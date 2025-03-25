@@ -22,4 +22,4 @@ create:
 .PHONY: native
 
 native:
-	@cd ./native && npm install && npm run ios
+	@cd ./native && bun install && bun gen && bun start
