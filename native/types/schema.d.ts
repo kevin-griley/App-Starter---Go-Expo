@@ -4,7 +4,7 @@
  */
 
 export interface paths {
-    "/login": {
+    '/login': {
         parameters: {
             query?: never;
             header?: never;
@@ -27,7 +27,7 @@ export interface paths {
             /** @description Login Request */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["handlers.PostAuthRequest"];
+                    'application/json': components['schemas']['handlers.PostAuthRequest'];
                 };
             };
             responses: {
@@ -35,21 +35,21 @@ export interface paths {
                 200: {
                     headers: Record<string, unknown>;
                     content: {
-                        "application/json": components["schemas"]["handlers.PostAuthResponse"];
+                        'application/json': components['schemas']['handlers.PostAuthResponse'];
                     };
                 };
                 /** @description Bad Request */
                 400: {
                     headers: Record<string, unknown>;
                     content: {
-                        "application/json": components["schemas"]["handlers.ApiError"];
+                        'application/json': components['schemas']['handlers.ApiError'];
                     };
                 };
                 /** @description Unauthorized */
                 401: {
                     headers: Record<string, unknown>;
                     content: {
-                        "application/json": components["schemas"]["handlers.ApiError"];
+                        'application/json': components['schemas']['handlers.ApiError'];
                     };
                 };
             };
@@ -60,7 +60,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/organization": {
+    '/organization': {
         parameters: {
             query?: never;
             header?: never;
@@ -83,7 +83,7 @@ export interface paths {
             /** @description Create Organization Request */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["handlers.PostOrganizationRequest"];
+                    'application/json': components['schemas']['handlers.PostOrganizationRequest'];
                 };
             };
             responses: {
@@ -91,14 +91,14 @@ export interface paths {
                 200: {
                     headers: Record<string, unknown>;
                     content: {
-                        "application/json": components["schemas"]["data.Organization"];
+                        'application/json': components['schemas']['data.Organization'];
                     };
                 };
                 /** @description Bad Request */
                 400: {
                     headers: Record<string, unknown>;
                     content: {
-                        "application/json": components["schemas"]["handlers.ApiError"];
+                        'application/json': components['schemas']['handlers.ApiError'];
                     };
                 };
             };
@@ -109,7 +109,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/organization/{id}": {
+    '/organization/{id}': {
         parameters: {
             query?: never;
             header?: never;
@@ -136,14 +136,14 @@ export interface paths {
                 200: {
                     headers: Record<string, unknown>;
                     content: {
-                        "application/json": components["schemas"]["data.Organization"];
+                        'application/json': components['schemas']['data.Organization'];
                     };
                 };
                 /** @description Bad Request */
                 400: {
                     headers: Record<string, unknown>;
                     content: {
-                        "application/json": components["schemas"]["handlers.ApiError"];
+                        'application/json': components['schemas']['handlers.ApiError'];
                     };
                 };
             };
@@ -170,7 +170,7 @@ export interface paths {
             /** @description Patch Organization Request */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["handlers.PatchOrganizationRequest"];
+                    'application/json': components['schemas']['handlers.PatchOrganizationRequest'];
                 };
             };
             responses: {
@@ -178,21 +178,21 @@ export interface paths {
                 200: {
                     headers: Record<string, unknown>;
                     content: {
-                        "application/json": components["schemas"]["data.Organization"];
+                        'application/json': components['schemas']['data.Organization'];
                     };
                 };
                 /** @description Bad Request */
                 400: {
                     headers: Record<string, unknown>;
                     content: {
-                        "application/json": components["schemas"]["handlers.ApiError"];
+                        'application/json': components['schemas']['handlers.ApiError'];
                     };
                 };
             };
         };
         trace?: never;
     };
-    "/user": {
+    '/user': {
         parameters: {
             query?: never;
             header?: never;
@@ -215,7 +215,7 @@ export interface paths {
             /** @description Create User Request */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["handlers.PostUserRequest"];
+                    'application/json': components['schemas']['handlers.PostUserRequest'];
                 };
             };
             responses: {
@@ -223,14 +223,14 @@ export interface paths {
                 200: {
                     headers: Record<string, unknown>;
                     content: {
-                        "application/json": components["schemas"]["data.User"];
+                        'application/json': components['schemas']['data.User'];
                     };
                 };
                 /** @description Bad Request */
                 400: {
                     headers: Record<string, unknown>;
                     content: {
-                        "application/json": components["schemas"]["handlers.ApiError"];
+                        'application/json': components['schemas']['handlers.ApiError'];
                     };
                 };
             };
@@ -241,7 +241,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/user/me": {
+    '/user/me': {
         parameters: {
             query?: never;
             header?: never;
@@ -265,14 +265,14 @@ export interface paths {
                 200: {
                     headers: Record<string, unknown>;
                     content: {
-                        "application/json": components["schemas"]["data.User"];
+                        'application/json': components['schemas']['data.User'];
                     };
                 };
                 /** @description Bad Request */
                 400: {
                     headers: Record<string, unknown>;
                     content: {
-                        "application/json": components["schemas"]["handlers.ApiError"];
+                        'application/json': components['schemas']['handlers.ApiError'];
                     };
                 };
             };
@@ -296,7 +296,7 @@ export interface paths {
             /** @description Patch User Request */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["handlers.PatchUserRequest"];
+                    'application/json': components['schemas']['handlers.PatchUserRequest'];
                 };
             };
             responses: {
@@ -304,14 +304,14 @@ export interface paths {
                 200: {
                     headers: Record<string, unknown>;
                     content: {
-                        "application/json": components["schemas"]["data.User"];
+                        'application/json': components['schemas']['data.User'];
                     };
                 };
                 /** @description Bad Request */
                 400: {
                     headers: Record<string, unknown>;
                     content: {
-                        "application/json": components["schemas"]["handlers.ApiError"];
+                        'application/json': components['schemas']['handlers.ApiError'];
                     };
                 };
             };
@@ -322,48 +322,48 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
-        "data.Organization": {
+        'data.Organization': {
             address?: string;
             contact_info?: string;
             created_at?: string;
             id?: string;
             name?: string;
-            organization_type?: components["schemas"]["data.OrganizationType"];
+            organization_type?: components['schemas']['data.OrganizationType'];
             unique_url?: string;
             updated_at?: string;
         };
         /** @enum {string} */
-        "data.OrganizationType": "Airline" | "Carrier" | "Warehouse";
-        "data.User": {
+        'data.OrganizationType': 'Airline' | 'Carrier' | 'Warehouse';
+        'data.User': {
             created_at?: string;
             email?: string;
             id?: string;
             updated_at?: string;
             user_name?: string;
         };
-        "handlers.ApiError": {
+        'handlers.ApiError': {
             error?: string;
             status?: number;
         };
-        "handlers.PatchOrganizationRequest": Record<string, never>;
-        "handlers.PatchUserRequest": {
+        'handlers.PatchOrganizationRequest': Record<string, never>;
+        'handlers.PatchUserRequest': {
             password?: string;
             user_name?: string;
         };
-        "handlers.PostAuthRequest": {
+        'handlers.PostAuthRequest': {
             email?: string;
             password?: string;
         };
-        "handlers.PostAuthResponse": {
+        'handlers.PostAuthResponse': {
             token?: string;
         };
-        "handlers.PostOrganizationRequest": {
+        'handlers.PostOrganizationRequest': {
             address?: string;
             contact_info?: string;
             name?: string;
-            organization_type?: components["schemas"]["data.OrganizationType"];
+            organization_type?: components['schemas']['data.OrganizationType'];
         };
-        "handlers.PostUserRequest": {
+        'handlers.PostUserRequest': {
             email?: string;
             password?: string;
         };
