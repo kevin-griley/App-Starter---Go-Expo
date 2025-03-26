@@ -1,9 +1,9 @@
 import { View, Pressable, Text } from 'react-native';
 
-type Props = {
+interface Props {
     label: string;
     onPress?: () => void;
-};
+}
 
 export default function Button({ label, onPress }: Props) {
     return (

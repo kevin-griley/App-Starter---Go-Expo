@@ -33,27 +33,21 @@ export interface paths {
             responses: {
                 /** @description Token Response */
                 200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
+                    headers: Record<string, unknown>;
                     content: {
                         "application/json": components["schemas"]["handlers.PostAuthResponse"];
                     };
                 };
                 /** @description Bad Request */
                 400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
+                    headers: Record<string, unknown>;
                     content: {
                         "application/json": components["schemas"]["handlers.ApiError"];
                     };
                 };
                 /** @description Unauthorized */
                 401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
+                    headers: Record<string, unknown>;
                     content: {
                         "application/json": components["schemas"]["handlers.ApiError"];
                     };
@@ -95,18 +89,14 @@ export interface paths {
             responses: {
                 /** @description Organization */
                 200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
+                    headers: Record<string, unknown>;
                     content: {
                         "application/json": components["schemas"]["data.Organization"];
                     };
                 };
                 /** @description Bad Request */
                 400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
+                    headers: Record<string, unknown>;
                     content: {
                         "application/json": components["schemas"]["handlers.ApiError"];
                     };
@@ -144,18 +134,14 @@ export interface paths {
             responses: {
                 /** @description Organization */
                 200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
+                    headers: Record<string, unknown>;
                     content: {
                         "application/json": components["schemas"]["data.Organization"];
                     };
                 };
                 /** @description Bad Request */
                 400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
+                    headers: Record<string, unknown>;
                     content: {
                         "application/json": components["schemas"]["handlers.ApiError"];
                     };
@@ -190,18 +176,14 @@ export interface paths {
             responses: {
                 /** @description Organization */
                 200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
+                    headers: Record<string, unknown>;
                     content: {
                         "application/json": components["schemas"]["data.Organization"];
                     };
                 };
                 /** @description Bad Request */
                 400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
+                    headers: Record<string, unknown>;
                     content: {
                         "application/json": components["schemas"]["handlers.ApiError"];
                     };
@@ -239,18 +221,14 @@ export interface paths {
             responses: {
                 /** @description User */
                 200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
+                    headers: Record<string, unknown>;
                     content: {
                         "application/json": components["schemas"]["data.User"];
                     };
                 };
                 /** @description Bad Request */
                 400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
+                    headers: Record<string, unknown>;
                     content: {
                         "application/json": components["schemas"]["handlers.ApiError"];
                     };
@@ -285,18 +263,14 @@ export interface paths {
             responses: {
                 /** @description User */
                 200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
+                    headers: Record<string, unknown>;
                     content: {
                         "application/json": components["schemas"]["data.User"];
                     };
                 };
                 /** @description Bad Request */
                 400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
+                    headers: Record<string, unknown>;
                     content: {
                         "application/json": components["schemas"]["handlers.ApiError"];
                     };
@@ -328,18 +302,14 @@ export interface paths {
             responses: {
                 /** @description User */
                 200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
+                    headers: Record<string, unknown>;
                     content: {
                         "application/json": components["schemas"]["data.User"];
                     };
                 };
                 /** @description Bad Request */
                 400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
+                    headers: Record<string, unknown>;
                     content: {
                         "application/json": components["schemas"]["handlers.ApiError"];
                     };
