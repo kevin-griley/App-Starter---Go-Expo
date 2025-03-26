@@ -1,17 +1,16 @@
 import * as React from 'react';
 
-import { SafeAreaView } from 'react-native';
-
 import { ThemeToggle } from '@/components/ThemeToggle';
-
 import { SplashScreen } from '@/screens/auth/splash-screen';
 import { Stack } from 'expo-router';
+import { SafeAreaView } from 'react-native';
 
 export default function Index() {
     return (
         <>
             <Stack.Screen
                 options={{
+                    headerTitle: 'Welcome to MyCartage',
                     headerRight: () => <ThemeToggle />,
                 }}
             />
