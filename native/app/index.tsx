@@ -10,7 +10,7 @@ export default function Index() {
         <>
             <Stack.Screen
                 options={{
-                    headerTitle: 'Welcome to MyCartage',
+                    headerTitle: 'Welcome to **Company**',
                     headerRight: () => <ThemeToggle />,
                 }}
             />

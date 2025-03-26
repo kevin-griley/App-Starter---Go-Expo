@@ -1,8 +1,8 @@
 import { Button } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
+import { H4 } from '@/components/ui/typography';
 import { VStack } from '@/components/ui/vstack';
 import { Link } from 'expo-router';
-import { Image } from 'react-native';
 import { AuthLayout } from '../layout';
 
 const SplashScreenWithLeftBackground = () => {
@@ -11,10 +11,7 @@ const SplashScreenWithLeftBackground = () => {
             className="w-full max-w-[440px] items-center h-full justify-center"
             space="lg"
         >
-            <Image
-                // eslint-disable-next-line @typescript-eslint/no-require-imports
-                source={require('@/assets/logos/MyCartage-banner.png')}
-            />
+            <H4>Welcome to **Company**</H4>
 
             <VStack className="w-full" space="lg">
                 <Link href="/auth/sign-in">
