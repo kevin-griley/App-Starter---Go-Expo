@@ -1,21 +1,24 @@
 import '../global.css';
 
-import { Stack } from 'expo-router';
-import { Platform } from 'react-native';
-import * as React from 'react';
-import { NAV_THEME } from '@/lib/constants';
-import { QueryClientProvider } from '@tanstack/react-query';
+import { setAndroidNavigationBar } from '@/lib/android-navigation-bar';
 import { queryClient } from '@/lib/api/client';
+import { NAV_THEME } from '@/lib/constants';
+import { useColorScheme } from '@/lib/useColorScheme';
 import {
     DarkTheme,
     DefaultTheme,
     type Theme,
     ThemeProvider,
 } from '@react-navigation/native';
-import { useColorScheme } from '@/lib/useColorScheme';
-import { setAndroidNavigationBar } from '@/lib/android-navigation-bar';
-import { StatusBar } from 'expo-status-bar';
 import { PortalHost } from '@rn-primitives/portal';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { useFonts } from 'expo-font';
+import { Stack } from 'expo-router';
+import * as SplashScreen from 'expo-splash-screen';
+import { StatusBar } from 'expo-status-bar';
+import * as React from 'react';
+import { Platform } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 const LIGHT_THEME: Theme = {
     ...DefaultTheme,
@@ -28,10 +31,27 @@ const DARK_THEME: Theme = {
 
 export { ErrorBoundary } from 'expo-router';
 
+SplashScreen.preventAutoHideAsync();
+
 export default function RootLayout() {
     const hasMounted = React.useRef(false);
     const { colorScheme, isDarkColorScheme } = useColorScheme();
     const [isColorSchemeLoaded, setIsColorSchemeLoaded] = React.useState(false);
+
+    const [loaded, error] = useFonts({
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
+        SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    });
+
+    React.useEffect(() => {
+        if (error) throw error;
+    }, [error]);
+
+    React.useEffect(() => {
+        if (loaded) {
+            SplashScreen.hideAsync();
+        }
+    }, [loaded]);
 
     useIsomorphicLayoutEffect(() => {
         if (hasMounted.current) {
@@ -45,18 +65,22 @@ export default function RootLayout() {
         hasMounted.current = true;
     }, []);
 
-    if (!isColorSchemeLoaded) {
+    if (!isColorSchemeLoaded || !loaded) {
         return null;
     }
 
     return (
-        <QueryClientProvider client={queryClient}>
-            <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
-                <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
-                <Stack />
-                <PortalHost />
-            </ThemeProvider>
-        </QueryClientProvider>
+        <SafeAreaProvider>
+            <QueryClientProvider client={queryClient}>
+                <ThemeProvider
+                    value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}
+                >
+                    <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
+                    <Stack />
+                    <PortalHost />
+                </ThemeProvider>
+            </QueryClientProvider>
+        </SafeAreaProvider>
     );
 }
 

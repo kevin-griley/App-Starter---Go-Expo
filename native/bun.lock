@@ -35,6 +35,7 @@
         "clsx": "^2.1.1",
         "expo": "^52.0.16",
         "expo-constants": "~17.0.3",
+        "expo-font": "^13.0.4",
         "expo-linking": "~7.0.5",
         "expo-navigation-bar": "~4.0.8",
         "expo-router": "~4.0.11",
