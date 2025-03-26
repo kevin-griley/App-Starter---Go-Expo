@@ -37,9 +37,7 @@ export default function RootLayout() {
         if (hasMounted.current) {
             return;
         }
-
         if (Platform.OS === 'web') {
-            // Adds the background color to the html element to prevent white background on overscroll.
             document.documentElement.classList.add('bg-background');
         }
         setAndroidNavigationBar(colorScheme);
