@@ -124,6 +124,21 @@ paths:
       summary: Retrive token for bearer authentication
       tags:
       - Auth
+  /logout:
+    delete:
+      consumes:
+      - application/json
+      description: Removes HttpOnly cookie from client
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Removes HttpOnly cookie from client
+      tags:
+      - Auth
   /organization:
     post:
       consumes:

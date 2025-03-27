@@ -8,7 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Link } from 'expo-router';
 import * as React from 'react';
 import { useForm } from 'react-hook-form';
-import { View } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 
 import { $api } from '@/lib/api/client';
 import { z } from 'zod';
@@ -59,6 +59,8 @@ const SignUpWithLeftBackground = () => {
     const postUser = $api.useMutation('post', '/user');
 
     function onSubmit(values: SignUpSchemaType) {
+        if (postUser.status === 'pending') return;
+
         postUser.mutateAsync({
             body: {
                 email: values.email,
@@ -147,7 +149,11 @@ const SignUpWithLeftBackground = () => {
                             className="w-full"
                             onPress={form.handleSubmit(onSubmit)}
                         >
-                            <Text className="font-medium">Log in</Text>
+                            {postUser.status === 'pending' ? (
+                                <ActivityIndicator size="small" />
+                            ) : (
+                                <Text>Sign up</Text>
+                            )}
                         </Button>
                     </VStack>
 

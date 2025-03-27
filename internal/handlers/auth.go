@@ -3,11 +3,13 @@ package handlers
 import (
 	"log"
 	"net/http"
+	"net/url"
 	"os"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/kevin-griley/api/internal/data"
+	"github.com/kevin-griley/api/internal/middleware"
 )
 
 type PostAuthRequest struct {
@@ -82,6 +84,30 @@ func HandlePostLogin(w http.ResponseWriter, r *http.Request) *ApiError {
 		return &ApiError{http.StatusInternalServerError, err.Error()}
 	}
 
+	corsData, ok := middleware.GetCORSData(ctx)
+	if !ok {
+		return &ApiError{http.StatusInternalServerError, "no corsData in context"}
+	}
+
+	if corsData.Method == middleware.Session {
+		cookieDomain, err := url.Parse(corsData.Domain)
+		if err != nil {
+			return &ApiError{http.StatusInternalServerError, err.Error()}
+		}
+
+		http.SetCookie(w, &http.Cookie{
+			Name:     middleware.AuthTokenCookie,
+			Value:    tokenString,
+			Path:     "/",
+			Domain:   "."+cookieDomain.Host,
+			HttpOnly: true,
+			Secure:   !corsData.IsLocal,
+			SameSite: http.SameSiteStrictMode,
+			Expires:  time.Now().Add(24 * time.Hour),
+		})
+
+	}
+
 	return WriteJSON(w, http.StatusOK, PostAuthResponse{Token: tokenString})
 }
 
@@ -98,4 +124,42 @@ func CreateJWT(user *data.User) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString([]byte(secret))
 
+}
+
+// @Summary			Removes HttpOnly cookie from client
+// @Description		Removes HttpOnly cookie from client
+// @Tags			Auth
+// @Accept			json
+// @Produce			json
+// @Success			200		{string}	string	"OK"
+// @Router			/logout	[delete]
+func HandleGetLogout(w http.ResponseWriter, r *http.Request) *ApiError {
+
+	ctx := r.Context()
+
+	corsData, ok := middleware.GetCORSData(ctx)
+	if !ok {
+		return &ApiError{http.StatusInternalServerError, "no corsData in context"}
+	}
+
+	if corsData.Method == middleware.Session {
+		cookieDomain, err := url.Parse(corsData.Domain)
+		if err != nil {
+			return &ApiError{http.StatusInternalServerError, err.Error()}
+		}
+
+		http.SetCookie(w, &http.Cookie{
+			Name:     middleware.AuthTokenCookie,
+			Value:    "",
+			Path:     "/",
+			Domain:   "."+cookieDomain.Host,
+			Expires:  time.Unix(0, 0),
+			MaxAge:  -1,
+			HttpOnly: true,
+			Secure:   !corsData.IsLocal,			
+		})
+
+	}
+
+	return WriteJSON(w, http.StatusOK, "OK")
 }

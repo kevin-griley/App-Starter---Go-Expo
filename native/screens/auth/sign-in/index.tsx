@@ -8,9 +8,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Link } from 'expo-router';
 import * as React from 'react';
 import { useForm } from 'react-hook-form';
-import { View } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 
-import { $api } from '@/lib/api/client';
+import { useSession } from '@/components/auth';
+import { AlertDefault } from '@/components/ui/alert/default';
 import { z } from 'zod';
 import { AuthLayout } from '../layout';
 
@@ -23,29 +24,30 @@ const loginSchema = z.object({
 type LoginSchemaType = z.infer<typeof loginSchema>;
 
 const LoginWithLeftBackground = () => {
+    const { session, login, error, isLoading, logout } = useSession();
+
     const form = useForm<LoginSchemaType>({
         resolver: zodResolver(loginSchema),
+        defaultValues: {
+            email: '',
+            password: '',
+            rememberme: false,
+        },
     });
 
-    const postLogin = $api.useMutation('post', '/login');
-
     function onSubmit(values: LoginSchemaType) {
-        postLogin.mutateAsync({
-            body: {
-                email: values.email,
-                password: values.password,
-            },
+        login({
+            email: values.email,
+            password: values.password,
         });
     }
 
     React.useEffect(() => {
-        if (postLogin.status === 'error') {
-            console.log(postLogin.error);
-
-            form.setError('email', { message: postLogin.error.error });
-            form.setError('password', { message: postLogin.error.error });
+        if (error) {
+            form.setError('email', { message: error.error });
+            form.setError('password', { message: error.error });
         }
-    }, [postLogin.status]);
+    }, [error]);
 
     return (
         <VStack className="max-w-[440px] w-full" space="md">
@@ -113,7 +115,11 @@ const LoginWithLeftBackground = () => {
                             className="w-full"
                             onPress={form.handleSubmit(onSubmit)}
                         >
-                            <Text className="font-medium">Log in</Text>
+                            {isLoading ? (
+                                <ActivityIndicator size="small" />
+                            ) : (
+                                <Text>Log in</Text>
+                            )}
                         </Button>
                     </VStack>
 
@@ -126,6 +132,30 @@ const LoginWithLeftBackground = () => {
                             </Text>
                         </Link>
                     </HStack>
+
+                    {session && (
+                        <>
+                            <AlertDefault
+                                title={`${session.email} is logged in`}
+                                description={JSON.stringify(
+                                    {
+                                        message: 'You are logged in',
+                                        ...session,
+                                    },
+                                    null,
+                                    4,
+                                )}
+                                variant="success"
+                            />
+
+                            <Button
+                                onPress={() => logout()}
+                                variant="destructive"
+                            >
+                                <Text>Logout</Text>
+                            </Button>
+                        </>
+                    )}
                 </VStack>
             </VStack>
         </VStack>

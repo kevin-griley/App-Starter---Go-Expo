@@ -61,6 +61,29 @@ const docTemplate = `{
                 }
             }
         },
+        "/logout": {
+            "delete": {
+                "description": "Removes HttpOnly cookie from client",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Removes HttpOnly cookie from client",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/organization": {
             "post": {
                 "description": "Create a new organization",

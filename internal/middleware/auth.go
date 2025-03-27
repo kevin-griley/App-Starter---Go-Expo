@@ -14,28 +14,44 @@ import (
 	"github.com/google/uuid"
 )
 
-const ContextKeyUserID ContextKey = "ContextKeyUserID"
-const ContextKeyClaims ContextKey = "ContextKeyClaims"
 
-func ExtractBearerToken(authHeader string) (string, error) {
-	const prefix = "Bearer "
-	if !strings.HasPrefix(authHeader, prefix) {
-		return "", errors.New("authorization header must be in Bearer format")
-	}
-	return strings.TrimSpace(strings.TrimPrefix(authHeader, prefix)), nil
-}
 
 func JwtAuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
 		ctx := r.Context()
-
-		authHeader := r.Header.Get("Authorization")
-		tokenStr, err := ExtractBearerToken(authHeader)
-		if err != nil {
-			slog.Error("JwtAuthMiddleware", "ExtractBearerToken", err)
+		corsData, ok := GetCORSData(r.Context())
+		if !ok {
+			slog.Error("JwtAuthMiddleware", "GetCORSData", errors.New("no CORS data in context"))
 			PermissionDenied(w)
 			return
+		}
+
+		var tokenStr string
+
+		switch corsData.Method {
+		case Session:
+			cookie, err := r.Cookie(AuthTokenCookie)
+			if err != nil {
+				slog.Error("JwtAuthMiddleware", "r.Cookie", err)
+				PermissionDenied(w)
+				return
+			}
+			tokenStr = cookie.Value
+		case Token:
+			authHeader := r.Header.Get("Authorization")
+			if authHeader == "" {
+				slog.Error("JwtAuthMiddleware", "r.Header.Get", errors.New("no authorization header"))
+				PermissionDenied(w)
+				return
+			}
+			var err error
+			tokenStr, err = ExtractBearerToken(authHeader)
+			if err != nil {
+				slog.Error("JwtAuthMiddleware", "ExtractBearerToken", err)
+				PermissionDenied(w)
+				return
+			}
 		}
 
 		token, err := ValidateJWT(tokenStr)
@@ -83,10 +99,9 @@ func ValidateJWT(tokenStr string) (*jwt.Token, error) {
 	})
 }
 
-type ApiError struct {
-	Status  int    `json:"status"`
-	Message string `json:"error"`
-}
+const ContextKeyUserID ContextKey = "ContextKeyUserID"
+const ContextKeyClaims ContextKey = "ContextKeyClaims"
+
 
 func PermissionDenied(w http.ResponseWriter) {
 	w.Header().Add("Content-Type", "application/json")
@@ -110,4 +125,13 @@ func GetClaims(ctx context.Context) (jwt.MapClaims, bool) {
 
 func withClaims(ctx context.Context, claims jwt.MapClaims) context.Context {
 	return context.WithValue(ctx, ContextKeyClaims, claims)
+}
+
+
+func ExtractBearerToken(authHeader string) (string, error) {
+	const prefix = "Bearer "
+	if !strings.HasPrefix(authHeader, prefix) {
+		return "", errors.New("authorization header must be in Bearer format")
+	}
+	return strings.TrimSpace(strings.TrimPrefix(authHeader, prefix)), nil
 }

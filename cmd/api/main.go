@@ -38,6 +38,7 @@ func main() {
 
 	mux.HandleFunc("GET /docs/", httpSwagger.WrapHandler)
 	mux.HandleFunc("POST /login", handlers.HandleApiError(handlers.HandlePostLogin))
+	mux.HandleFunc("DELETE /logout", handlers.HandleApiError(handlers.HandleGetLogout))
 	mux.HandleFunc("POST /user", handlers.HandleApiError(handlers.HandlePostUser))
 
 	GetUserByKeyHandler := middleware.JwtAuthMiddleware(handlers.HandleApiError(handlers.HandleGetUserByKey))

@@ -1,6 +1,7 @@
 import { Text } from '@/components/ui/text';
 import '../global.css';
 
+import { SessionProvider } from '@/components/auth';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { setAndroidNavigationBar } from '@/lib/android-navigation-bar';
 import { queryClient } from '@/lib/api/client';
@@ -39,7 +40,6 @@ export default function RootLayout() {
     const hasMounted = React.useRef(false);
     const { colorScheme, isDarkColorScheme } = useColorScheme();
     const [isColorSchemeLoaded, setIsColorSchemeLoaded] = React.useState(false);
-
     const [loaded, error] = useFonts({
         // eslint-disable-next-line @typescript-eslint/no-require-imports
         SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
@@ -73,27 +73,31 @@ export default function RootLayout() {
 
     return (
         <QueryClientProvider client={queryClient}>
-            <SafeAreaProvider>
-                <ThemeProvider
-                    value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}
-                >
-                    <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
-                    <Stack
-                        screenOptions={{
-                            headerBackTitle: 'Back',
-                            headerTitle(props) {
-                                return (
-                                    <Text className="text-xl font-semibold">
-                                        {toOptions(props.children)}
-                                    </Text>
-                                );
-                            },
-                            headerRight: () => <ThemeToggle />,
-                        }}
-                    />
-                    <PortalHost />
-                </ThemeProvider>
-            </SafeAreaProvider>
+            <SessionProvider>
+                <SafeAreaProvider>
+                    <ThemeProvider
+                        value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}
+                    >
+                        <StatusBar
+                            style={isDarkColorScheme ? 'light' : 'dark'}
+                        />
+                        <Stack
+                            screenOptions={{
+                                headerBackTitle: 'Back',
+                                headerTitle(props) {
+                                    return (
+                                        <Text className="text-xl font-semibold">
+                                            {toOptions(props.children)}
+                                        </Text>
+                                    );
+                                },
+                                headerRight: () => <ThemeToggle />,
+                            }}
+                        />
+                        <PortalHost />
+                    </ThemeProvider>
+                </SafeAreaProvider>
+            </SessionProvider>
         </QueryClientProvider>
     );
 }
