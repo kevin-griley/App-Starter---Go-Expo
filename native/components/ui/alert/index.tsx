@@ -13,6 +13,7 @@ const alertVariants = cva(
             variant: {
                 default: '',
                 destructive: 'border-destructive',
+                success: 'border-success',
             },
         },
         defaultVariants: {
@@ -21,15 +22,15 @@ const alertVariants = cva(
     },
 );
 
-const Alert = React.forwardRef<
-    React.ElementRef<typeof View>,
+type AlertProps = React.ComponentPropsWithoutRef<typeof View> &
     ViewProps &
-        VariantProps<typeof alertVariants> & {
-            icon: LucideIcon;
-            iconSize?: number;
-            iconClassName?: string;
-        }
->(
+    VariantProps<typeof alertVariants> & {
+        icon: LucideIcon;
+        iconSize?: number;
+        iconClassName?: string;
+    };
+
+const Alert = React.forwardRef<React.ElementRef<typeof View>, AlertProps>(
     (
         {
             className,
@@ -98,3 +99,4 @@ const AlertDescription = React.forwardRef<
 AlertDescription.displayName = 'AlertDescription';
 
 export { Alert, AlertDescription, AlertTitle };
+export type { AlertProps };

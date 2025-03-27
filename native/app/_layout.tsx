@@ -1,5 +1,7 @@
+import { Text } from '@/components/ui/text';
 import '../global.css';
 
+import { ThemeToggle } from '@/components/ThemeToggle';
 import { setAndroidNavigationBar } from '@/lib/android-navigation-bar';
 import { queryClient } from '@/lib/api/client';
 import { NAV_THEME } from '@/lib/constants';
@@ -70,17 +72,29 @@ export default function RootLayout() {
     }
 
     return (
-        <SafeAreaProvider>
-            <QueryClientProvider client={queryClient}>
+        <QueryClientProvider client={queryClient}>
+            <SafeAreaProvider>
                 <ThemeProvider
                     value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}
                 >
                     <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
-                    <Stack />
+                    <Stack
+                        screenOptions={{
+                            headerBackTitle: 'Back',
+                            headerTitle(props) {
+                                return (
+                                    <Text className="text-xl font-semibold">
+                                        {toOptions(props.children)}
+                                    </Text>
+                                );
+                            },
+                            headerRight: () => <ThemeToggle />,
+                        }}
+                    />
                     <PortalHost />
                 </ThemeProvider>
-            </QueryClientProvider>
-        </SafeAreaProvider>
+            </SafeAreaProvider>
+        </QueryClientProvider>
     );
 }
 
@@ -88,3 +102,16 @@ const useIsomorphicLayoutEffect =
     Platform.OS === 'web' && typeof window === 'undefined'
         ? React.useEffect
         : React.useLayoutEffect;
+
+function toOptions(name: string) {
+    const title = name
+        .split('/')
+        .flatMap((str) => str.split('-'))
+        .map(function (str: string) {
+            return str.replace(/\b\w/g, function (char) {
+                return char.toUpperCase();
+            });
+        })
+        .join(' ');
+    return title === 'index' ? 'Home' : title;
+}

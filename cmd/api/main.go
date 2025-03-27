@@ -31,8 +31,8 @@ func main() {
 		log.Fatal("Failed to load embedded .env file:", err)
 	}
 
-	listenAddress := ":3000"
-	docs.SwaggerInfo.Host = "localhost:3000"
+	listenAddress := ":8080"
+	docs.SwaggerInfo.Host = "localhost:8080"
 
 	mux := http.NewServeMux()
 
@@ -71,10 +71,11 @@ func main() {
 	finalHandler := middleware.Chain(
 		mux.ServeHTTP,
 		middleware.LoggingMiddleware,
+		middleware.CORSMiddleware,
 		middleware.StoreMiddleware(store),
 	)
 
-	slog.Info("Application", "Swagger Docs Url", "http://localhost:3000/docs")
+	slog.Info("Application", "Swagger Docs Url", "http://localhost:8080/docs")
 
 	http.ListenAndServe(listenAddress, finalHandler)
 }

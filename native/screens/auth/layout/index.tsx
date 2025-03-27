@@ -10,7 +10,7 @@ interface AuthLayoutProps {
 
 export const AuthLayout = (props: AuthLayoutProps) => {
     return (
-        <SafeAreaView className="w-full h-full">
+        <SafeAreaView className="flex-1 justify-center items-center p-6 bg-secondary/30">
             <ScrollView
                 className="w-full h-full"
                 contentContainerStyle={{ flexGrow: 1 }}
@@ -20,14 +20,14 @@ export const AuthLayout = (props: AuthLayoutProps) => {
                         className="relative hidden md:flex h-full w-full flex-1 items-center  justify-center"
                         space="md"
                     >
-                        <View className="flex-1 w-full bg-gradient-to-br from-green-900 via-slate-950 to-emerald-900 rounded-md">
+                        <View className="flex-1 w-full bg-gradient-to-br from-green-900 via-slate-950 to-emerald-900 ">
                             <View className="flex items-center justify-center h-full">
                                 {/* Logo Goes Here */}
                             </View>
                         </View>
                     </VStack>
 
-                    <VStack className="md:items-center md:justify-center flex-1 w-full p-9 md:gap-10 gap-16 md:m-auto md:w-1/2 h-full">
+                    <VStack className="md:items-center md:justify-center flex-1 w-full p-4 md:gap-10 gap-16 md:m-auto md:w-1/2 h-full">
                         {props.children}
                     </VStack>
                 </HStack>

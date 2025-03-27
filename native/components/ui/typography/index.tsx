@@ -1,8 +1,8 @@
+import { cn } from '@/lib/utils';
 import * as Slot from '@rn-primitives/slot';
 import type { SlottableTextProps, TextRef } from '@rn-primitives/types';
 import * as React from 'react';
 import { Platform, Text as RNText } from 'react-native';
-import { cn } from '@/lib/utils';
 
 const H1 = React.forwardRef<TextRef, SlottableTextProps>(
     ({ className, asChild = false, ...props }, ref) => {
@@ -15,6 +15,7 @@ const H1 = React.forwardRef<TextRef, SlottableTextProps>(
                     'web:scroll-m-20 text-4xl text-foreground font-extrabold tracking-tight lg:text-5xl web:select-text',
                     className,
                 )}
+                style={{ fontFamily: 'SpaceMono' }}
                 ref={ref}
                 {...props}
             />
@@ -35,6 +36,7 @@ const H2 = React.forwardRef<TextRef, SlottableTextProps>(
                     'web:scroll-m-20 border-b border-border pb-2 text-3xl text-foreground font-semibold tracking-tight first:mt-0 web:select-text',
                     className,
                 )}
+                style={{ fontFamily: 'SpaceMono' }}
                 ref={ref}
                 {...props}
             />
@@ -55,6 +57,7 @@ const H3 = React.forwardRef<TextRef, SlottableTextProps>(
                     'web:scroll-m-20 text-2xl text-foreground font-semibold tracking-tight web:select-text',
                     className,
                 )}
+                style={{ fontFamily: 'SpaceMono' }}
                 ref={ref}
                 {...props}
             />
@@ -75,6 +78,7 @@ const H4 = React.forwardRef<TextRef, SlottableTextProps>(
                     'web:scroll-m-20 text-xl text-foreground font-semibold tracking-tight web:select-text',
                     className,
                 )}
+                style={{ fontFamily: 'SpaceMono' }}
                 ref={ref}
                 {...props}
             />
@@ -93,6 +97,7 @@ const P = React.forwardRef<TextRef, SlottableTextProps>(
                     'text-base text-foreground web:select-text',
                     className,
                 )}
+                style={{ fontFamily: 'SpaceMono' }}
                 ref={ref}
                 {...props}
             />
