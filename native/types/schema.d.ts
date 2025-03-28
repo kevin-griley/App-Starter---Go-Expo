@@ -4,7 +4,7 @@
  */
 
 export interface paths {
-    "/login": {
+    "/auth/login": {
         parameters: {
             query?: never;
             header?: never;
@@ -60,7 +60,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/logout": {
+    "/auth/logout": {
         parameters: {
             query?: never;
             header?: never;
@@ -92,6 +92,104 @@ export interface paths {
                 };
             };
         };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/reset/confirm": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Confirms a password reset
+         * @description Confirms a password reset
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            /** @description Reset Confirm */
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["handlers.PostAuthResetConfirm"];
+                };
+            };
+            responses: {
+                /** @description User */
+                200: {
+                    headers: Record<string, unknown>;
+                    content: {
+                        "application/json": components["schemas"]["data.User"];
+                    };
+                };
+                /** @description Bad Request */
+                400: {
+                    headers: Record<string, unknown>;
+                    content: {
+                        "application/json": components["schemas"]["handlers.ApiError"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/reset/request": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Requests a password reset
+         * @description Requests a password reset
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            /** @description Reset Request */
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["handlers.PostAuthResetRequest"];
+                };
+            };
+            responses: {
+                /** @description User */
+                200: {
+                    headers: Record<string, unknown>;
+                    content: {
+                        "application/json": components["schemas"]["data.User"];
+                    };
+                };
+                /** @description Bad Request */
+                400: {
+                    headers: Record<string, unknown>;
+                    content: {
+                        "application/json": components["schemas"]["handlers.ApiError"];
+                    };
+                };
+            };
+        };
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -390,6 +488,13 @@ export interface components {
         "handlers.PostAuthRequest": {
             email?: string;
             password?: string;
+        };
+        "handlers.PostAuthResetConfirm": {
+            confirm_code?: string;
+            new_password?: string;
+        };
+        "handlers.PostAuthResetRequest": {
+            email?: string;
         };
         "handlers.PostAuthResponse": {
             token?: string;

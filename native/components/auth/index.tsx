@@ -29,7 +29,7 @@ interface SessionProviderProps {
 export function SessionProvider({ children }: SessionProviderProps) {
     const [session, setSession] = React.useState<UserData | null>(null);
 
-    const deleteLogout = $api.useMutation('delete', '/logout', {
+    const deleteLogout = $api.useMutation('delete', '/auth/logout', {
         onSuccess: () => setSession(null),
     });
 
@@ -41,7 +41,7 @@ export function SessionProvider({ children }: SessionProviderProps) {
         }
     }, [getUserByKey.data]);
 
-    const loginMutation = $api.useMutation('post', '/login', {
+    const loginMutation = $api.useMutation('post', '/auth/login', {
         onSuccess: async () => getUserByKey.refetch(),
     });
 

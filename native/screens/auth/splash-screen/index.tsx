@@ -2,12 +2,10 @@ import { Button } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
 import { H4 } from '@/components/ui/typography';
 import { VStack } from '@/components/ui/vstack';
-import { Link, useRouter } from 'expo-router';
+import { Link } from 'expo-router';
 import { AuthLayout } from '../layout';
 
 const SplashScreenWithLeftBackground = () => {
-    const router = useRouter();
-
     return (
         <VStack
             className="w-full max-w-[440px] items-center h-full justify-center"
@@ -15,19 +13,13 @@ const SplashScreenWithLeftBackground = () => {
         >
             <H4>Welcome to **Company**</H4>
             <VStack className="w-full" space="lg">
-                <Link href="/auth/sign-in">
-                    <Button
-                        className="w-full"
-                        onPress={() => router.push('/auth/sign-in')}
-                    >
+                <Link href="/sign-in">
+                    <Button className="w-full">
                         <Text>Log in</Text>
                     </Button>
                 </Link>
-                <Link href="/auth/sign-up">
-                    <Button
-                        className="w-full"
-                        onPress={() => router.push('/auth/sign-up')}
-                    >
+                <Link href="/sign-up">
+                    <Button className="w-full">
                         <Text>Sign Up</Text>
                     </Button>
                 </Link>

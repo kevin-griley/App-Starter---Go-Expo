@@ -1,3 +1,4 @@
+import { useSession } from '@/components/auth';
 import { Button } from '@/components/ui/button';
 import { Form, FormCheckbox, FormField, FormInput } from '@/components/ui/form';
 import { HStack } from '@/components/ui/hstack';
@@ -9,9 +10,6 @@ import { Link } from 'expo-router';
 import * as React from 'react';
 import { useForm } from 'react-hook-form';
 import { ActivityIndicator, View } from 'react-native';
-
-import { useSession } from '@/components/auth';
-import { AlertDefault } from '@/components/ui/alert/default';
 import { z } from 'zod';
 import { AuthLayout } from '../layout';
 
@@ -24,7 +22,7 @@ const loginSchema = z.object({
 type LoginSchemaType = z.infer<typeof loginSchema>;
 
 const LoginWithLeftBackground = () => {
-    const { session, login, error, isLoading, logout } = useSession();
+    const { login, error, isLoading } = useSession();
 
     const form = useForm<LoginSchemaType>({
         resolver: zodResolver(loginSchema),
@@ -68,6 +66,9 @@ const LoginWithLeftBackground = () => {
                                             placeholder="hello@email.ai"
                                             autoCapitalize="none"
                                             autoComplete="email"
+                                            onSubmitEditing={() =>
+                                                form.setFocus('password')
+                                            }
                                             {...field}
                                         />
                                     )}
@@ -77,11 +78,15 @@ const LoginWithLeftBackground = () => {
                                     name="password"
                                     render={({ field }) => (
                                         <FormInput
+                                            className="flex-1"
                                             label="Password"
                                             placeholder="********"
                                             description="Use a secure password."
                                             secureTextEntry
                                             autoComplete="password"
+                                            onSubmitEditing={form.handleSubmit(
+                                                onSubmit,
+                                            )}
                                             {...field}
                                         />
                                     )}
@@ -100,7 +105,7 @@ const LoginWithLeftBackground = () => {
                                         )}
                                     />
 
-                                    <Link href="/auth/sign-up">
+                                    <Link href="/forgot-password">
                                         <Text className="underline font-medium text-primary group-hover/link:text-primary">
                                             Forgot Password?
                                         </Text>
@@ -126,36 +131,12 @@ const LoginWithLeftBackground = () => {
                     <HStack className="self-center">
                         <Text>Don't have an account?</Text>
 
-                        <Link href="/auth/sign-up">
+                        <Link href="/sign-up">
                             <Text className="underline font-medium text-primary group-hover/link:text-primary  group-hover/pressed:text-primary">
                                 Sign up
                             </Text>
                         </Link>
                     </HStack>
-
-                    {session && (
-                        <>
-                            <AlertDefault
-                                title={`${session.email} is logged in`}
-                                description={JSON.stringify(
-                                    {
-                                        message: 'You are logged in',
-                                        ...session,
-                                    },
-                                    null,
-                                    4,
-                                )}
-                                variant="success"
-                            />
-
-                            <Button
-                                onPress={() => logout()}
-                                variant="destructive"
-                            >
-                                <Text>Logout</Text>
-                            </Button>
-                        </>
-                    )}
                 </VStack>
             </VStack>
         </VStack>

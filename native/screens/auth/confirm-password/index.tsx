@@ -1,22 +1,19 @@
 import { Button } from '@/components/ui/button';
-import { Form, FormCheckbox, FormField, FormInput } from '@/components/ui/form';
-import { HStack } from '@/components/ui/hstack';
+import { Form, FormField, FormInput } from '@/components/ui/form';
 import { Text } from '@/components/ui/text';
 import { H1 } from '@/components/ui/typography';
 import { VStack } from '@/components/ui/vstack';
+import { $api } from '@/lib/api/client';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Link } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import * as React from 'react';
 import { useForm } from 'react-hook-form';
 import { ActivityIndicator, View } from 'react-native';
-
-import { $api } from '@/lib/api/client';
 import { z } from 'zod';
 import { AuthLayout } from '../layout';
 
-const signUpSchema = z
+const ConfirmPasswordSchema = z
     .object({
-        email: z.string().min(1, 'Email is required').email(),
         password: z
             .string()
             .min(6, 'Must be at least 8 characters in length')
@@ -37,7 +34,6 @@ const signUpSchema = z
                 new RegExp('.*[`~<>?,./!@#$%^&*()\\-_+="\'|{}\\[\\];:\\\\].*'),
                 'One special character',
             ),
-        rememberme: z.boolean(),
     })
     .superRefine((data, ctx) => {
         if (data.password !== data.confirmpassword) {
@@ -49,61 +45,69 @@ const signUpSchema = z
         }
     });
 
-type SignUpSchemaType = z.infer<typeof signUpSchema>;
+type ConfirmPasswordSchemaType = z.infer<typeof ConfirmPasswordSchema>;
 
-const SignUpWithLeftBackground = () => {
-    const form = useForm<SignUpSchemaType>({
-        resolver: zodResolver(signUpSchema),
+const ConfirmPasswordWithLeftBackground = () => {
+    const router = useRouter();
+    const local = useLocalSearchParams();
+
+    const postConfirmRequest = $api.useMutation('post', '/auth/reset/confirm');
+
+    const form = useForm<ConfirmPasswordSchemaType>({
+        resolver: zodResolver(ConfirmPasswordSchema),
+        defaultValues: {
+            password: '',
+            confirmpassword: '',
+        },
     });
 
-    const postUser = $api.useMutation('post', '/user');
+    async function onSubmit(values: ConfirmPasswordSchemaType) {
+        if (typeof local.token !== 'string') {
+            form.setError('password', {
+                message: 'Invalid email link',
+            });
+            form.setError('confirmpassword', {
+                message: 'Invalid email link',
+            });
+            return;
+        }
 
-    async function onSubmit(values: SignUpSchemaType) {
-        if (postUser.status === 'pending') return;
-
-        return postUser.mutateAsync({
+        return postConfirmRequest.mutateAsync({
             body: {
-                email: values.email,
-                password: values.password,
+                confirm_code: local.token,
+                new_password: values.password,
             },
         });
     }
 
     React.useEffect(() => {
-        if (postUser.isSuccess) {
-            // Navigate to the dashboard
+        if (postConfirmRequest.isSuccess) {
+            router.push('/sign-in');
         }
-        if (postUser.isError) {
-            form.setError('email', { message: postUser.error.error });
+        if (postConfirmRequest.isError) {
+            form.setError('password', {
+                message: postConfirmRequest.error.error,
+            });
+            form.setError('confirmpassword', {
+                message: postConfirmRequest.error.error,
+            });
         }
-    }, [postUser.status]);
+    }, [postConfirmRequest.status]);
 
     return (
         <VStack className="max-w-[440px] w-full" space="md">
             <VStack>
-                <H1>Sign up</H1>
-                <Text> Sign up and start using **Company** </Text>
+                <H1>Create new password</H1>
+                <Text>
+                    {' '}
+                    Your new password must be different from previously used
+                    passwords{' '}
+                </Text>
 
                 <VStack className="w-full">
                     <VStack space="xl" className="w-full">
                         <Form {...form}>
                             <View className="gap-7">
-                                <FormField
-                                    control={form.control}
-                                    name="email"
-                                    render={({ field }) => (
-                                        <FormInput
-                                            label="Email"
-                                            placeholder="hello@email.ai"
-                                            autoCapitalize="none"
-                                            autoComplete="email"
-                                            onSubmitEditing={() =>
-                                                form.setFocus('password')
-                                            }
-                                            {...field}
-                                        />
-                                    )}
-                                />
                                 <FormField
                                     control={form.control}
                                     name="password"
@@ -137,17 +141,6 @@ const SignUpWithLeftBackground = () => {
                                         />
                                     )}
                                 />
-
-                                <FormField
-                                    control={form.control}
-                                    name="rememberme"
-                                    render={({ field }) => (
-                                        <FormCheckbox
-                                            label="I accept the Terms of Use & Privacy Policy"
-                                            {...field}
-                                        />
-                                    )}
-                                />
                             </View>
                         </Form>
                     </VStack>
@@ -157,33 +150,24 @@ const SignUpWithLeftBackground = () => {
                             className="w-full"
                             onPress={form.handleSubmit(onSubmit)}
                         >
-                            {postUser.status === 'pending' ? (
+                            {/* eslint-disable-next-line no-constant-condition */}
+                            {postConfirmRequest.isPending ? (
                                 <ActivityIndicator size="small" />
                             ) : (
-                                <Text>Sign up</Text>
+                                <Text>Update Password</Text>
                             )}
                         </Button>
                     </VStack>
-
-                    <HStack className="self-center">
-                        <Text>Already have an account?</Text>
-
-                        <Link href="/sign-in">
-                            <Text className="underline font-medium text-primary group-hover/link:text-primary  group-hover/pressed:text-primary">
-                                Login
-                            </Text>
-                        </Link>
-                    </HStack>
                 </VStack>
             </VStack>
         </VStack>
     );
 };
 
-export const SignUp = () => {
+export const ConfirmPassword = () => {
     return (
         <AuthLayout>
-            <SignUpWithLeftBackground />
+            <ConfirmPasswordWithLeftBackground />
         </AuthLayout>
     );
 };

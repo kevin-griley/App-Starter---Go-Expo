@@ -65,6 +65,18 @@ definitions:
       password:
         type: string
     type: object
+  handlers.PostAuthResetConfirm:
+    properties:
+      confirm_code:
+        type: string
+      new_password:
+        type: string
+    type: object
+  handlers.PostAuthResetRequest:
+    properties:
+      email:
+        type: string
+    type: object
   handlers.PostAuthResponse:
     properties:
       token:
@@ -94,7 +106,7 @@ info:
   title: Rest API
   version: "1.0"
 paths:
-  /login:
+  /auth/login:
     post:
       consumes:
       - application/json
@@ -124,7 +136,7 @@ paths:
       summary: Retrive token for bearer authentication
       tags:
       - Auth
-  /logout:
+  /auth/logout:
     delete:
       consumes:
       - application/json
@@ -137,6 +149,58 @@ paths:
           schema:
             type: string
       summary: Removes HttpOnly cookie from client
+      tags:
+      - Auth
+  /auth/reset/confirm:
+    post:
+      consumes:
+      - application/json
+      description: Confirms a password reset
+      parameters:
+      - description: Reset Confirm
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.PostAuthResetConfirm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User
+          schema:
+            $ref: '#/definitions/data.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ApiError'
+      summary: Confirms a password reset
+      tags:
+      - Auth
+  /auth/reset/request:
+    post:
+      consumes:
+      - application/json
+      description: Requests a password reset
+      parameters:
+      - description: Reset Request
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.PostAuthResetRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User
+          schema:
+            $ref: '#/definitions/data.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ApiError'
+      summary: Requests a password reset
       tags:
       - Auth
   /organization:

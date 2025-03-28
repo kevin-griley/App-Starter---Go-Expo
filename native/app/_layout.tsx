@@ -1,8 +1,6 @@
-import { Text } from '@/components/ui/text';
 import '../global.css';
 
 import { SessionProvider } from '@/components/auth';
-import { ThemeToggle } from '@/components/ThemeToggle';
 import { setAndroidNavigationBar } from '@/lib/android-navigation-bar';
 import { queryClient } from '@/lib/api/client';
 import { NAV_THEME } from '@/lib/constants';
@@ -81,19 +79,7 @@ export default function RootLayout() {
                         <StatusBar
                             style={isDarkColorScheme ? 'light' : 'dark'}
                         />
-                        <Stack
-                            screenOptions={{
-                                headerBackTitle: 'Back',
-                                headerTitle(props) {
-                                    return (
-                                        <Text className="text-xl font-semibold">
-                                            {toOptions(props.children)}
-                                        </Text>
-                                    );
-                                },
-                                headerRight: () => <ThemeToggle />,
-                            }}
-                        />
+                        <Stack />
                         <PortalHost />
                     </ThemeProvider>
                 </SafeAreaProvider>
@@ -106,16 +92,3 @@ const useIsomorphicLayoutEffect =
     Platform.OS === 'web' && typeof window === 'undefined'
         ? React.useEffect
         : React.useLayoutEffect;
-
-function toOptions(name: string) {
-    const title = name
-        .split('/')
-        .flatMap((str) => str.split('-'))
-        .map(function (str: string) {
-            return str.replace(/\b\w/g, function (char) {
-                return char.toUpperCase();
-            });
-        })
-        .join(' ');
-    return title === 'index' ? 'Home' : title;
-}
