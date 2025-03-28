@@ -1,6 +1,6 @@
 import '../global.css';
 
-import { SessionProvider } from '@/components/auth';
+import { SessionProvider } from '@/components/SessionProvider';
 import { setAndroidNavigationBar } from '@/lib/android-navigation-bar';
 import { queryClient } from '@/lib/api/client';
 import { NAV_THEME } from '@/lib/constants';
@@ -14,7 +14,7 @@ import {
 import { PortalHost } from '@rn-primitives/portal';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+import { Slot } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
@@ -79,7 +79,7 @@ export default function RootLayout() {
                         <StatusBar
                             style={isDarkColorScheme ? 'light' : 'dark'}
                         />
-                        <Stack />
+                        <Slot />
                         <PortalHost />
                     </ThemeProvider>
                 </SafeAreaProvider>

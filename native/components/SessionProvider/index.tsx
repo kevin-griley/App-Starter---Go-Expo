@@ -3,6 +3,7 @@ import React, { createContext, useContext } from 'react';
 
 import { $api } from '@/lib/api/client';
 import type { components } from '@/types/schema';
+import { setSessionToken } from './store';
 
 type UserData = components['schemas']['data.User'];
 type LoginCredentials = components['schemas']['handlers.PostAuthRequest'];
@@ -42,7 +43,10 @@ export function SessionProvider({ children }: SessionProviderProps) {
     }, [getUserByKey.data]);
 
     const loginMutation = $api.useMutation('post', '/auth/login', {
-        onSuccess: async () => getUserByKey.refetch(),
+        onSuccess: async ({ token }) => {
+            await setSessionToken(token);
+            return getUserByKey.refetch();
+        },
     });
 
     const login = async (credentials: LoginCredentials) => {

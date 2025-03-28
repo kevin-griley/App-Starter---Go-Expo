@@ -1,7 +1,27 @@
+import { getSessionToken } from '@/components/SessionProvider/store';
 import type { paths } from '@/types/schema';
 import { QueryClient } from '@tanstack/react-query';
+import type { Middleware } from 'openapi-fetch';
 import createFetchClient from 'openapi-fetch';
 import createClient from 'openapi-react-query';
+
+export const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            retry: false,
+        },
+    },
+});
+
+const authMiddleware: Middleware = {
+    async onRequest({ request }) {
+        const token = await getSessionToken();
+        if (token) {
+            request.headers.set('Authorization', `Bearer ${token}`);
+        }
+        return request;
+    },
+};
 
 const fetchClient = createFetchClient<paths>({
     baseUrl: 'http://localhost:8080',
@@ -11,12 +31,6 @@ const fetchClient = createFetchClient<paths>({
     credentials: 'include',
 });
 
-export const $api = createClient(fetchClient);
+fetchClient.use(authMiddleware);
 
-export const queryClient = new QueryClient({
-    defaultOptions: {
-        queries: {
-            retry: false,
-        },
-    },
-});
+export const $api = createClient(fetchClient);

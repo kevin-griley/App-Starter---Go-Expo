@@ -1,4 +1,4 @@
-import { useSession } from '@/components/auth';
+import { useSession } from '@/components/SessionProvider';
 import { AlertDefault } from '@/components/ui/alert/default';
 import { Button } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';

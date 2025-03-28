@@ -1,4 +1,4 @@
-import { useSession } from '@/components/auth';
+import { useSession } from '@/components/SessionProvider';
 import { Button } from '@/components/ui/button';
 import { Form, FormCheckbox, FormField, FormInput } from '@/components/ui/form';
 import { HStack } from '@/components/ui/hstack';
@@ -105,7 +105,7 @@ const LoginWithLeftBackground = () => {
                                         )}
                                     />
 
-                                    <Link href="/forgot-password">
+                                    <Link href="/forgot-password" asChild>
                                         <Text className="underline font-medium text-primary group-hover/link:text-primary">
                                             Forgot Password?
                                         </Text>
@@ -131,7 +131,7 @@ const LoginWithLeftBackground = () => {
                     <HStack className="self-center">
                         <Text>Don't have an account?</Text>
 
-                        <Link href="/sign-up">
+                        <Link href="/sign-up" asChild>
                             <Text className="underline font-medium text-primary group-hover/link:text-primary  group-hover/pressed:text-primary">
                                 Sign up
                             </Text>

@@ -1,5 +1,5 @@
-import { useSession } from '@/components/auth';
-import { Redirect, Slot } from 'expo-router';
+import { useSession } from '@/components/SessionProvider';
+import { Redirect, Stack } from 'expo-router';
 import { Text } from 'react-native';
 
 export default function AppLayout() {
@@ -10,8 +10,8 @@ export default function AppLayout() {
     }
 
     if (!session) {
-        return <Redirect href="/(auth)/sign-in" />;
+        return <Redirect href="/" />;
     }
 
-    return <Slot />;
+    return <Stack />;
 }

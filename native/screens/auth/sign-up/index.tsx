@@ -168,7 +168,7 @@ const SignUpWithLeftBackground = () => {
                     <HStack className="self-center">
                         <Text>Already have an account?</Text>
 
-                        <Link href="/sign-in">
+                        <Link href="/sign-in" asChild>
                             <Text className="underline font-medium text-primary group-hover/link:text-primary  group-hover/pressed:text-primary">
                                 Login
                             </Text>

@@ -13,12 +13,12 @@ const SplashScreenWithLeftBackground = () => {
         >
             <H4>Welcome to **Company**</H4>
             <VStack className="w-full" space="lg">
-                <Link href="/sign-in">
+                <Link href="/sign-in" asChild>
                     <Button className="w-full">
                         <Text>Log in</Text>
                     </Button>
                 </Link>
-                <Link href="/sign-up">
+                <Link href="/sign-up" asChild>
                     <Button className="w-full">
                         <Text>Sign Up</Text>
                     </Button>

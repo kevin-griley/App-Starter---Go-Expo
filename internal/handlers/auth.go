@@ -192,7 +192,7 @@ func HandlePostResetRequest(w http.ResponseWriter, r *http.Request) *ApiError {
 		return &ApiError{http.StatusInternalServerError, "no corsData in context"}
 	}
 
-	resetLink := fmt.Sprintf("%s/auth/confirm-password?token=%s", corsData.Domain, tokenString)
+	resetLink := fmt.Sprintf("%s/confirm-password?token=%s", corsData.Domain, tokenString)
 	fmt.Println(resetLink)
 
 	return WriteJSON(w, http.StatusOK, user)
