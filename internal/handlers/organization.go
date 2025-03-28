@@ -13,15 +13,15 @@ type PostOrganizationRequest struct {
 	OrganizationType data.OrganizationType `json:"organization_type"`
 }
 
-// @Summary			Create a new organization
-// @Description		Create a new organization
-// @Tags			Organization
-// @Accept			json
-// @Produce			json
-// @Param			body	body		PostOrganizationRequest	true	"Create Organization Request"
-// @Success         200		{object}	data.Organization	"Organization"
-// @Failure         400		{object} 	ApiError	"Bad Request"
-// @Router			/organization	[post]
+//	@Summary		Create a new organization
+//	@Description	Create a new organization
+//	@Tags			Organization
+//	@Accept			json
+//	@Produce		json
+//	@Param			body			body		PostOrganizationRequest	true	"Create Organization Request"
+//	@Success		200				{object}	data.Organization		"Organization"
+//	@Failure		400				{object}	ApiError				"Bad Request"
+//	@Router			/organization	[post]
 func HandlePostOrganization(w http.ResponseWriter, r *http.Request) *ApiError {
 	ctx := r.Context()
 
@@ -48,16 +48,16 @@ func HandlePostOrganization(w http.ResponseWriter, r *http.Request) *ApiError {
 	return WriteJSON(w, http.StatusOK, resp)
 }
 
-// @Summary			Get organization by ID
-// @Description		Get organization by ID
-// @Tags			Organization
-// @Security 		ApiKeyAuth
-// @Accept			json
-// @Produce			json
-// @Param			id	path	string	true	"Organization ID"
-// @Success         200			{object}	data.Organization	"Organization"
-// @Failure         400			{object} 	ApiError	"Bad Request"
-// @Router			/organization/{id}	[get]
+//	@Summary		Get organization by ID
+//	@Description	Get organization by ID
+//	@Tags			Organization
+//	@Security		ApiKeyAuth
+//	@Accept			json
+//	@Produce		json
+//	@Param			id					path		string				true	"Organization ID"
+//	@Success		200					{object}	data.Organization	"Organization"
+//	@Failure		400					{object}	ApiError			"Bad Request"
+//	@Router			/organization/{id}	[get]
 func HandleGetOrganizationByID(w http.ResponseWriter, r *http.Request) *ApiError {
 	ctx := r.Context()
 
@@ -87,17 +87,17 @@ type PatchOrganizationRequest struct {
 	organizationType data.OrganizationType
 }
 
-// @Summary			Patch organization by ID
-// @Description		Patch organization by ID
-// @Tags			Organization
-// @Security 		ApiKeyAuth
-// @Accept			json
-// @Produce			json
-// @Param			id	path	string	true	"Organization ID"
-// @Param			body	body		PatchOrganizationRequest	true	"Patch Organization Request"
-// @Success         200			{object}	data.Organization	"Organization"
-// @Failure         400			{object} 	ApiError	"Bad Request"
-// @Router			/organization/{id}	[patch]
+//	@Summary		Patch organization by ID
+//	@Description	Patch organization by ID
+//	@Tags			Organization
+//	@Security		ApiKeyAuth
+//	@Accept			json
+//	@Produce		json
+//	@Param			id					path		string						true	"Organization ID"
+//	@Param			body				body		PatchOrganizationRequest	true	"Patch Organization Request"
+//	@Success		200					{object}	data.Organization			"Organization"
+//	@Failure		400					{object}	ApiError					"Bad Request"
+//	@Router			/organization/{id}	[patch]
 func HandlePatchOrganizationByID(w http.ResponseWriter, r *http.Request) *ApiError {
 	ctx := r.Context()
 

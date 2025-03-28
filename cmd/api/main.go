@@ -15,16 +15,16 @@ import (
 	httpSwagger "github.com/swaggo/http-swagger"
 )
 
-//	@title			Rest API
-//	@description	API for the ULD Management System
+//	@title						Rest API
+//	@description				API for the ULD Management System
 //
-// @version         1.0
-// @BasePath					/
-// @securityDefinitions.apikey	Bearer Authentication
-// @tokenUrl http://localhost:3000/login
-// @in							header
-// @name						Authorization
-// @description					A valid JWT token with Bearer prefix
+//	@version					1.0
+//	@BasePath					/
+//	@securityDefinitions.apikey	Bearer Authentication
+//	@tokenUrl					http://localhost:3000/login
+//	@in							header
+//	@name						Authorization
+//	@description				A valid JWT token with Bearer prefix
 func main() {
 	err := godotenv.Load()
 	if err != nil {

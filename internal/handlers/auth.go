@@ -23,16 +23,16 @@ type PostAuthResponse struct {
 	Token string `json:"token"`
 }
 
-// @Summary			Retrive token for bearer authentication
-// @Description		Retrive token for bearer authentication
-// @Tags			Auth
-// @Accept			json
-// @Produce			json
-// @Param			body	body		PostAuthRequest	true	"Login Request"
-// @Success			200		{object}	PostAuthResponse	"Token Response"
-// @Failure			400		{object} 	ApiError	"Bad Request"
-// @Failure			401		{object} 	ApiError	"Unauthorized"
-// @Router			/auth/login			[post]
+//	@Summary		Retrive token for bearer authentication
+//	@Description	Retrive token for bearer authentication
+//	@Tags			Auth
+//	@Accept			json
+//	@Produce		json
+//	@Param			body		body		PostAuthRequest		true	"Login Request"
+//	@Success		200			{object}	PostAuthResponse	"Token Response"
+//	@Failure		400			{object}	ApiError			"Bad Request"
+//	@Failure		401			{object}	ApiError			"Unauthorized"
+//	@Router			/auth/login									[post]
 func HandlePostLogin(w http.ResponseWriter, r *http.Request) *ApiError {
 	ctx := r.Context()
 
@@ -113,13 +113,13 @@ func HandlePostLogin(w http.ResponseWriter, r *http.Request) *ApiError {
 	return WriteJSON(w, http.StatusOK, PostAuthResponse{Token: tokenString})
 }
 
-// @Summary			Removes HttpOnly cookie from client
-// @Description		Removes HttpOnly cookie from client
-// @Tags			Auth
-// @Accept			json
-// @Produce			json
-// @Success			200		{string}	string	"OK"
-// @Router			/auth/logout		[delete]
+//	@Summary		Removes HttpOnly cookie from client
+//	@Description	Removes HttpOnly cookie from client
+//	@Tags			Auth
+//	@Accept			json
+//	@Produce		json
+//	@Success		200				{string}	string	"OK"
+//	@Router			/auth/logout				[delete]
 func HandleGetLogout(w http.ResponseWriter, r *http.Request) *ApiError {
 
 	ctx := r.Context()
@@ -155,15 +155,15 @@ type PostAuthResetRequest struct {
 	Email    string `json:"email"`
 }
 
-// @Summary			Requests a password reset
-// @Description		Requests a password reset
-// @Tags			Auth
-// @Accept			json
-// @Produce			json
-// @Param			body	body		PostAuthResetRequest	true	"Reset Request"
-// @Success			200		{object}	data.User	"User"
-// @Failure			400		{object} 	ApiError	"Bad Request"
-// @Router			/auth/reset/request	[post]
+//	@Summary		Requests a password reset
+//	@Description	Requests a password reset
+//	@Tags			Auth
+//	@Accept			json
+//	@Produce		json
+//	@Param			body				body		PostAuthResetRequest	true	"Reset Request"
+//	@Success		200					{object}	data.User				"User"
+//	@Failure		400					{object}	ApiError				"Bad Request"
+//	@Router			/auth/reset/request	[post]
 func HandlePostResetRequest(w http.ResponseWriter, r *http.Request) *ApiError {
 	ctx := r.Context()
 
@@ -203,15 +203,15 @@ type PostAuthResetConfirm struct {
     NewPassword string `json:"new_password"`
 }
 
-// @Summary			Confirms a password reset
-// @Description		Confirms a password reset
-// @Tags			Auth
-// @Accept			json
-// @Produce			json
-// @Param			body	body		PostAuthResetConfirm	true	"Reset Confirm"
-// @Success			200		{object}	data.User	"User"
-// @Failure			400		{object} 	ApiError	"Bad Request"
-// @Router			/auth/reset/confirm	[post]
+//	@Summary		Confirms a password reset
+//	@Description	Confirms a password reset
+//	@Tags			Auth
+//	@Accept			json
+//	@Produce		json
+//	@Param			body				body		PostAuthResetConfirm	true	"Reset Confirm"
+//	@Success		200					{object}	data.User				"User"
+//	@Failure		400					{object}	ApiError				"Bad Request"
+//	@Router			/auth/reset/confirm	[post]
 func HandlePostResetConfirm(w http.ResponseWriter, r *http.Request) *ApiError {
 	ctx := r.Context()
 

@@ -1,6 +1,6 @@
-# ULD Management System
+# Golang and React Native Starter
 
-The ULD Management System is a robust platform for managing Unit Load Devices (ULDs) across airlines, carriers, and warehouses. The backend is built in Go while the mobile client is developed using React Native.
+The application starter is a robust full stack platform ready to go. The backend is built in Go while the mobile client is developed using React Native.
 
 ## Getting Started
 
@@ -41,7 +41,7 @@ make native
 
 ```
 api/
-├── cmd 
+├── cmd
 ├── data
 ├── db
 ├── docs
@@ -50,7 +50,6 @@ api/
 ├── types
 ├── Makefile
 ├── README.md
-├── sst.config.ts
 └── ...
 ```
 

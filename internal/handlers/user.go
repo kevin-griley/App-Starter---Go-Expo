@@ -12,15 +12,15 @@ type PostUserRequest struct {
 	Password string `json:"password"`
 }
 
-// @Summary			Create a new user
-// @Description		Create a new user
-// @Tags			User
-// @Accept			json
-// @Produce			json
-// @Param			body	body		PostUserRequest	true	"Create User Request"
-// @Success         200		{object}	data.User	"User"
-// @Failure         400		{object} 	ApiError	"Bad Request"
-// @Router			/user	[post]
+//	@Summary		Create a new user
+//	@Description	Create a new user
+//	@Tags			User
+//	@Accept			json
+//	@Produce		json
+//	@Param			body	body		PostUserRequest	true	"Create User Request"
+//	@Success		200		{object}	data.User		"User"
+//	@Failure		400		{object}	ApiError		"Bad Request"
+//	@Router			/user	[post]
 func HandlePostUser(w http.ResponseWriter, r *http.Request) *ApiError {
 	ctx := r.Context()
 
@@ -47,15 +47,15 @@ func HandlePostUser(w http.ResponseWriter, r *http.Request) *ApiError {
 	return WriteJSON(w, http.StatusOK, resp)
 }
 
-// @Summary			Get user by apiKey
-// @Description		Get user by apiKey
-// @Tags			User
-// @Security 		ApiKeyAuth
-// @Accept			json
-// @Produce			json
-// @Success         200			{object}	data.User	"User"
-// @Failure         400			{object} 	ApiError	"Bad Request"
-// @Router			/user/me	[get]
+//	@Summary		Get user by apiKey
+//	@Description	Get user by apiKey
+//	@Tags			User
+//	@Security		ApiKeyAuth
+//	@Accept			json
+//	@Produce		json
+//	@Success		200			{object}	data.User	"User"
+//	@Failure		400			{object}	ApiError	"Bad Request"
+//	@Router			/user/me	[get]
 func HandleGetUserByKey(w http.ResponseWriter, r *http.Request) *ApiError {
 	ctx := r.Context()
 
@@ -82,16 +82,16 @@ type PatchUserRequest struct {
 	Password string `json:"password"`
 }
 
-// @Summary			Patch user by apiKey
-// @Description		Patch user by apiKey
-// @Tags			User
-// @Security 		ApiKeyAuth
-// @Accept			json
-// @Produce			json
-// @Param			body		body		PatchUserRequest	true	"Patch User Request"
-// @Success         200			{object}	data.User	"User"
-// @Failure         400			{object} 	ApiError	"Bad Request"
-// @Router			/user/me	[patch]
+//	@Summary		Patch user by apiKey
+//	@Description	Patch user by apiKey
+//	@Tags			User
+//	@Security		ApiKeyAuth
+//	@Accept			json
+//	@Produce		json
+//	@Param			body		body		PatchUserRequest	true	"Patch User Request"
+//	@Success		200			{object}	data.User			"User"
+//	@Failure		400			{object}	ApiError			"Bad Request"
+//	@Router			/user/me	[patch]
 func HandlePatchUser(w http.ResponseWriter, r *http.Request) *ApiError {
 	ctx := r.Context()
 
