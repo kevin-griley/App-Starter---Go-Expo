@@ -1,8 +1,8 @@
-import type { ReactNode } from 'react';
-import React, { createContext, useContext } from 'react';
-
 import { $api } from '@/lib/api/client';
 import type { components } from '@/types/schema';
+import * as SplashScreen from 'expo-splash-screen';
+import type { ReactNode } from 'react';
+import React, { createContext, useContext } from 'react';
 import { setSessionToken } from './store';
 
 type UserData = components['schemas']['data.User'];
@@ -35,6 +35,12 @@ export function SessionProvider({ children }: SessionProviderProps) {
     });
 
     const getUserByKey = $api.useQuery('get', '/user/me');
+
+    React.useEffect(() => {
+        if (getUserByKey.isFetched) {
+            SplashScreen.hideAsync();
+        }
+    }, [getUserByKey.status]);
 
     React.useEffect(() => {
         if (getUserByKey.data) {

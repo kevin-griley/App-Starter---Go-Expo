@@ -21,7 +21,7 @@ import (
 //	@version					1.0
 //	@BasePath					/
 //	@securityDefinitions.apikey	Bearer Authentication
-//	@tokenUrl					http://localhost:3000/login
+//	@tokenUrl					http://localhost:8080/login
 //	@in							header
 //	@name						Authorization
 //	@description				A valid JWT token with Bearer prefix
@@ -31,8 +31,8 @@ func main() {
 		log.Fatal("Failed to load embedded .env file:", err)
 	}
 
-	listenAddress := ":8080"
-	docs.SwaggerInfo.Host = "localhost:8080"
+	listenAddress := "localhost:8080"
+	docs.SwaggerInfo.Host = listenAddress
 
 	mux := http.NewServeMux()
 
@@ -76,7 +76,7 @@ func main() {
 		middleware.StoreMiddleware(store),
 	)
 
-	slog.Info("Application", "Swagger Docs Url", "http://localhost:8080/docs")
+	slog.Info("Application", "Swagger Docs Url", "http://"+listenAddress+"/docs")
 
 	http.ListenAndServe(listenAddress, finalHandler)
 }

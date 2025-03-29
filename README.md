@@ -33,7 +33,7 @@ make native
 
 ## Documentation
 
-- **API Docs:** Once the backend server is running, the API documentation is available at the `/docs` endpoint (e.g., [http://localhost:3000/docs](http://localhost:3000/docs)).
+- **API Docs:** Once the backend server is running, the API documentation is available at the `/docs` endpoint (e.g., [http://localhost:8080/docs](http://localhost:8080/docs)).
 
 - **Frontend Documentation:** Details for the React Native client can be found within the `/native` directory.
 

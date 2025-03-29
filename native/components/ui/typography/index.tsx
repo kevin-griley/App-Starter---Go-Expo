@@ -12,7 +12,7 @@ const H1 = React.forwardRef<TextRef, SlottableTextProps>(
                 role="heading"
                 aria-level="1"
                 className={cn(
-                    'web:scroll-m-20 text-4xl text-foreground font-extrabold tracking-tight lg:text-5xl web:select-text',
+                    'web:scroll-m-20 text-4xl text-foreground tracking-tighter lg:text-5xl web:select-text',
                     className,
                 )}
                 style={{ fontFamily: 'SpaceMono' }}
@@ -33,7 +33,7 @@ const H2 = React.forwardRef<TextRef, SlottableTextProps>(
                 role="heading"
                 aria-level="2"
                 className={cn(
-                    'web:scroll-m-20 border-b border-border pb-2 text-3xl text-foreground font-semibold tracking-tight first:mt-0 web:select-text',
+                    'web:scroll-m-20 border-b border-border pb-2 text-3xl text-foreground tracking-tighter first:mt-0 web:select-text',
                     className,
                 )}
                 style={{ fontFamily: 'SpaceMono' }}
@@ -54,7 +54,7 @@ const H3 = React.forwardRef<TextRef, SlottableTextProps>(
                 role="heading"
                 aria-level="3"
                 className={cn(
-                    'web:scroll-m-20 text-2xl text-foreground font-semibold tracking-tight web:select-text',
+                    'web:scroll-m-20 text-2xl text-foreground tracking-tighter web:select-text',
                     className,
                 )}
                 style={{ fontFamily: 'SpaceMono' }}
@@ -75,7 +75,7 @@ const H4 = React.forwardRef<TextRef, SlottableTextProps>(
                 role="heading"
                 aria-level="4"
                 className={cn(
-                    'web:scroll-m-20 text-xl text-foreground font-semibold tracking-tight web:select-text',
+                    'web:scroll-m-20 text-xl text-foreground tracking-tighter web:select-text',
                     className,
                 )}
                 style={{ fontFamily: 'SpaceMono' }}

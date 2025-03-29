@@ -47,12 +47,6 @@ export default function RootLayout() {
         if (error) throw error;
     }, [error]);
 
-    React.useEffect(() => {
-        if (loaded) {
-            SplashScreen.hideAsync();
-        }
-    }, [loaded]);
-
     useIsomorphicLayoutEffect(() => {
         if (hasMounted.current) {
             return;
