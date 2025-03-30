@@ -5,8 +5,9 @@ import { Text } from '@/components/ui/text';
 import { H1 } from '@/components/ui/typography';
 import { VStack } from '@/components/ui/vstack';
 import * as React from 'react';
+import { AppLayout } from '../layout';
 
-export const Dashboard = () => {
+const DashboardWithoutLayout = () => {
     const { session, logout, sessionRefresh } = useSession();
 
     return (
@@ -42,5 +43,13 @@ export const Dashboard = () => {
                 </VStack>
             </VStack>
         </VStack>
+    );
+};
+
+export const Dashboard = () => {
+    return (
+        <AppLayout>
+            <DashboardWithoutLayout />
+        </AppLayout>
     );
 };

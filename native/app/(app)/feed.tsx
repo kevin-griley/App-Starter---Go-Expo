@@ -1,2 +1,2 @@
-import { Dashboard } from '@/screens/dashboard';
+import { Dashboard } from '@/screens/app/dashboard';
 export default Dashboard;

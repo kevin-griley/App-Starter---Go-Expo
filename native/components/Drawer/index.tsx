@@ -1,8 +1,8 @@
 import type { DrawerContentComponentProps } from '@react-navigation/drawer';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
-import { Link, router, usePathname } from 'expo-router';
+import { router, usePathname } from 'expo-router';
 
-import { Home, LogOut, Newspaper } from 'lucide-react-native';
+import { Home, LogOut, Network, Newspaper } from 'lucide-react-native';
 import * as React from 'react';
 import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -26,18 +26,16 @@ export const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (
 
                 <View className="h-4" />
 
-                <Link href="/dashboard" asChild>
-                    <DrawerItem
-                        style={{ borderRadius: 8 }}
-                        icon={(props) => <Home {...props} />}
-                        label="Dashboard"
-                        labelStyle={{ fontFamily: 'SpaceMono', fontSize: 16 }}
-                        focused={pathname === '/dashboard'}
-                        onPress={() => {
-                            router.push('/dashboard');
-                        }}
-                    />
-                </Link>
+                <DrawerItem
+                    style={{ borderRadius: 8 }}
+                    icon={(props) => <Home {...props} />}
+                    label="Dashboard"
+                    labelStyle={{ fontFamily: 'SpaceMono', fontSize: 16 }}
+                    focused={pathname === '/dashboard'}
+                    onPress={() => {
+                        router.push('/dashboard');
+                    }}
+                />
 
                 <DrawerItem
                     style={{ borderRadius: 8 }}
@@ -55,6 +53,15 @@ export const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (
                 className="border-t border-border"
                 style={{ paddingBottom: bottom + 20 }}
             >
+                <DrawerItem
+                    style={{ borderRadius: 8 }}
+                    icon={(props) => <Network {...props} />}
+                    label="Site Map"
+                    labelStyle={{ fontFamily: 'SpaceMono', fontSize: 16 }}
+                    onPress={() => {
+                        router.push('/_sitemap');
+                    }}
+                />
                 <DrawerItem
                     style={{ borderRadius: 8 }}
                     icon={(props) => <LogOut {...props} />}

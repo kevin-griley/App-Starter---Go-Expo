@@ -24,7 +24,6 @@ export default function AppRootLayout() {
             <Drawer
                 drawerContent={(props) => <CustomDrawerContent {...props} />}
                 screenOptions={{
-                    drawerHideStatusBarOnOpen: true,
                     headerTitle(props) {
                         return <H4>{toOptions(props.children)}</H4>;
                     },
