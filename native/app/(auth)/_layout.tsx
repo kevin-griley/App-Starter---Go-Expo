@@ -13,6 +13,8 @@ export default function AppLayout() {
     }
 
     if (session) {
+        console.log('Redirecting to dashboard from (auth) layout');
+
         return <Redirect href="/dashboard" />;
     }
 

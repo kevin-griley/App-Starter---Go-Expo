@@ -1,9 +1,12 @@
 import { LoadingScreen } from '@/components/LoadingScreen';
 import { useSession } from '@/components/SessionProvider';
+import { Redirect } from 'expo-router';
+import { Drawer } from 'expo-router/drawer';
+
+import { CustomDrawerContent } from '@/components/Drawer';
+import { GestureRootView } from '@/components/GestureRoot/View';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { H4 } from '@/components/ui/typography';
-
-import { Redirect, Stack } from 'expo-router';
 
 export default function AppLayout() {
     const { session, isLoading } = useSession();
@@ -13,18 +16,24 @@ export default function AppLayout() {
     }
 
     if (!session) {
+        console.log('Redirecting to home from (app) layout');
+
         return <Redirect href="/" />;
     }
 
     return (
-        <Stack
-            screenOptions={{
-                headerTitle(props) {
-                    return <H4>{toOptions(props.children)}</H4>;
-                },
-                headerRight: () => <ThemeToggle />,
-            }}
-        />
+        <GestureRootView>
+            <Drawer
+                drawerContent={(props) => <CustomDrawerContent {...props} />}
+                screenOptions={{
+                    drawerHideStatusBarOnOpen: true,
+                    headerTitle(props) {
+                        return <H4>{toOptions(props.children)}</H4>;
+                    },
+                    headerRight: () => <ThemeToggle />,
+                }}
+            />
+        </GestureRootView>
     );
 }
 

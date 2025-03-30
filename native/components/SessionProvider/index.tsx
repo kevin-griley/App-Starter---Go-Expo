@@ -2,7 +2,7 @@ import { $api } from '@/lib/api/client';
 import type { components } from '@/types/schema';
 import * as SplashScreen from 'expo-splash-screen';
 import type { ReactNode } from 'react';
-import React, { createContext, useContext } from 'react';
+import * as React from 'react';
 import { setSessionToken } from './store';
 
 type UserData = components['schemas']['data.User'];
@@ -19,9 +19,9 @@ export interface SessionContextValue {
     logout: () => Promise<unknown>;
 }
 
-export const SessionContext = createContext<SessionContextValue | undefined>(
-    undefined,
-);
+export const SessionContext = React.createContext<
+    SessionContextValue | undefined
+>(undefined);
 
 interface SessionProviderProps {
     children: ReactNode;
@@ -30,31 +30,38 @@ interface SessionProviderProps {
 export function SessionProvider({ children }: SessionProviderProps) {
     const [session, setSession] = React.useState<UserData | null>(null);
 
-    const deleteLogout = $api.useMutation('delete', '/auth/logout', {
-        onSuccess: () => setSession(null),
-    });
+    // Logout mutation
+    const deleteLogout = $api.useMutation('delete', '/auth/logout');
+    React.useEffect(() => {
+        if (deleteLogout.status === 'success') {
+            setSessionToken(null).then(() => {
+                setSession(null);
+            });
+        }
+    }, [deleteLogout.status]);
 
+    // Fetch user data
     const getUserByKey = $api.useQuery('get', '/user/me');
-
     React.useEffect(() => {
         if (getUserByKey.isFetched) {
             SplashScreen.hideAsync();
         }
     }, [getUserByKey.status]);
-
     React.useEffect(() => {
-        if (getUserByKey.data) {
-            setSession(getUserByKey.data);
-        }
+        setSession(getUserByKey.data ?? null);
     }, [getUserByKey.data]);
 
-    const loginMutation = $api.useMutation('post', '/auth/login', {
-        onSuccess: async ({ token }) => {
-            await setSessionToken(token);
-            return getUserByKey.refetch();
-        },
-    });
+    // Fetch token and trigger user data fetch
+    const loginMutation = $api.useMutation('post', '/auth/login');
+    React.useEffect(() => {
+        if (loginMutation.status === 'success') {
+            setSessionToken(loginMutation.data.token).then(() => {
+                getUserByKey.refetch();
+            });
+        }
+    }, [loginMutation.status]);
 
+    // Login function
     const login = async (credentials: LoginCredentials) => {
         return loginMutation.mutateAsync({ body: credentials });
     };
@@ -76,7 +83,7 @@ export function SessionProvider({ children }: SessionProviderProps) {
 }
 
 export function useSession() {
-    const context = useContext(SessionContext);
+    const context = React.useContext(SessionContext);
     if (context === undefined) {
         throw new Error('useSession must be used within a SessionProvider');
     }

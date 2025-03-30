@@ -32,7 +32,7 @@ type PostAuthResponse struct {
 //	@Success		200			{object}	PostAuthResponse	"Token Response"
 //	@Failure		400			{object}	ApiError			"Bad Request"
 //	@Failure		401			{object}	ApiError			"Unauthorized"
-//	@Router			/auth/login																																																																					[post]
+//	@Router			/auth/login																																																																											[post]
 func HandlePostLogin(w http.ResponseWriter, r *http.Request) *ApiError {
 	ctx := r.Context()
 
