@@ -8,7 +8,7 @@ import { GestureRootView } from '@/components/GestureRoot/View';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { H4 } from '@/components/ui/typography';
 
-export default function AppLayout() {
+export default function AppRootLayout() {
     const { session, isLoading } = useSession();
 
     if (isLoading) {
@@ -16,8 +16,6 @@ export default function AppLayout() {
     }
 
     if (!session) {
-        console.log('Redirecting to home from (app) layout');
-
         return <Redirect href="/" />;
     }
 

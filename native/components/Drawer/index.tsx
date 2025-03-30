@@ -1,6 +1,6 @@
 import type { DrawerContentComponentProps } from '@react-navigation/drawer';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
-import { router, usePathname } from 'expo-router';
+import { Link, router, usePathname } from 'expo-router';
 
 import { Home, LogOut, Newspaper } from 'lucide-react-native';
 import * as React from 'react';
@@ -13,12 +13,7 @@ export const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (
     props,
 ) => {
     const { session, logout } = useSession();
-
     const pathname = usePathname();
-    React.useEffect(() => {
-        console.log(pathname);
-    }, [pathname]);
-
     const { bottom } = useSafeAreaInsets();
 
     return (
@@ -31,26 +26,28 @@ export const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (
 
                 <View className="h-4" />
 
-                <DrawerItem
-                    style={{ borderRadius: 8 }}
-                    icon={(props) => <Home {...props} />}
-                    label="Dashboard"
-                    labelStyle={{ fontFamily: 'SpaceMono', fontSize: 16 }}
-                    onPress={() => {
-                        router.push('/(app)/dashboard');
-                    }}
-                    focused={pathname === '/dashboard'}
-                />
+                <Link href="/dashboard" asChild>
+                    <DrawerItem
+                        style={{ borderRadius: 8 }}
+                        icon={(props) => <Home {...props} />}
+                        label="Dashboard"
+                        labelStyle={{ fontFamily: 'SpaceMono', fontSize: 16 }}
+                        focused={pathname === '/dashboard'}
+                        onPress={() => {
+                            router.push('/dashboard');
+                        }}
+                    />
+                </Link>
 
                 <DrawerItem
                     style={{ borderRadius: 8 }}
                     icon={(props) => <Newspaper {...props} />}
                     label="Newsfeed"
                     labelStyle={{ fontFamily: 'SpaceMono', fontSize: 16 }}
-                    onPress={() => {
-                        router.push('/(app)/feed');
-                    }}
                     focused={pathname === '/feed'}
+                    onPress={() => {
+                        router.push('/feed');
+                    }}
                 />
             </DrawerContentScrollView>
 
@@ -63,9 +60,7 @@ export const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (
                     icon={(props) => <LogOut {...props} />}
                     label="Logout"
                     labelStyle={{ fontFamily: 'SpaceMono', fontSize: 16 }}
-                    onPress={() => {
-                        logout();
-                    }}
+                    onPress={logout}
                 />
             </View>
         </View>

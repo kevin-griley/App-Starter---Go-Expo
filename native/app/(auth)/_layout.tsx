@@ -1,20 +1,13 @@
-import { LoadingScreen } from '@/components/LoadingScreen';
 import { useSession } from '@/components/SessionProvider';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { H4 } from '@/components/ui/typography';
 
 import { Redirect, Stack } from 'expo-router';
 
-export default function AppLayout() {
-    const { session, isLoading } = useSession();
-
-    if (isLoading) {
-        return <LoadingScreen />;
-    }
+export default function AuthRootLayout() {
+    const { session } = useSession();
 
     if (session) {
-        console.log('Redirecting to dashboard from (auth) layout');
-
         return <Redirect href="/dashboard" />;
     }
 

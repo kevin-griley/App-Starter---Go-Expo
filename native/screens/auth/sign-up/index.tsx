@@ -5,7 +5,7 @@ import { Text } from '@/components/ui/text';
 import { H1 } from '@/components/ui/typography';
 import { VStack } from '@/components/ui/vstack';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import * as React from 'react';
 import { useForm } from 'react-hook-form';
 import { ActivityIndicator, View } from 'react-native';
@@ -52,6 +52,8 @@ const signUpSchema = z
 type SignUpSchemaType = z.infer<typeof signUpSchema>;
 
 const SignUpWithLeftBackground = () => {
+    const router = useRouter();
+
     const form = useForm<SignUpSchemaType>({
         resolver: zodResolver(signUpSchema),
     });
@@ -71,7 +73,7 @@ const SignUpWithLeftBackground = () => {
 
     React.useEffect(() => {
         if (postUser.isSuccess) {
-            // Navigate to the dashboard
+            router.push('/sign-in');
         }
         if (postUser.isError) {
             form.setError('email', { message: postUser.error.error });
