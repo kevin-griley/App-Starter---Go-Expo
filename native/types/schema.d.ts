@@ -453,10 +453,67 @@ export interface paths {
         };
         trace?: never;
     };
+    '/user_associations/me': {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get associations by apiKey
+         * @description Get associations by apiKey
+         */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description Expand associations */
+                    expand?: string[];
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Associations */
+                200: {
+                    headers: Record<string, unknown>;
+                    content: {
+                        'application/json': components['schemas']['data.Association'][];
+                    };
+                };
+                /** @description Bad Request */
+                400: {
+                    headers: Record<string, unknown>;
+                    content: {
+                        'application/json': components['schemas']['handlers.ApiError'];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        'data.Association': {
+            created_at?: string;
+            id?: string;
+            organization?: components['schemas']['data.Organization'];
+            organization_id?: string;
+            permissions?: components['schemas']['data.PermissionsEnum'][];
+            status?: components['schemas']['data.OrganizationStatus'];
+            updated_at?: string;
+            user_id?: string;
+        };
         'data.Organization': {
             address?: string;
             contact_info?: string;
@@ -468,7 +525,19 @@ export interface components {
             updated_at?: string;
         };
         /** @enum {string} */
-        'data.OrganizationType': 'Airline' | 'Carrier' | 'Warehouse';
+        'data.OrganizationStatus': 'pending' | 'active' | 'inactive';
+        /** @enum {string} */
+        'data.OrganizationType': 'airline' | 'carrier' | 'warehouse';
+        /** @enum {string} */
+        'data.PermissionsEnum':
+            | 'user.read'
+            | 'user.write'
+            | 'organization.read'
+            | 'organization.write'
+            | 'manifest.read'
+            | 'manifest.write'
+            | 'uld.read'
+            | 'uld.write';
         'data.User': {
             created_at?: string;
             email?: string;

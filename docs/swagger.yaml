@@ -1,5 +1,26 @@
 basePath: /
 definitions:
+  data.Association:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+      organization:
+        $ref: '#/definitions/data.Organization'
+      organization_id:
+        type: string
+      permissions:
+        items:
+          $ref: '#/definitions/data.PermissionsEnum'
+        type: array
+      status:
+        $ref: '#/definitions/data.OrganizationStatus'
+      updated_at:
+        type: string
+      user_id:
+        type: string
+    type: object
   data.Organization:
     properties:
       address:
@@ -19,16 +40,46 @@ definitions:
       updated_at:
         type: string
     type: object
+  data.OrganizationStatus:
+    enum:
+    - pending
+    - active
+    - inactive
+    type: string
+    x-enum-varnames:
+    - Pending
+    - Active
+    - Inactive
   data.OrganizationType:
     enum:
-    - Airline
-    - Carrier
-    - Warehouse
+    - airline
+    - carrier
+    - warehouse
     type: string
     x-enum-varnames:
     - Airline
     - Carrier
     - Warehouse
+  data.PermissionsEnum:
+    enum:
+    - user.read
+    - user.write
+    - organization.read
+    - organization.write
+    - manifest.read
+    - manifest.write
+    - uld.read
+    - uld.write
+    type: string
+    x-enum-varnames:
+    - ReadUserPermissions
+    - WriteUserPermissions
+    - ReadOrganizationPermissions
+    - WriteOrganizationPermissions
+    - ReadManifestPermissions
+    - WriteManifestPermissions
+    - ReadUldPermissions
+    - WriteUldPermissions
   data.User:
     properties:
       created_at:
@@ -362,6 +413,37 @@ paths:
       summary: Patch user by apiKey
       tags:
       - User
+  /user_associations/me:
+    get:
+      consumes:
+      - application/json
+      description: Get associations by apiKey
+      parameters:
+      - collectionFormat: csv
+        description: Expand associations
+        in: query
+        items:
+          type: string
+        name: expand
+        type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Associations
+          schema:
+            items:
+              $ref: '#/definitions/data.Association'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ApiError'
+      security:
+      - ApiKeyAuth: []
+      summary: Get associations by apiKey
+      tags:
+      - User Associations
 securityDefinitions:
   Bearer Authentication:
     description: A valid JWT token with Bearer prefix

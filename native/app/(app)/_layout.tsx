@@ -29,7 +29,7 @@ export default function AppRootLayout() {
                     },
                     headerRight: () => <ThemeToggle />,
                 }}
-            />
+            ></Drawer>
         </GestureRootView>
     );
 }

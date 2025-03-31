@@ -8,6 +8,8 @@ import (
 	"github.com/google/uuid"
 )
 
+
+
 func (s *organizationStoreImpl) CreateRequest(name, address, contactInfo string, organizationType OrganizationType) (*Organization, error) {
 
 	orgId, err := uuid.NewV7()
@@ -224,9 +226,9 @@ type OrganizationStore interface {
 type OrganizationType string
 
 const (
-	Airline   OrganizationType = "Airline"
-	Carrier   OrganizationType = "Carrier"
-	Warehouse OrganizationType = "Warehouse"
+	Airline   OrganizationType = "airline"
+	Carrier   OrganizationType = "carrier"
+	Warehouse OrganizationType = "warehouse"
 )
 
 type Organization struct {
@@ -241,18 +243,18 @@ type Organization struct {
 }
 
 func scanIntoOrganization(rows *sql.Rows) (*Organization, error) {
-	var o Organization
+	o := new(Organization)
 	err := rows.Scan(
 		&o.ID,
 		&o.CreatedAt,
 		&o.UpdatedAt,
 		&o.Name,
+		&o.UniqueURL,
 		&o.Address,
 		&o.ContactInfo,
 		&o.OrganizationType,
 	)
-	if err != nil {
-		return nil, err
-	}
-	return &o, nil
+	return o, err
 }
+
+

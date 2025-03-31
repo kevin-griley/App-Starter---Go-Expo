@@ -7,7 +7,7 @@ import { Alert, AlertDescription, AlertTitle } from '.';
 interface AlertExampleProps {
     icon?: LucideIcon;
     title?: string;
-    description: string;
+    description: React.ReactNode;
     variant?: AlertProps['variant'];
 }
 

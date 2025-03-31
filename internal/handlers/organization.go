@@ -1,9 +1,11 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/kevin-griley/api/internal/data"
+	"github.com/kevin-griley/api/internal/middleware"
 )
 
 type PostOrganizationRequest struct {
@@ -35,12 +37,43 @@ func HandlePostOrganization(w http.ResponseWriter, r *http.Request) *ApiError {
 		return &ApiError{http.StatusBadRequest, err.Error()}
 	}
 
+	fmt.Println("PostOrganizationRequest:", postReq)
+
+
 	org, err := store.Organization.CreateRequest(postReq.Name, postReq.Address, postReq.ContactInfo, postReq.OrganizationType)
 	if err != nil {
 		return &ApiError{http.StatusBadRequest, err.Error()}
 	}
 
 	resp, err := store.Organization.CreateOrganization(org)
+	if err != nil {
+		return &ApiError{http.StatusInternalServerError, err.Error()}
+	}
+
+	userID, ok := middleware.GetUserID(ctx)
+	if !ok {
+		return &ApiError{http.StatusBadRequest, "Invalid user id"}
+	}
+
+	permissions := []data.PermissionsEnum{
+		data.ReadUserPermissions,
+		data.WriteUserPermissions,
+		data.ReadOrganizationPermissions,
+		data.WriteOrganizationPermissions,
+		data.ReadManifestPermissions,
+		data.WriteManifestPermissions,
+		data.ReadUldPermissions,
+		data.WriteUldPermissions,
+	}
+
+	fmt.Println(permissions)
+
+	association, err := store.Association.CreateRequest(userID, resp.ID, data.Active, permissions)
+	if err != nil {
+		return &ApiError{http.StatusInternalServerError, err.Error()}
+	}
+
+	_, err = store.Association.CreateAssociation(association)
 	if err != nil {
 		return &ApiError{http.StatusInternalServerError, err.Error()}
 	}

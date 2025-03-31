@@ -413,9 +413,90 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/user_associations/me": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get associations by apiKey",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User Associations"
+                ],
+                "summary": "Get associations by apiKey",
+                "parameters": [
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "csv",
+                        "description": "Expand associations",
+                        "name": "expand",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Associations",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/data.Association"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ApiError"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
+        "data.Association": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "organization": {
+                    "$ref": "#/definitions/data.Organization"
+                },
+                "organization_id": {
+                    "type": "string"
+                },
+                "permissions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/data.PermissionsEnum"
+                    }
+                },
+                "status": {
+                    "$ref": "#/definitions/data.OrganizationStatus"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
         "data.Organization": {
             "type": "object",
             "properties": {
@@ -445,17 +526,53 @@ const docTemplate = `{
                 }
             }
         },
+        "data.OrganizationStatus": {
+            "type": "string",
+            "enum": [
+                "pending",
+                "active",
+                "inactive"
+            ],
+            "x-enum-varnames": [
+                "Pending",
+                "Active",
+                "Inactive"
+            ]
+        },
         "data.OrganizationType": {
             "type": "string",
             "enum": [
-                "Airline",
-                "Carrier",
-                "Warehouse"
+                "airline",
+                "carrier",
+                "warehouse"
             ],
             "x-enum-varnames": [
                 "Airline",
                 "Carrier",
                 "Warehouse"
+            ]
+        },
+        "data.PermissionsEnum": {
+            "type": "string",
+            "enum": [
+                "user.read",
+                "user.write",
+                "organization.read",
+                "organization.write",
+                "manifest.read",
+                "manifest.write",
+                "uld.read",
+                "uld.write"
+            ],
+            "x-enum-varnames": [
+                "ReadUserPermissions",
+                "WriteUserPermissions",
+                "ReadOrganizationPermissions",
+                "WriteOrganizationPermissions",
+                "ReadManifestPermissions",
+                "WriteManifestPermissions",
+                "ReadUldPermissions",
+                "WriteUldPermissions"
             ]
         },
         "data.User": {

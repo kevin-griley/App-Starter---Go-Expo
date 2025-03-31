@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"context"
+	"log/slog"
 	"net/http"
 
 	"github.com/google/uuid"
@@ -22,6 +23,9 @@ func LoggingMiddleware(next http.HandlerFunc) http.HandlerFunc {
 			ctx := withRequestID(ctx, reqID)
 			r = r.WithContext(ctx)
 		}
+
+		slog.Info("Request", "method", r.Method, "url", r.URL.String(), "requestID", reqID)
+
 		next(w, r)
 	}
 }

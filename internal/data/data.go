@@ -16,12 +16,14 @@ const ContextKeyStore ContextKey = "ContextKeyStore"
 type Store struct {
 	User         UserStore
 	Organization OrganizationStore
+	Association AssociationStore
 }
 
 func NewStore(db *sql.DB) *Store {
 	return &Store{
-		User:         NewUserStore(db),
-		Organization: NewOrganizationStore(db),
+		User:       	NewUserStore(db),
+		Organization:	NewOrganizationStore(db),
+		Association: 	NewAssociationStore(db),
 	}
 }
 

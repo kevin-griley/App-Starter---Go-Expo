@@ -264,6 +264,39 @@ paths:
             summary: Patch user by apiKey
             tags:
                 - User
+    /user_associations/me:
+        get:
+            description: Get associations by apiKey
+            parameters:
+                - description: Expand associations
+                  in: query
+                  name: expand
+                  style: form
+                  explode: false
+                  schema:
+                      type: array
+                      items:
+                          type: string
+            responses:
+                '200':
+                    description: Associations
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/data.Association'
+                                type: array
+                '400':
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/handlers.ApiError'
+            security:
+                - ApiKeyAuth: []
+            summary: Get associations by apiKey
+            tags:
+                - User Associations
 servers:
     - url: /
 components:
@@ -274,6 +307,27 @@ components:
             name: Authorization
             type: apiKey
     schemas:
+        data.Association:
+            properties:
+                created_at:
+                    type: string
+                id:
+                    type: string
+                organization:
+                    $ref: '#/components/schemas/data.Organization'
+                organization_id:
+                    type: string
+                permissions:
+                    items:
+                        $ref: '#/components/schemas/data.PermissionsEnum'
+                    type: array
+                status:
+                    $ref: '#/components/schemas/data.OrganizationStatus'
+                updated_at:
+                    type: string
+                user_id:
+                    type: string
+            type: object
         data.Organization:
             properties:
                 address:
@@ -293,16 +347,46 @@ components:
                 updated_at:
                     type: string
             type: object
+        data.OrganizationStatus:
+            enum:
+                - pending
+                - active
+                - inactive
+            type: string
+            x-enum-varnames:
+                - Pending
+                - Active
+                - Inactive
         data.OrganizationType:
             enum:
-                - Airline
-                - Carrier
-                - Warehouse
+                - airline
+                - carrier
+                - warehouse
             type: string
             x-enum-varnames:
                 - Airline
                 - Carrier
                 - Warehouse
+        data.PermissionsEnum:
+            enum:
+                - user.read
+                - user.write
+                - organization.read
+                - organization.write
+                - manifest.read
+                - manifest.write
+                - uld.read
+                - uld.write
+            type: string
+            x-enum-varnames:
+                - ReadUserPermissions
+                - WriteUserPermissions
+                - ReadOrganizationPermissions
+                - WriteOrganizationPermissions
+                - ReadManifestPermissions
+                - WriteManifestPermissions
+                - ReadUldPermissions
+                - WriteUldPermissions
         data.User:
             properties:
                 created_at:

@@ -37,29 +37,40 @@ func main() {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("GET /docs/", httpSwagger.WrapHandler)
+
+	// Auth endpoints
 	mux.HandleFunc("POST /auth/login", handlers.HandleApiError(handlers.HandlePostLogin))
 	mux.HandleFunc("DELETE /auth/logout", handlers.HandleApiError(handlers.HandleGetLogout))
 	mux.HandleFunc("POST /auth/reset/request", handlers.HandleApiError(handlers.HandlePostResetRequest))
 	mux.HandleFunc("POST /auth/reset/confirm", handlers.HandleApiError(handlers.HandlePostResetConfirm))
 
+	// User endpoints
 	mux.HandleFunc("POST /user", handlers.HandleApiError(handlers.HandlePostUser))
 	GetUserByKeyHandler := middleware.JwtAuthMiddleware(handlers.HandleApiError(handlers.HandleGetUserByKey))
 	mux.HandleFunc("GET /user/me", GetUserByKeyHandler)
 	PatchUserHandler := middleware.JwtAuthMiddleware(handlers.HandleApiError(handlers.HandlePatchUser))
 	mux.HandleFunc("PATCH /user/me", PatchUserHandler)
 
+	// Organization endpoints
 	PostOrganization := middleware.Chain(
 		handlers.HandleApiError(handlers.HandlePostOrganization),
 		middleware.JwtAuthMiddleware,
-		middleware.ScopeMiddleware("organization:write"),
 	)
-	mux.HandleFunc("POST /organization/{ID}", PostOrganization)
+	mux.HandleFunc("POST /organization", PostOrganization)
+	
 	HandlePatchOrganizationByID := middleware.Chain(
 		handlers.HandleApiError(handlers.HandlePatchOrganizationByID),
 		middleware.JwtAuthMiddleware,
 		middleware.ScopeMiddleware("organization:write"),
 	)
 	mux.HandleFunc("PATCH /organization/{ID}", HandlePatchOrganizationByID)
+
+	// Association endpoints
+	GetAssociationsByKey := middleware.Chain(
+		handlers.HandleApiError(handlers.HandleGetAssociationsByKey),
+		middleware.JwtAuthMiddleware,
+	)
+	mux.HandleFunc("GET /user_associations/me", GetAssociationsByKey)
 
 	dbConn, err := db.Init()
 	if err != nil {
