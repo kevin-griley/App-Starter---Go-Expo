@@ -17,7 +17,8 @@ CREATE TABLE IF NOT EXISTS "organizations" (
     "unique_url" CITEXT UNIQUE,
     "address" TEXT NOT NULL,
     "contact_info" TEXT NOT NULL,
-    "organization_type" "organization_type_enum" NOT NULL
+    "organization_type" "organization_type_enum" NOT NULL,
+    "is_deleted" BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 

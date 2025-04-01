@@ -2,6 +2,7 @@ package data
 
 import (
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"time"
 
@@ -60,6 +61,7 @@ func (s *associationStoreImpl) CreateAssociation(a *Association) (*Association, 
 func (s *associationStoreImpl) GetAssociationByUserID(ID uuid.UUID, expands []string) ([]*Association, error) {
 	data := map[string]any{
 		"user_id": ID,
+		"status":  Active,
 	}
 
 	if len(expands) > 0 {
@@ -126,16 +128,7 @@ type AssociationStore interface {
 	CreateRequest(userID, orgID uuid.UUID, status OrganizationStatus, permissions []PermissionsEnum) (*Association, error)
 }
 
-type Association struct {
-	ID                  uuid.UUID 			`json:"id"`
-	CreatedAt           time.Time 			`json:"created_at"`
-	UpdatedAt           time.Time 			`json:"updated_at"`
-	Status				OrganizationStatus  `json:"status"`
-	Permissions			[]PermissionsEnum   `json:"permissions"`
-	UserID 				uuid.UUID 			`json:"user_id"`
-	OrganizationID 		uuid.UUID 			`json:"organization_id"`
-	Organization 		*Organization 		`json:"organization,omitempty"`
-}
+
 
 func scanIntoAssociation(rows *sql.Rows) (*Association, error) {
 	a := new(Association)
@@ -159,9 +152,20 @@ func scanIntoAssociation(rows *sql.Rows) (*Association, error) {
 	return a, err
 }
 
+type Association struct {
+	ID                  uuid.UUID 			`json:"id"`
+	CreatedAt           time.Time 			`json:"created_at"`
+	UpdatedAt           time.Time 			`json:"updated_at"`
+	Status				OrganizationStatus  `json:"status"`
+	Permissions			[]PermissionsEnum   `json:"permissions"`
+	UserID 				uuid.UUID 			`json:"user_id"`
+	OrganizationID 		uuid.UUID 			`json:"organization_id"`
+	Organization 		*Organization 		`json:"organization,omitempty"`
+}
+
 func scanAssociationWithExpansions(rows *sql.Rows, expansions []string) (*Association, error) {
 	a := new(Association)
-	var perms []string 
+	var perms []string
 
 	basePointers := []any{
 		&a.ID,
@@ -173,32 +177,19 @@ func scanAssociationWithExpansions(rows *sql.Rows, expansions []string) (*Associ
 		&a.OrganizationID,
 	}
 
+	var orgJSON []byte
 	extraPointers := []any{}
 	for _, expand := range expansions {
 		switch expand {
 		case "organizations":
-			o := new(Organization)
-			a.Organization = o
-
-			extraPointers = append(extraPointers, 
-				&o.ID,
-				&o.CreatedAt,
-				&o.UpdatedAt,
-				&o.Name,
-				&o.UniqueURL,
-				&o.Address,
-				&o.ContactInfo,
-				&o.OrganizationType,
-			)
-		
+			extraPointers = append(extraPointers, &orgJSON)
 		default:
 			return nil, fmt.Errorf("unknown expansion: %s", expand)
 		}
 	}
 
 	allPointers := append(basePointers, extraPointers...)
-	err := rows.Scan(allPointers...)
-	if err != nil {
+	if err := rows.Scan(allPointers...); err != nil {
 		return nil, err
 	}
 
@@ -207,8 +198,20 @@ func scanAssociationWithExpansions(rows *sql.Rows, expansions []string) (*Associ
 		a.Permissions[i] = PermissionsEnum(p)
 	}
 
-	return a, nil
+	for _, expand := range expansions {
+		switch expand {
+		case "organizations":
+			var orgs []Organization
+			if err := json.Unmarshal(orgJSON, &orgs); err != nil {
+				return nil, fmt.Errorf("failed to unmarshal organizations JSON: %w", err)
+			}
+			if len(orgs) > 0 {
+				a.Organization = &orgs[0]
+			}
+		}
+	}
 
+	return a, nil
 }
 
 

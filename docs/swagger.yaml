@@ -31,6 +31,8 @@ definitions:
         type: string
       id:
         type: string
+      is_deleted:
+        type: boolean
       name:
         type: string
       organization_type:
@@ -420,7 +422,7 @@ paths:
       description: Get associations by apiKey
       parameters:
       - collectionFormat: csv
-        description: Expand associations
+        description: 'Allowed: [''organizations'']'
         in: query
         items:
           type: string

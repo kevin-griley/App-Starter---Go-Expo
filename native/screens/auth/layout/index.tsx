@@ -9,7 +9,7 @@ interface AuthLayoutProps {
 
 export const AuthLayout = (props: AuthLayoutProps) => {
     return (
-        <View className="flex-1 justify-center items-center p-6 bg-secondary/30">
+        <View className="flex-1 justify-center items-center bg-secondary/30">
             <ScrollView
                 className="w-full h-full"
                 contentContainerStyle={{ flexGrow: 1 }}
@@ -26,7 +26,7 @@ export const AuthLayout = (props: AuthLayoutProps) => {
                         </View>
                     </VStack>
 
-                    <VStack className="md:items-center md:justify-center flex-1 w-full p-4 md:gap-10 gap-16 md:m-auto md:w-1/2 h-full">
+                    <VStack className="md:items-center md:justify-center flex-1 w-full p-9 md:gap-10 gap-16 md:m-auto md:w-1/2 h-full">
                         {props.children}
                     </VStack>
                 </HStack>

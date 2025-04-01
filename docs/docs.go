@@ -439,7 +439,7 @@ const docTemplate = `{
                             "type": "string"
                         },
                         "collectionFormat": "csv",
-                        "description": "Expand associations",
+                        "description": "Allowed: ['organizations']",
                         "name": "expand",
                         "in": "query"
                     }
@@ -511,6 +511,9 @@ const docTemplate = `{
                 },
                 "id": {
                     "type": "string"
+                },
+                "is_deleted": {
+                    "type": "boolean"
                 },
                 "name": {
                     "type": "string"

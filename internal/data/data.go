@@ -14,9 +14,9 @@ type ContextKey string
 const ContextKeyStore ContextKey = "ContextKeyStore"
 
 type Store struct {
-	User         UserStore
-	Organization OrganizationStore
-	Association AssociationStore
+	User         	UserStore
+	Organization 	OrganizationStore
+	Association 	AssociationStore
 }
 
 func NewStore(db *sql.DB) *Store {

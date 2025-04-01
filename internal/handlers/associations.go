@@ -13,7 +13,7 @@ import (
 //	@Security		ApiKeyAuth
 //	@Accept			json
 //	@Produce		json
-//	@Param			expand		query		[]string		false	"Expand associations"
+//	@Param			expand		query		[]string		false	"Allowed: ['organizations']"
 // 	@Success		200			{object}	[]data.Association	"Associations"
 // 	@Failure		400			{object}	ApiError			"Bad Request"
 // 	@Router			/user_associations/me	[get]

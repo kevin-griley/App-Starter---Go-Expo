@@ -19,25 +19,23 @@ const signUpSchema = z
         email: z.string().min(1, 'Email is required').email(),
         password: z
             .string()
-            .min(6, 'Must be at least 8 characters in length')
+            .min(8, 'Must be at least 8 characters in length')
+            .max(20, 'Must be at most 20 characters in length')
             .regex(new RegExp('.*[A-Z].*'), 'One uppercase character')
             .regex(new RegExp('.*[a-z].*'), 'One lowercase character')
-            .regex(new RegExp('.*\\d.*'), 'One number')
-            .regex(
-                new RegExp('.*[`~<>?,./!@#$%^&*()\\-_+="\'|{}\\[\\];:\\\\].*'),
-                'One special character',
-            ),
+            .regex(new RegExp('.*\\d.*'), 'One number'),
+
         confirmpassword: z
             .string()
-            .min(6, 'Must be at least 8 characters in length')
+            .min(8, 'Must be at least 8 characters in length')
+            .max(20, 'Must be at most 20 characters in length')
             .regex(new RegExp('.*[A-Z].*'), 'One uppercase character')
             .regex(new RegExp('.*[a-z].*'), 'One lowercase character')
-            .regex(new RegExp('.*\\d.*'), 'One number')
-            .regex(
-                new RegExp('.*[`~<>?,./!@#$%^&*()\\-_+="\'|{}\\[\\];:\\\\].*'),
-                'One special character',
-            ),
-        rememberme: z.boolean(),
+            .regex(new RegExp('.*\\d.*'), 'One number'),
+
+        rememberme: z.boolean().refine((val) => val === true, {
+            message: 'You must accept the Terms of Use & Privacy Policy',
+        }),
     })
     .superRefine((data, ctx) => {
         if (data.password !== data.confirmpassword) {
@@ -115,7 +113,7 @@ const SignUpWithLeftBackground = () => {
                                             placeholder="********"
                                             description="Use a secure password."
                                             secureTextEntry
-                                            autoComplete="password"
+                                            autoComplete="new-password"
                                             onSubmitEditing={() =>
                                                 form.setFocus('confirmpassword')
                                             }
@@ -132,6 +130,7 @@ const SignUpWithLeftBackground = () => {
                                             placeholder="********"
                                             secureTextEntry
                                             autoComplete="password"
+                                            passwordRules="minlength: 8; maxlength: 20; required: lower; required: upper; required: digit;"
                                             onSubmitEditing={form.handleSubmit(
                                                 onSubmit,
                                             )}

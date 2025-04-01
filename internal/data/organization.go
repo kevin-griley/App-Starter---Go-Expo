@@ -28,6 +28,8 @@ func (s *organizationStoreImpl) CreateRequest(name, address, contactInfo string,
 		Address:          address,
 		ContactInfo:      contactInfo,
 		OrganizationType: organizationType,
+		IsDeleted:        false,
+
 	}, nil
 }
 
@@ -42,6 +44,7 @@ func (s *organizationStoreImpl) CreateOrganization(o *Organization) (*Organizati
 		"address":           o.Address,
 		"contact_info":      o.ContactInfo,
 		"organization_type": o.OrganizationType,
+		"is_deleted":        o.IsDeleted,
 	}
 
 	query, values, err := BuildInsertQuery("organizations", data)
@@ -81,7 +84,7 @@ func (s *organizationStoreImpl) UpdateRequest(name, uniqueURL, address, contactI
 	if organizationType != "" {
 		o.OrganizationType = organizationType
 	}
-
+	
 	return o, nil
 }
 
@@ -240,6 +243,7 @@ type Organization struct {
 	Address          string           `json:"address"`
 	ContactInfo      string           `json:"contact_info"`
 	OrganizationType OrganizationType `json:"organization_type"`
+	IsDeleted		 bool             `json:"is_deleted"`
 }
 
 func scanIntoOrganization(rows *sql.Rows) (*Organization, error) {
@@ -253,6 +257,7 @@ func scanIntoOrganization(rows *sql.Rows) (*Organization, error) {
 		&o.Address,
 		&o.ContactInfo,
 		&o.OrganizationType,
+		&o.IsDeleted,
 	)
 	return o, err
 }

@@ -7,13 +7,12 @@ import {
     CardHeader,
     CardTitle,
 } from '.';
-import { Text } from '../text';
 
 interface CardDefaultProps {
-    title: string;
-    description: string;
-    content: string;
-    footer: string;
+    title: React.ReactNode;
+    description?: React.ReactNode;
+    content: React.ReactNode;
+    footer?: React.ReactNode;
 }
 
 export const CardDefault: React.FC<CardDefaultProps> = ({
@@ -26,14 +25,12 @@ export const CardDefault: React.FC<CardDefaultProps> = ({
         <Card className="w-full max-w-sm">
             <CardHeader>
                 <CardTitle>{title}</CardTitle>
-                <CardDescription>{description}</CardDescription>
+                {description && (
+                    <CardDescription>{description}</CardDescription>
+                )}
             </CardHeader>
-            <CardContent>
-                <Text>{content}</Text>
-            </CardContent>
-            <CardFooter>
-                <Text>{footer}</Text>
-            </CardFooter>
+            <CardContent>{content}</CardContent>
+            {footer && <CardFooter>{footer}</CardFooter>}
         </Card>
     );
 };

@@ -20,38 +20,54 @@ var allowedExpansions = map[string]JoinSpec{
 }
 
 func BuildSelectQueryWithExpansions(mainTable string, conditions map[string]any, expansions []string) (string, []any, error) {
-
 	if !isValidTable(mainTable) {
 		return "", nil, fmt.Errorf("invalid table name: %s", mainTable)
 	}
 
-	queryBuilder := strings.Builder{}
-	queryBuilder.WriteString(fmt.Sprintf("SELECT %s.*", mainTable))
+	useAlias := len(expansions) > 0
+	mainAlias := mainTable
+	if useAlias {
+		mainAlias = "main"
+	}
 
-	joinClauses := []string{}
+	var queryBuilder strings.Builder
+
+	queryBuilder.WriteString(fmt.Sprintf("SELECT %s.*", mainAlias))
+
 	for _, expand := range expansions {
 		spec, ok := allowedExpansions[expand]
 		if !ok {
 			return "", nil, fmt.Errorf("expansion %q is not allowed", expand)
 		}
 
-		queryBuilder.WriteString(fmt.Sprintf(", %s.*", spec.Alias))
-		joinClause := fmt.Sprintf("LEFT JOIN %s %s ON %s", spec.Table, spec.Alias, spec.JoinCondition)
-		joinClauses = append(joinClauses, joinClause)
+		joinCondition := spec.JoinCondition
+		if useAlias {
+			joinCondition = strings.ReplaceAll(joinCondition, mainTable+".", mainAlias+".")
+		}
+
+		subquery := fmt.Sprintf(
+			"(SELECT COALESCE(json_agg(%s.*), '[]'::json) FROM %s %s WHERE %s) AS %s",
+			spec.Alias, spec.Table, spec.Alias, joinCondition, expand,
+		)
+		queryBuilder.WriteString(", " + subquery)
 	}
 
-	queryBuilder.WriteString(fmt.Sprintf(" FROM %s", mainTable))
-	for _, joinClause := range joinClauses {
-		queryBuilder.WriteString(" ")
-		queryBuilder.WriteString(joinClause)
+	if useAlias {
+		queryBuilder.WriteString(fmt.Sprintf(" FROM %s %s", mainTable, mainAlias))
+	} else {
+		queryBuilder.WriteString(fmt.Sprintf(" FROM %s", mainTable))
 	}
 
 	values := []any{}
 	if len(conditions) > 0 {
-		condKeys := sortedKeys(conditions)
+		condKeys := sortedKeys(conditions) 
 		whereClauses := make([]string, 0, len(conditions))
 		for i, key := range condKeys {
-			whereClauses = append(whereClauses, fmt.Sprintf("%s.%s = $%d", mainTable, key, i+1))
+			if useAlias {
+				whereClauses = append(whereClauses, fmt.Sprintf("%s.%s = $%d", mainAlias, key, i+1))
+			} else {
+				whereClauses = append(whereClauses, fmt.Sprintf("%s.%s = $%d", mainTable, key, i+1))
+			}
 			values = append(values, conditions[key])
 		}
 		queryBuilder.WriteString(" WHERE " + strings.Join(whereClauses, " AND "))

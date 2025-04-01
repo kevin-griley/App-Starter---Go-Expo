@@ -16,6 +16,9 @@ const HStackVariants = cva('flex-row', {
         reversed: {
             true: 'flex-row-reverse',
         },
+        wrap: {
+            true: 'flex-wrap',
+        },
     },
     defaultVariants: {
         space: 'md',
@@ -27,12 +30,13 @@ type HStackProps = React.ComponentPropsWithoutRef<typeof View> &
     VariantProps<typeof HStackVariants>;
 
 const HStack = React.forwardRef<React.ElementRef<typeof View>, HStackProps>(
-    ({ className, space, reversed, ...props }, ref) => {
+    ({ className, space, reversed, wrap, ...props }, ref) => {
         return (
             <View
                 className={HStackVariants({
                     space,
                     reversed,
+                    wrap,
                     class: className,
                 })}
                 {...props}

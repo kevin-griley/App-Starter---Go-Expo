@@ -12,13 +12,16 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'expo-router';
 import * as React from 'react';
 import { useForm } from 'react-hook-form';
-import { ActivityIndicator, View } from 'react-native';
+import { ActivityIndicator, Pressable, View } from 'react-native';
 
+import { HStack } from '@/components/ui/hstack';
 import { Label } from '@/components/ui/label';
 import { RadioGroupItem } from '@/components/ui/radio-group';
-import { $api } from '@/lib/api/client';
+import { $api, queryClient } from '@/lib/api/client';
+import { AuthLayout } from '@/screens/auth/layout';
 import { z } from 'zod';
-import { AppLayout } from '../layout';
+
+import { ArrowLeft } from '@/lib/icons/ArrowLeft';
 
 const newOrgaizationSchema = z.object({
     name: z.string().min(1, 'Name is required'),
@@ -59,7 +62,18 @@ const CreateOrganizationWithoutLayout = () => {
 
     React.useEffect(() => {
         if (postOrganization.isSuccess) {
+            form.reset();
+
             router.push('/dashboard');
+
+            const { queryKey } = $api.queryOptions(
+                'get',
+                '/user_associations/me',
+            );
+
+            queryClient.invalidateQueries({
+                queryKey,
+            });
         }
         if (postOrganization.isError) {
             console.log(postOrganization.error);
@@ -68,8 +82,19 @@ const CreateOrganizationWithoutLayout = () => {
     }, [postOrganization.status]);
 
     return (
-        <VStack className="max-w-[440px] w-full" space="md">
-            <VStack>
+        <VStack className="max-w-[440px] w-full">
+            <VStack space="xl">
+                <Pressable
+                    onPress={() => {
+                        router.back();
+                    }}
+                >
+                    <HStack space="sm">
+                        <ArrowLeft className="text-primary" />
+                        <Text>Back</Text>
+                    </HStack>
+                </Pressable>
+
                 <H1>Create Organization</H1>
                 <Text>Create an organization to start using the app.</Text>
 
@@ -194,7 +219,7 @@ const CreateOrganizationWithoutLayout = () => {
                         </Form>
                     </VStack>
 
-                    <VStack className="w-full my-7 " space="lg">
+                    <VStack className="w-full my-7" space="lg">
                         <Button
                             className="w-full"
                             onPress={form.handleSubmit(onSubmit)}
@@ -214,8 +239,8 @@ const CreateOrganizationWithoutLayout = () => {
 
 export const CreateOrganization = () => {
     return (
-        <AppLayout>
+        <AuthLayout>
             <CreateOrganizationWithoutLayout />
-        </AppLayout>
+        </AuthLayout>
     );
 };
