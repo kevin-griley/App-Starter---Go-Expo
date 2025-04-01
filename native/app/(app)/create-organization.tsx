@@ -1,2 +1,2 @@
-import { CreateOrganization } from '@/screens/app/create-organization';
+import { CreateOrganization } from '@/screens/accounts/create-organization';
 export default CreateOrganization;

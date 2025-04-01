@@ -204,7 +204,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/organization/{id}": {
+        "/organization/{ID}": {
             "get": {
                 "security": [
                     {
@@ -226,7 +226,7 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "Organization ID",
-                        "name": "id",
+                        "name": "ID",
                         "in": "path",
                         "required": true
                     }

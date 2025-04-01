@@ -64,7 +64,7 @@ const CreateOrganizationWithoutLayout = () => {
         if (postOrganization.isSuccess) {
             form.reset();
 
-            router.push('/dashboard');
+            router.push('/my-account');
 
             const { queryKey } = $api.queryOptions(
                 'get',
@@ -86,7 +86,11 @@ const CreateOrganizationWithoutLayout = () => {
             <VStack space="xl">
                 <Pressable
                     onPress={() => {
-                        router.back();
+                        if (router.canGoBack()) {
+                            router.back();
+                        } else {
+                            router.push('/my-account');
+                        }
                     }}
                 >
                     <HStack space="sm">

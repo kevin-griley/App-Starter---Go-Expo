@@ -2,7 +2,12 @@ import type { DrawerContentComponentProps } from '@react-navigation/drawer';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { router, usePathname } from 'expo-router';
 
-import { Home, LogOut, Network, Newspaper } from 'lucide-react-native';
+import {
+    BriefcaseBusiness,
+    LogOut,
+    Network,
+    UserCircle,
+} from 'lucide-react-native';
 import * as React from 'react';
 import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -28,23 +33,27 @@ export const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (
 
                 <DrawerItem
                     style={{ borderRadius: 8 }}
-                    icon={(props) => <Home {...props} />}
-                    label="Dashboard"
+                    icon={({ color, size }) => (
+                        <BriefcaseBusiness color={color} size={size} />
+                    )}
+                    label="My Account"
                     labelStyle={{ fontFamily: 'SpaceMono', fontSize: 16 }}
-                    focused={pathname === '/dashboard'}
+                    focused={pathname === '/my-account'}
                     onPress={() => {
-                        router.push('/dashboard');
+                        router.push('/my-account');
                     }}
                 />
 
                 <DrawerItem
                     style={{ borderRadius: 8 }}
-                    icon={(props) => <Newspaper {...props} />}
-                    label="Newsfeed"
+                    icon={({ color, size }) => (
+                        <UserCircle color={color} size={size} />
+                    )}
+                    label="My Profile"
                     labelStyle={{ fontFamily: 'SpaceMono', fontSize: 16 }}
-                    focused={pathname === '/feed'}
+                    focused={pathname === '/my-profile'}
                     onPress={() => {
-                        router.push('/feed');
+                        router.push('/my-profile');
                     }}
                 />
             </DrawerContentScrollView>
@@ -55,7 +64,9 @@ export const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (
             >
                 <DrawerItem
                     style={{ borderRadius: 8 }}
-                    icon={(props) => <Network {...props} />}
+                    icon={({ color, size }) => (
+                        <Network color={color} size={size} />
+                    )}
                     label="Site Map"
                     labelStyle={{ fontFamily: 'SpaceMono', fontSize: 16 }}
                     onPress={() => {
@@ -64,7 +75,9 @@ export const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (
                 />
                 <DrawerItem
                     style={{ borderRadius: 8 }}
-                    icon={(props) => <LogOut {...props} />}
+                    icon={({ color, size }) => (
+                        <LogOut color={color} size={size} />
+                    )}
                     label="Logout"
                     labelStyle={{ fontFamily: 'SpaceMono', fontSize: 16 }}
                     onPress={logout}

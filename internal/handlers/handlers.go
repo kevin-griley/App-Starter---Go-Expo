@@ -13,7 +13,7 @@ import (
 )
 
 func GetPathID(r *http.Request) (uuid.UUID, error) {
-	idStr := r.PathValue("id")
+	idStr := r.PathValue("ID")
 	if idStr == "" {
 		return uuid.Nil, fmt.Errorf("id is required")
 	}

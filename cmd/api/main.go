@@ -52,18 +52,24 @@ func main() {
 	mux.HandleFunc("PATCH /user/me", PatchUserHandler)
 
 	// Organization endpoints
+	GetOrganization := middleware.Chain(
+		handlers.HandleApiError(handlers.HandleGetOrganizationByID),
+		middleware.JwtAuthMiddleware,
+	)
+	mux.HandleFunc("GET /organization/{ID}", GetOrganization)
+
 	PostOrganization := middleware.Chain(
 		handlers.HandleApiError(handlers.HandlePostOrganization),
 		middleware.JwtAuthMiddleware,
 	)
 	mux.HandleFunc("POST /organization", PostOrganization)
 	
-	HandlePatchOrganizationByID := middleware.Chain(
+	PatchOrganizationByID := middleware.Chain(
 		handlers.HandleApiError(handlers.HandlePatchOrganizationByID),
 		middleware.JwtAuthMiddleware,
 		middleware.ScopeMiddleware("organization:write"),
 	)
-	mux.HandleFunc("PATCH /organization/{ID}", HandlePatchOrganizationByID)
+	mux.HandleFunc("PATCH /organization/{ID}", PatchOrganizationByID)
 
 	// Association endpoints
 	GetAssociationsByKey := middleware.Chain(

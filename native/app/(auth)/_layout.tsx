@@ -8,7 +8,7 @@ export default function AuthRootLayout() {
     const { session } = useSession();
 
     if (session) {
-        return <Redirect href="/dashboard" />;
+        return <Redirect href="/my-account" />;
     }
 
     return (

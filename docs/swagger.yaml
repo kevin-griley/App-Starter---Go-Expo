@@ -282,7 +282,7 @@ paths:
       summary: Create a new organization
       tags:
       - Organization
-  /organization/{id}:
+  /organization/{ID}:
     get:
       consumes:
       - application/json
@@ -290,7 +290,7 @@ paths:
       parameters:
       - description: Organization ID
         in: path
-        name: id
+        name: ID
         required: true
         type: string
       produces:

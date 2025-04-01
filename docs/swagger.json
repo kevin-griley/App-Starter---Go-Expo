@@ -197,7 +197,7 @@
                 }
             }
         },
-        "/organization/{id}": {
+        "/organization/{ID}": {
             "get": {
                 "security": [
                     {
@@ -219,7 +219,7 @@
                     {
                         "type": "string",
                         "description": "Organization ID",
-                        "name": "id",
+                        "name": "ID",
                         "in": "path",
                         "required": true
                     }

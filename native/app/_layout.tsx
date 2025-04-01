@@ -1,3 +1,4 @@
+import { OrganizationProvider } from '@/components/OrganizationProvider';
 import '../global.css';
 
 import { SessionProvider } from '@/components/SessionProvider';
@@ -66,17 +67,19 @@ export default function RootLayout() {
     return (
         <QueryClientProvider client={queryClient}>
             <SessionProvider>
-                <SafeAreaProvider>
-                    <ThemeProvider
-                        value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}
-                    >
-                        <StatusBar
-                            style={isDarkColorScheme ? 'light' : 'dark'}
-                        />
-                        <Slot />
-                        <PortalHost />
-                    </ThemeProvider>
-                </SafeAreaProvider>
+                <OrganizationProvider>
+                    <SafeAreaProvider>
+                        <ThemeProvider
+                            value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}
+                        >
+                            <StatusBar
+                                style={isDarkColorScheme ? 'light' : 'dark'}
+                            />
+                            <Slot />
+                            <PortalHost />
+                        </ThemeProvider>
+                    </SafeAreaProvider>
+                </OrganizationProvider>
             </SessionProvider>
         </QueryClientProvider>
     );

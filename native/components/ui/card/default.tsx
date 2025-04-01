@@ -24,7 +24,9 @@ export const CardDefault: React.FC<CardDefaultProps> = ({
     return (
         <Card className="w-full max-w-sm">
             <CardHeader>
-                <CardTitle>{title}</CardTitle>
+                <CardTitle style={{ fontFamily: 'SpaceMono' }}>
+                    {title}
+                </CardTitle>
                 {description && (
                     <CardDescription>{description}</CardDescription>
                 )}

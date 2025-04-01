@@ -87,10 +87,10 @@ func HandlePostOrganization(w http.ResponseWriter, r *http.Request) *ApiError {
 //	@Security		ApiKeyAuth
 //	@Accept			json
 //	@Produce		json
-//	@Param			id					path		string				true	"Organization ID"
+//	@Param			ID					path		string				true	"Organization ID"
 //	@Success		200					{object}	data.Organization	"Organization"
 //	@Failure		400					{object}	ApiError			"Bad Request"
-//	@Router			/organization/{id}	[get]
+//	@Router			/organization/{ID}	[get]
 func HandleGetOrganizationByID(w http.ResponseWriter, r *http.Request) *ApiError {
 	ctx := r.Context()
 
@@ -130,7 +130,7 @@ type PatchOrganizationRequest struct {
 //	@Param			body				body		PatchOrganizationRequest	true	"Patch Organization Request"
 //	@Success		200					{object}	data.Organization			"Organization"
 //	@Failure		400					{object}	ApiError					"Bad Request"
-//	@Router			/organization/{id}	[patch]
+//	@Router			/organization/{ID}	[patch]
 func HandlePatchOrganizationByID(w http.ResponseWriter, r *http.Request) *ApiError {
 	ctx := r.Context()
 

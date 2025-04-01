@@ -3,7 +3,7 @@ import { useSession } from '@/components/SessionProvider';
 import { Redirect } from 'expo-router';
 import { Drawer } from 'expo-router/drawer';
 
-import { CustomDrawerContent } from '@/components/Drawer/account';
+import { CustomDrawerContent } from '@/components/Drawer/organization';
 import { GestureRootView } from '@/components/GestureRoot/View';
 import { useOrganization } from '@/components/OrganizationProvider';
 import { ThemeToggle } from '@/components/ThemeToggle';
@@ -21,8 +21,8 @@ export default function AppRootLayout() {
         return <Redirect href="/" />;
     }
 
-    if (organization) {
-        return <Redirect href="/dashboard" />;
+    if (!organization) {
+        return <Redirect href="/my-account" />;
     }
 
     return (
@@ -31,7 +31,11 @@ export default function AppRootLayout() {
                 drawerContent={(props) => <CustomDrawerContent {...props} />}
                 screenOptions={{
                     headerTitle(props) {
-                        return <H4>{toOptions(props.children)}</H4>;
+                        return (
+                            <H4>
+                                {organization?.name} {toOptions(props.children)}
+                            </H4>
+                        );
                     },
                     headerRight: () => <ThemeToggle />,
                 }}
@@ -43,7 +47,7 @@ export default function AppRootLayout() {
 function toOptions(name: string) {
     switch (name) {
         case 'index':
-            return 'My Account';
+            return 'Dashboard';
 
         default: {
             const title = name

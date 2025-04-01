@@ -1,462 +1,462 @@
 openapi: 3.0.0
 info:
-  contact: {}
-  description: API for the ULD Management System
-  title: Rest API
-  version: "1.0"
+    contact: {}
+    description: API for the ULD Management System
+    title: Rest API
+    version: '1.0'
 paths:
-  /auth/login:
-    post:
-      description: Retrive token for bearer authentication
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/handlers.PostAuthRequest"
-        description: Login Request
-        required: true
-      responses:
-        "200":
-          description: Token Response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/handlers.PostAuthResponse"
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/handlers.ApiError"
-        "401":
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/handlers.ApiError"
-      summary: Retrive token for bearer authentication
-      tags:
-        - Auth
-  /auth/logout:
-    delete:
-      description: Removes HttpOnly cookie from client
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: string
-      summary: Removes HttpOnly cookie from client
-      tags:
-        - Auth
-  /auth/reset/confirm:
-    post:
-      description: Confirms a password reset
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/handlers.PostAuthResetConfirm"
-        description: Reset Confirm
-        required: true
-      responses:
-        "200":
-          description: User
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/data.User"
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/handlers.ApiError"
-      summary: Confirms a password reset
-      tags:
-        - Auth
-  /auth/reset/request:
-    post:
-      description: Requests a password reset
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/handlers.PostAuthResetRequest"
-        description: Reset Request
-        required: true
-      responses:
-        "200":
-          description: User
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/data.User"
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/handlers.ApiError"
-      summary: Requests a password reset
-      tags:
-        - Auth
-  /organization:
-    post:
-      description: Create a new organization
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/handlers.PostOrganizationRequest"
-        description: Create Organization Request
-        required: true
-      responses:
-        "200":
-          description: Organization
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/data.Organization"
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/handlers.ApiError"
-      summary: Create a new organization
-      tags:
-        - Organization
-  "/organization/{id}":
-    get:
-      description: Get organization by ID
-      parameters:
-        - description: Organization ID
-          in: path
-          name: id
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Organization
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/data.Organization"
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/handlers.ApiError"
-      security:
-        - ApiKeyAuth: []
-      summary: Get organization by ID
-      tags:
-        - Organization
-    patch:
-      description: Patch organization by ID
-      parameters:
-        - description: Organization ID
-          in: path
-          name: id
-          required: true
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/handlers.PatchOrganizationRequest"
-        description: Patch Organization Request
-        required: true
-      responses:
-        "200":
-          description: Organization
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/data.Organization"
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/handlers.ApiError"
-      security:
-        - ApiKeyAuth: []
-      summary: Patch organization by ID
-      tags:
-        - Organization
-  /user:
-    post:
-      description: Create a new user
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/handlers.PostUserRequest"
-        description: Create User Request
-        required: true
-      responses:
-        "200":
-          description: User
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/data.User"
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/handlers.ApiError"
-      summary: Create a new user
-      tags:
-        - User
-  /user/me:
-    get:
-      description: Get user by apiKey
-      responses:
-        "200":
-          description: User
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/data.User"
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/handlers.ApiError"
-      security:
-        - ApiKeyAuth: []
-      summary: Get user by apiKey
-      tags:
-        - User
-    patch:
-      description: Patch user by apiKey
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/handlers.PatchUserRequest"
-        description: Patch User Request
-        required: true
-      responses:
-        "200":
-          description: User
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/data.User"
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/handlers.ApiError"
-      security:
-        - ApiKeyAuth: []
-      summary: Patch user by apiKey
-      tags:
-        - User
-  /user_associations/me:
-    get:
-      description: Get associations by apiKey
-      parameters:
-        - description: "Allowed: ['organizations']"
-          in: query
-          name: expand
-          style: form
-          explode: false
-          schema:
-            type: array
-            items:
-              type: string
-      responses:
-        "200":
-          description: Associations
-          content:
-            application/json:
-              schema:
-                items:
-                  $ref: "#/components/schemas/data.Association"
-                type: array
-        "400":
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/handlers.ApiError"
-      security:
-        - ApiKeyAuth: []
-      summary: Get associations by apiKey
-      tags:
-        - User Associations
+    /auth/login:
+        post:
+            description: Retrive token for bearer authentication
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/handlers.PostAuthRequest'
+                description: Login Request
+                required: true
+            responses:
+                '200':
+                    description: Token Response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/handlers.PostAuthResponse'
+                '400':
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/handlers.ApiError'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/handlers.ApiError'
+            summary: Retrive token for bearer authentication
+            tags:
+                - Auth
+    /auth/logout:
+        delete:
+            description: Removes HttpOnly cookie from client
+            responses:
+                '200':
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                type: string
+            summary: Removes HttpOnly cookie from client
+            tags:
+                - Auth
+    /auth/reset/confirm:
+        post:
+            description: Confirms a password reset
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/handlers.PostAuthResetConfirm'
+                description: Reset Confirm
+                required: true
+            responses:
+                '200':
+                    description: User
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/data.User'
+                '400':
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/handlers.ApiError'
+            summary: Confirms a password reset
+            tags:
+                - Auth
+    /auth/reset/request:
+        post:
+            description: Requests a password reset
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/handlers.PostAuthResetRequest'
+                description: Reset Request
+                required: true
+            responses:
+                '200':
+                    description: User
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/data.User'
+                '400':
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/handlers.ApiError'
+            summary: Requests a password reset
+            tags:
+                - Auth
+    /organization:
+        post:
+            description: Create a new organization
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/handlers.PostOrganizationRequest'
+                description: Create Organization Request
+                required: true
+            responses:
+                '200':
+                    description: Organization
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/data.Organization'
+                '400':
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/handlers.ApiError'
+            summary: Create a new organization
+            tags:
+                - Organization
+    '/organization/{ID}':
+        get:
+            description: Get organization by ID
+            parameters:
+                - description: Organization ID
+                  in: path
+                  name: ID
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                '200':
+                    description: Organization
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/data.Organization'
+                '400':
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/handlers.ApiError'
+            security:
+                - ApiKeyAuth: []
+            summary: Get organization by ID
+            tags:
+                - Organization
+        patch:
+            description: Patch organization by ID
+            parameters:
+                - description: Organization ID
+                  in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/handlers.PatchOrganizationRequest'
+                description: Patch Organization Request
+                required: true
+            responses:
+                '200':
+                    description: Organization
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/data.Organization'
+                '400':
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/handlers.ApiError'
+            security:
+                - ApiKeyAuth: []
+            summary: Patch organization by ID
+            tags:
+                - Organization
+    /user:
+        post:
+            description: Create a new user
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/handlers.PostUserRequest'
+                description: Create User Request
+                required: true
+            responses:
+                '200':
+                    description: User
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/data.User'
+                '400':
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/handlers.ApiError'
+            summary: Create a new user
+            tags:
+                - User
+    /user/me:
+        get:
+            description: Get user by apiKey
+            responses:
+                '200':
+                    description: User
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/data.User'
+                '400':
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/handlers.ApiError'
+            security:
+                - ApiKeyAuth: []
+            summary: Get user by apiKey
+            tags:
+                - User
+        patch:
+            description: Patch user by apiKey
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/handlers.PatchUserRequest'
+                description: Patch User Request
+                required: true
+            responses:
+                '200':
+                    description: User
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/data.User'
+                '400':
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/handlers.ApiError'
+            security:
+                - ApiKeyAuth: []
+            summary: Patch user by apiKey
+            tags:
+                - User
+    /user_associations/me:
+        get:
+            description: Get associations by apiKey
+            parameters:
+                - description: "Allowed: ['organizations']"
+                  in: query
+                  name: expand
+                  style: form
+                  explode: false
+                  schema:
+                      type: array
+                      items:
+                          type: string
+            responses:
+                '200':
+                    description: Associations
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/data.Association'
+                                type: array
+                '400':
+                    description: Bad Request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/handlers.ApiError'
+            security:
+                - ApiKeyAuth: []
+            summary: Get associations by apiKey
+            tags:
+                - User Associations
 servers:
-  - url: /
+    - url: /
 components:
-  securitySchemes:
-    Bearer_Authentication:
-      description: A valid JWT token with Bearer prefix
-      in: header
-      name: Authorization
-      type: apiKey
-  schemas:
-    data.Association:
-      properties:
-        created_at:
-          type: string
-        id:
-          type: string
-        organization:
-          $ref: "#/components/schemas/data.Organization"
-        organization_id:
-          type: string
-        permissions:
-          items:
-            $ref: "#/components/schemas/data.PermissionsEnum"
-          type: array
-        status:
-          $ref: "#/components/schemas/data.OrganizationStatus"
-        updated_at:
-          type: string
-        user_id:
-          type: string
-      type: object
-    data.Organization:
-      properties:
-        address:
-          type: string
-        contact_info:
-          type: string
-        created_at:
-          type: string
-        id:
-          type: string
-        is_deleted:
-          type: boolean
-        name:
-          type: string
-        organization_type:
-          $ref: "#/components/schemas/data.OrganizationType"
-        unique_url:
-          type: string
-        updated_at:
-          type: string
-      type: object
-    data.OrganizationStatus:
-      enum:
-        - pending
-        - active
-        - inactive
-      type: string
-      x-enum-varnames:
-        - Pending
-        - Active
-        - Inactive
-    data.OrganizationType:
-      enum:
-        - airline
-        - carrier
-        - warehouse
-      type: string
-      x-enum-varnames:
-        - Airline
-        - Carrier
-        - Warehouse
-    data.PermissionsEnum:
-      enum:
-        - user.read
-        - user.write
-        - organization.read
-        - organization.write
-        - manifest.read
-        - manifest.write
-        - uld.read
-        - uld.write
-      type: string
-      x-enum-varnames:
-        - ReadUserPermissions
-        - WriteUserPermissions
-        - ReadOrganizationPermissions
-        - WriteOrganizationPermissions
-        - ReadManifestPermissions
-        - WriteManifestPermissions
-        - ReadUldPermissions
-        - WriteUldPermissions
-    data.User:
-      properties:
-        created_at:
-          type: string
-        email:
-          type: string
-        id:
-          type: string
-        updated_at:
-          type: string
-        user_name:
-          type: string
-      type: object
-    handlers.ApiError:
-      properties:
-        error:
-          type: string
-        status:
-          type: integer
-      type: object
-    handlers.PatchOrganizationRequest:
-      type: object
-    handlers.PatchUserRequest:
-      properties:
-        password:
-          type: string
-        user_name:
-          type: string
-      type: object
-    handlers.PostAuthRequest:
-      properties:
-        email:
-          type: string
-        password:
-          type: string
-      type: object
-    handlers.PostAuthResetConfirm:
-      properties:
-        confirm_code:
-          type: string
-        new_password:
-          type: string
-      type: object
-    handlers.PostAuthResetRequest:
-      properties:
-        email:
-          type: string
-      type: object
-    handlers.PostAuthResponse:
-      properties:
-        token:
-          type: string
-      type: object
-    handlers.PostOrganizationRequest:
-      properties:
-        address:
-          type: string
-        contact_info:
-          type: string
-        name:
-          type: string
-        organization_type:
-          $ref: "#/components/schemas/data.OrganizationType"
-      type: object
-    handlers.PostUserRequest:
-      properties:
-        email:
-          type: string
-        password:
-          type: string
-      type: object
+    securitySchemes:
+        Bearer_Authentication:
+            description: A valid JWT token with Bearer prefix
+            in: header
+            name: Authorization
+            type: apiKey
+    schemas:
+        data.Association:
+            properties:
+                created_at:
+                    type: string
+                id:
+                    type: string
+                organization:
+                    $ref: '#/components/schemas/data.Organization'
+                organization_id:
+                    type: string
+                permissions:
+                    items:
+                        $ref: '#/components/schemas/data.PermissionsEnum'
+                    type: array
+                status:
+                    $ref: '#/components/schemas/data.OrganizationStatus'
+                updated_at:
+                    type: string
+                user_id:
+                    type: string
+            type: object
+        data.Organization:
+            properties:
+                address:
+                    type: string
+                contact_info:
+                    type: string
+                created_at:
+                    type: string
+                id:
+                    type: string
+                is_deleted:
+                    type: boolean
+                name:
+                    type: string
+                organization_type:
+                    $ref: '#/components/schemas/data.OrganizationType'
+                unique_url:
+                    type: string
+                updated_at:
+                    type: string
+            type: object
+        data.OrganizationStatus:
+            enum:
+                - pending
+                - active
+                - inactive
+            type: string
+            x-enum-varnames:
+                - Pending
+                - Active
+                - Inactive
+        data.OrganizationType:
+            enum:
+                - airline
+                - carrier
+                - warehouse
+            type: string
+            x-enum-varnames:
+                - Airline
+                - Carrier
+                - Warehouse
+        data.PermissionsEnum:
+            enum:
+                - user.read
+                - user.write
+                - organization.read
+                - organization.write
+                - manifest.read
+                - manifest.write
+                - uld.read
+                - uld.write
+            type: string
+            x-enum-varnames:
+                - ReadUserPermissions
+                - WriteUserPermissions
+                - ReadOrganizationPermissions
+                - WriteOrganizationPermissions
+                - ReadManifestPermissions
+                - WriteManifestPermissions
+                - ReadUldPermissions
+                - WriteUldPermissions
+        data.User:
+            properties:
+                created_at:
+                    type: string
+                email:
+                    type: string
+                id:
+                    type: string
+                updated_at:
+                    type: string
+                user_name:
+                    type: string
+            type: object
+        handlers.ApiError:
+            properties:
+                error:
+                    type: string
+                status:
+                    type: integer
+            type: object
+        handlers.PatchOrganizationRequest:
+            type: object
+        handlers.PatchUserRequest:
+            properties:
+                password:
+                    type: string
+                user_name:
+                    type: string
+            type: object
+        handlers.PostAuthRequest:
+            properties:
+                email:
+                    type: string
+                password:
+                    type: string
+            type: object
+        handlers.PostAuthResetConfirm:
+            properties:
+                confirm_code:
+                    type: string
+                new_password:
+                    type: string
+            type: object
+        handlers.PostAuthResetRequest:
+            properties:
+                email:
+                    type: string
+            type: object
+        handlers.PostAuthResponse:
+            properties:
+                token:
+                    type: string
+            type: object
+        handlers.PostOrganizationRequest:
+            properties:
+                address:
+                    type: string
+                contact_info:
+                    type: string
+                name:
+                    type: string
+                organization_type:
+                    $ref: '#/components/schemas/data.OrganizationType'
+            type: object
+        handlers.PostUserRequest:
+            properties:
+                email:
+                    type: string
+                password:
+                    type: string
+            type: object

@@ -23,7 +23,7 @@ const authMiddleware: Middleware = {
     },
 };
 
-const fetchClient = createFetchClient<paths>({
+export const fetchClient = createFetchClient<paths>({
     baseUrl: 'http://localhost:8080',
     headers: {
         'Content-Type': 'application/json',
