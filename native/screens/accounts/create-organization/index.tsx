@@ -196,7 +196,7 @@ const CreateOrganizationWithoutLayout = () => {
                                                         <View
                                                             key={value}
                                                             className={
-                                                                'flex-row gap-2 items-center'
+                                                                'flex flex-row gap-2 items-center'
                                                             }
                                                         >
                                                             <RadioGroupItem

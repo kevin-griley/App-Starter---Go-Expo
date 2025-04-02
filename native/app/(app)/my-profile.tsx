@@ -1,2 +1,2 @@
-import { Account } from '@/screens/accounts/account';
-export default Account;
+import { Profile } from '@/screens/accounts/profile';
+export default Profile;
