@@ -35,6 +35,7 @@ interface Props {
 export function TenantSelector({ data, isLoading }: Props) {
     const router = useRouter();
     const { setOrganization } = useOrganization();
+    const [hovered, setHovered] = React.useState<Organization | null>(null);
 
     const [selectedTenant, setSelectedTenant] =
         React.useState<Organization | null>(null);
@@ -62,22 +63,17 @@ export function TenantSelector({ data, isLoading }: Props) {
     }
 
     return (
-        <View className="flex flex-row flex-wrap gap-6">
+        <View className="flex flex-row flex-wrap gap-6 px-1">
             {data.map((assoc) => (
-                <Pressable
-                    key={assoc.organization_id}
-                    className="w-full max-w-sm"
-                    onPress={() => {
-                        console.log('Pressed');
-
-                        handleSelectTenant(assoc.organization);
-                    }}
-                >
+                <View key={assoc.organization_id} className="w-full max-w-sm">
                     <Card
                         className={cn(
-                            'relative cursor-pointer transition-all hover:border-muted-foreground hover:shadow-md flex-1',
+                            'relative cursor-pointer transition-all flex-1',
                             selectedTenant?.id === assoc.organization_id
                                 ? 'border-border ring-2 ring-primary ring-opacity-50'
+                                : '',
+                            hovered?.id === assoc.organization_id
+                                ? 'hover:border-primary hover:shadow-md'
                                 : '',
                         )}
                     >
@@ -112,6 +108,10 @@ export function TenantSelector({ data, isLoading }: Props) {
                         <CardFooter>
                             <HStack className="flex-1">
                                 <Button
+                                    onHoverIn={() =>
+                                        setHovered(assoc.organization ?? null)
+                                    }
+                                    onHoverOut={() => setHovered(null)}
                                     variant="secondary"
                                     className="flex-1"
                                     onPress={(e) => {
@@ -121,8 +121,11 @@ export function TenantSelector({ data, isLoading }: Props) {
                                 >
                                     <Text>Select workspace</Text>
                                 </Button>
-
                                 <Button
+                                    onHoverIn={() =>
+                                        setHovered(assoc.organization ?? null)
+                                    }
+                                    onHoverOut={() => setHovered(null)}
                                     onPress={(e) => {
                                         e.stopPropagation();
                                         setEditingTenant(
@@ -138,16 +141,17 @@ export function TenantSelector({ data, isLoading }: Props) {
                             </HStack>
                         </CardFooter>
                     </Card>
-                </Pressable>
+                </View>
             ))}
 
             <Pressable
                 className="w-full max-w-sm"
                 onPress={() => {
+                    console.log('Pressed');
                     router.push('/create-organization');
                 }}
             >
-                <Card className="flex flex-col items-center justify-center border-dashed p-6 text-center hover:border-muted-foreground hover:bg-muted/30 flex-1">
+                <Card className="flex flex-col items-center justify-center border-dashed p-6 text-center flex-1">
                     <View className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
                         <Plus className="h-6 w-6 text-primary" />
                     </View>

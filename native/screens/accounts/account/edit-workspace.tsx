@@ -12,6 +12,7 @@ import {
     FormField,
     FormInput,
     FormRadioGroup,
+    FormTextarea,
 } from '@/components/ui/form';
 import { Label } from '@/components/ui/label';
 import { RadioGroupItem } from '@/components/ui/radio-group';
@@ -20,7 +21,7 @@ import { Text } from '@/components/ui/text';
 import type { components } from '@/types/schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { View } from 'react-native';
+import { Image, View } from 'react-native';
 import { z } from 'zod';
 
 const editWorkspaceSchema = z.object({
@@ -37,6 +38,14 @@ const editWorkspaceSchema = z.object({
     }, 'Billing email must be a valid email'),
 
     organizationType: z.enum(['airline', 'carrier', 'warehouse']),
+
+    scacCode: z.string().refine((val) => {
+        if (val.length === 0) return true;
+        const scac = z.string().length(4).safeParse(val);
+        return scac.success;
+    }, 'SCAC must be 4 uppercase letters'),
+
+    termsOfService: z.string(),
 });
 
 type EditWorkspaceSchemaType = z.infer<typeof editWorkspaceSchema>;
@@ -55,6 +64,9 @@ export function EditWorkspace({ editingTenant, setEditingTenant }: Props) {
             name: editingTenant?.name ?? '',
             logo: '',
             billing: '',
+            organizationType: editingTenant?.organization_type ?? 'carrier',
+            scacCode: '',
+            termsOfService: '',
         },
     });
 
@@ -124,6 +136,27 @@ export function EditWorkspace({ editingTenant, setEditingTenant }: Props) {
                                 </View>
                             )}
                         />
+
+                        <View className="flex flex-row items-center gap-4">
+                            <View className="w-1/4 text-right">
+                                <Label htmlFor="logo-preview">Preview</Label>
+                            </View>
+                            <View className="w-3/4">
+                                <View className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-md border bg-gray-100">
+                                    <Image
+                                        id="logo-preview"
+                                        source={{
+                                            uri: form.watch('logo'),
+                                        }}
+                                        alt="Logo preview"
+                                        width={64}
+                                        height={64}
+                                        className="h-full w-full object-cover"
+                                    />
+                                </View>
+                            </View>
+                        </View>
+
                         <FormField
                             control={form.control}
                             name="billing"
@@ -211,6 +244,49 @@ export function EditWorkspace({ editingTenant, setEditingTenant }: Props) {
                                     </View>
                                 );
                             }}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="scacCode"
+                            render={({ field }) => (
+                                <View className="flex flex-row items-center gap-4">
+                                    <View className="w-1/4 text-right">
+                                        <Label className="" htmlFor="name">
+                                            Standard Carrier Alpha Code
+                                        </Label>
+                                    </View>
+                                    <View className="w-3/4">
+                                        <FormInput
+                                            placeholder="4-character code"
+                                            maxLength={4}
+                                            className="uppercase"
+                                            {...field}
+                                        />
+                                    </View>
+                                </View>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="termsOfService"
+                            render={({ field }) => (
+                                <View className="flex flex-row items-center gap-4">
+                                    <View className="w-1/4 text-right">
+                                        <Label className="" htmlFor="name">
+                                            Invoice Terms
+                                        </Label>
+                                    </View>
+                                    <View className="w-3/4">
+                                        <FormTextarea
+                                            placeholder="Enter terms of service for invoices"
+                                            className="min-h-[120px]"
+                                            {...field}
+                                        />
+                                    </View>
+                                </View>
+                            )}
                         />
                     </View>
                 </Form>
