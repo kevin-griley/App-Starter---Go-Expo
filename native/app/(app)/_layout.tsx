@@ -34,6 +34,7 @@ export default function AppRootLayout() {
                         return <H4>{toOptions(props.children)}</H4>;
                     },
                     headerRight: () => <ThemeToggle />,
+                    headerShadowVisible: false,
                 }}
             />
         </GestureRootView>

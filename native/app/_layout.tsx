@@ -42,6 +42,8 @@ export default function RootLayout() {
     const [loaded, error] = useFonts({
         // eslint-disable-next-line @typescript-eslint/no-require-imports
         SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
+        RedHatText: require('../assets/fonts/RedHatText-VariableFont_wght.ttf'),
     });
 
     React.useEffect(() => {
@@ -53,7 +55,7 @@ export default function RootLayout() {
             return;
         }
         if (Platform.OS === 'web') {
-            document.documentElement.classList.add('bg-background');
+            document.documentElement.classList.add('bg-bg');
         }
         setAndroidNavigationBar(colorScheme);
         setIsColorSchemeLoaded(true);

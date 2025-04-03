@@ -148,7 +148,10 @@ const FormMessage = React.forwardRef<
             exiting={FadeOut.duration(275)}
             ref={ref}
             nativeID={formMessageNativeID}
-            className={cn('text-sm font-medium text-error', className)}
+            className={cn(
+                'text-sm font-medium text-error font-serif',
+                className,
+            )}
             {...props}
         >
             {body}

@@ -1,4 +1,4 @@
-import { TextClassContext } from '@/components/ui/text';
+import { Text, TextClassContext } from '@/components/ui/text';
 import { Check } from '@/lib/icons/Check';
 import { ChevronDown } from '@/lib/icons/ChevronDown';
 import { ChevronRight } from '@/lib/icons/ChevronRight';
@@ -6,7 +6,7 @@ import { ChevronUp } from '@/lib/icons/ChevronUp';
 import { cn } from '@/lib/utils';
 import * as MenubarPrimitive from '@rn-primitives/menubar';
 import * as React from 'react';
-import { Platform, Text, type TextProps, View } from 'react-native';
+import { Platform, type TextProps, View } from 'react-native';
 
 const MenubarMenu = MenubarPrimitive.Menu;
 

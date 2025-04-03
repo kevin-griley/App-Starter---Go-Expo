@@ -40,6 +40,10 @@ module.exports = {
                 reverseBoxShadowX: '-4px',
                 reverseBoxShadowY: '-4px',
             },
+            fontFamily: {
+                serif: ['RedHatText', 'serif'],
+                mono: ['SpaceMono', 'monospace'],
+            },
             fontWeight: {
                 base: '500',
                 heading: '700',

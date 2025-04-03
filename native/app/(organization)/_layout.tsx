@@ -38,6 +38,7 @@ export default function AppRootLayout() {
                         );
                     },
                     headerRight: () => <ThemeToggle />,
+                    headerShadowVisible: false,
                 }}
             />
         </GestureRootView>

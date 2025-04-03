@@ -9,7 +9,7 @@ interface AuthLayoutProps {
 
 export const AuthLayout = (props: AuthLayoutProps) => {
     return (
-        <View className="flex-1 justify-center items-center bg-bg border-2 border-border">
+        <View className="flex-1 justify-center items-center bg-bg border-t-2 border-border">
             <ScrollView
                 className="w-full h-full"
                 contentContainerStyle={{ flexGrow: 1 }}
