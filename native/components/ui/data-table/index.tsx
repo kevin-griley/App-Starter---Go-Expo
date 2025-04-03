@@ -6,16 +6,9 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import { ArrowDown } from '@/lib/icons/ArrowDown';
-import { ArrowUp } from '@/lib/icons/ArrowUp';
 import { cn } from '@/lib/utils';
 import { FlashList, type FlashListProps } from '@shopify/flash-list';
-import type {
-    Column,
-    ColumnDef,
-    Row,
-    SortingState,
-} from '@tanstack/react-table';
+import type { ColumnDef, Row, SortingState } from '@tanstack/react-table';
 import {
     flexRender,
     getCoreRowModel,
@@ -31,8 +24,6 @@ import {
 } from 'react-native';
 import Animated, { FadeInUp, FadeOutUp } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Button } from '../button';
-import { Text } from '../text';
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
@@ -80,10 +71,7 @@ export function DataTable<TData, TValue>({
                     exiting={FadeOutUp}
                     className="h-14 top-16 absolute items-center justify-center w-screen"
                 >
-                    <ActivityIndicator
-                        size="small"
-                        className="text-foreground"
-                    />
+                    <ActivityIndicator size="small" className="text-text" />
                 </Animated.View>
             )}
             <ScrollView
@@ -141,8 +129,7 @@ export function DataTable<TData, TValue>({
                                     <TableRow
                                         className={cn(
                                             'active:opacity-70',
-                                            index % 2 &&
-                                                'bg-zinc-100/50 dark:bg-zinc-900/50',
+                                            index % 2 && 'bg-bw',
                                         )}
                                         onPress={
                                             onRowPress
@@ -184,33 +171,4 @@ const { width } = Dimensions.get('window');
 function getColumnWidth(size: number, length: number) {
     const evenWidth = width / length;
     return evenWidth > size ? evenWidth : size;
-}
-
-interface HeaderProps<TValue> {
-    title: string;
-    column: Column<TValue>;
-}
-
-export function Header<TValue>({ title, column }: HeaderProps<TValue>) {
-    return (
-        <Button
-            onPress={() => {
-                if (column.getIsSorted() === 'desc') {
-                    column.clearSorting();
-                    return;
-                }
-                column.toggleSorting(column.getIsSorted() === 'asc');
-            }}
-            size="sm"
-            variant="ghost"
-            className="flex flex-row px-0 justify-start gap-1.5 web:hover:bg-background/0 web:hover:opacity-80 active:bg-background/0"
-        >
-            <Text className={'font-medium text-muted-foreground'}>{title}</Text>
-            {column.getIsSorted() === 'asc' ? (
-                <ArrowUp size={15} className="ml-2 text-muted-foreground" />
-            ) : column.getIsSorted() === 'desc' ? (
-                <ArrowDown size={15} className="ml-2 text-muted-foreground" />
-            ) : null}
-        </Button>
-    );
 }

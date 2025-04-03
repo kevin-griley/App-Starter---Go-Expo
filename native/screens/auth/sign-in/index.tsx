@@ -106,7 +106,7 @@ const LoginWithLeftBackground = () => {
                                     />
 
                                     <Link href="/forgot-password" asChild>
-                                        <Text className="underline font-medium text-primary group-hover/link:text-primary">
+                                        <Text className="underline font-medium text-text group-hover/link:text-text">
                                             Forgot Password?
                                         </Text>
                                     </Link>
@@ -132,7 +132,7 @@ const LoginWithLeftBackground = () => {
                         <Text>Don't have an account?</Text>
 
                         <Link href="/sign-up" asChild>
-                            <Text className="underline font-medium text-primary group-hover/link:text-primary  group-hover/pressed:text-primary">
+                            <Text className="underline font-medium text-text group-hover/link:text-text group-hover/pressed:text-text">
                                 Sign up
                             </Text>
                         </Link>

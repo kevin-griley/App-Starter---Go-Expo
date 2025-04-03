@@ -142,7 +142,7 @@ export function EditWorkspace({ editingTenant, setEditingTenant }: Props) {
                                 <Label htmlFor="logo-preview">Preview</Label>
                             </View>
                             <View className="w-3/4">
-                                <View className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-md border bg-gray-100">
+                                <View className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-base border-2 border-border bg-bw">
                                     <Image
                                         id="logo-preview"
                                         source={{

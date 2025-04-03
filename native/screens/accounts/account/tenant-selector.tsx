@@ -68,22 +68,19 @@ export function TenantSelector({ data, isLoading }: Props) {
                 <View key={assoc.organization_id} className="w-full max-w-sm">
                     <Card
                         className={cn(
-                            'relative cursor-pointer transition-all flex-1',
-                            selectedTenant?.id === assoc.organization_id
-                                ? 'border-border ring-2 ring-primary ring-opacity-50'
-                                : '',
+                            'relative transition-all flex-1',
                             hovered?.id === assoc.organization_id
-                                ? 'hover:border-primary hover:shadow-md'
+                                ? 'hover:shadow-shadow'
                                 : '',
                         )}
                     >
                         {selectedTenant?.id === assoc.organization_id && (
-                            <View className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-primary">
-                                <Check className="h-4 w-4 text-primary-foreground" />
+                            <View className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-bw border-2 border-border">
+                                <Check className="h-4 w-4 text-text" />
                             </View>
                         )}
                         <CardHeader className="flex flex-row items-center gap-4 space-y-0">
-                            <View className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-md bg-muted" />
+                            <View className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-md bg-bw border-2 border-border" />
 
                             <View>
                                 <CardTitle
@@ -98,7 +95,7 @@ export function TenantSelector({ data, isLoading }: Props) {
                             </View>
                         </CardHeader>
                         <CardContent>
-                            <View className="text-sm text-muted-foreground">
+                            <View className="text-sm">
                                 <Text>
                                     {assoc.organization?.organization_type?.toUpperCase()}
                                 </Text>
@@ -112,7 +109,7 @@ export function TenantSelector({ data, isLoading }: Props) {
                                         setHovered(assoc.organization ?? null)
                                     }
                                     onHoverOut={() => setHovered(null)}
-                                    variant="secondary"
+                                    variant="neutral"
                                     className="flex-1"
                                     onPress={(e) => {
                                         e.stopPropagation();
@@ -133,10 +130,7 @@ export function TenantSelector({ data, isLoading }: Props) {
                                         );
                                     }}
                                 >
-                                    <Edit
-                                        className="text-primary-foreground"
-                                        size={18}
-                                    />
+                                    <Edit className="text-mtext" size={18} />
                                 </Button>
                             </HStack>
                         </CardFooter>
@@ -151,14 +145,14 @@ export function TenantSelector({ data, isLoading }: Props) {
                     router.push('/create-organization');
                 }}
             >
-                <Card className="flex flex-col items-center justify-center border-dashed p-6 text-center flex-1">
-                    <View className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
-                        <Plus className="h-6 w-6 text-primary" />
+                <Card className="flex flex-col items-center justify-center border-border border-dashed p-6 text-center flex-1 ">
+                    <View className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-bw border-2 border-border">
+                        <Plus className="h-6 w-6 text-text" />
                     </View>
-                    <H3 className="mb-1 text-xl font-semibold">
+                    <H3 className="mb-1 text-xl font-semibold text-mtext">
                         Create new workspace
                     </H3>
-                    <Text className="text-sm text-muted-foreground">
+                    <Text className="text-sm text-mtext">
                         Set up a new workspace for your team
                     </Text>
                     <View className="h-4" />

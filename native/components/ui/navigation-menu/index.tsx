@@ -1,3 +1,5 @@
+import { ChevronDown } from '@/lib/icons/ChevronDown';
+import { cn } from '@/lib/utils';
 import * as NavigationMenuPrimitive from '@rn-primitives/navigation-menu';
 import { cva } from 'class-variance-authority';
 import * as React from 'react';
@@ -11,8 +13,6 @@ import Animated, {
     useDerivedValue,
     withTiming,
 } from 'react-native-reanimated';
-import { ChevronDown } from '@/lib/icons/ChevronDown';
-import { cn } from '@/lib/utils';
 
 const NavigationMenu = React.forwardRef<
     NavigationMenuPrimitive.RootRef,
@@ -21,7 +21,7 @@ const NavigationMenu = React.forwardRef<
     <NavigationMenuPrimitive.Root
         ref={ref}
         className={cn(
-            'relative z-10 flex flex-row max-w-max items-center justify-center',
+            'relative z-10 flex flex-row max-w-max items-center justify-center rounded-base border-border border-2 bg-main',
             className,
         )}
         {...props}
@@ -50,7 +50,7 @@ NavigationMenuList.displayName = NavigationMenuPrimitive.List.displayName;
 const NavigationMenuItem = NavigationMenuPrimitive.Item;
 
 const navigationMenuTriggerStyle = cva(
-    'web:group web:inline-flex flex-row h-10 native:h-12 native:px-3 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium web:transition-colors web:hover:bg-accent active:bg-accent web:hover:text-accent-foreground web:focus:bg-accent web:focus:text-accent-foreground web:focus:outline-none web:disabled:pointer-events-none disabled:opacity-50 web:data-[active]:bg-accent/50 web:data-[state=open]:bg-accent/50',
+    'web:group web:inline-flex flex-row h-10 native:h-12 native:px-3 w-max items-center justify-center rounded-md bg-main px-4 py-2 text-sm font-medium web:transition-colors web:focus:outline-none web:disabled:pointer-events-none disabled:opacity-50',
 );
 
 const NavigationMenuTrigger = React.forwardRef<
@@ -81,7 +81,7 @@ const NavigationMenuTrigger = React.forwardRef<
             className={cn(
                 navigationMenuTriggerStyle(),
                 'web:group gap-1.5',
-                value === itemValue && 'bg-accent',
+                value === itemValue && 'bg-main',
                 className,
             )}
             {...props}
@@ -91,7 +91,7 @@ const NavigationMenuTrigger = React.forwardRef<
                 <ChevronDown
                     size={12}
                     className={cn(
-                        'relative text-foreground h-3 w-3 web:transition web:duration-200',
+                        'relative text-mtext h-3 w-3 web:transition web:duration-200',
                     )}
                     aria-hidden={true}
                 />
@@ -114,7 +114,7 @@ const NavigationMenuContent = React.forwardRef<
             <NavigationMenuPrimitive.Content
                 ref={ref}
                 className={cn(
-                    'w-full native:border native:border-border native:rounded-lg native:shadow-lg native:bg-popover native:text-popover-foreground native:overflow-hidden',
+                    'w-full native:border-2 native:border-border native:rounded-base native:bg-main native:text-mtext native:overflow-hidden',
                     value === itemValue
                         ? 'web:animate-in web:fade-in web:slide-in-from-right-20'
                         : 'web:animate-out web:fade-out web:slide-out-to-left-20',
@@ -144,7 +144,7 @@ const NavigationMenuViewport = React.forwardRef<
         <View className={cn('absolute left-0 top-full flex justify-center')}>
             <View
                 className={cn(
-                    'web:origin-top-center relative mt-1.5 web:h-[var(--radix-navigation-menu-viewport-height)] w-full overflow-hidden rounded-md border border-border bg-popover text-popover-foreground shadow-lg web:animate-in web:zoom-in-90',
+                    'web:origin-top-center relative mt-1.5 web:h-[var(--radix-navigation-menu-viewport-height)] w-full overflow-hidden rounded-base border-2 border-border bg-main text-mtext web:animate-in web:zoom-in-90',
                     className,
                 )}
                 ref={ref}
@@ -177,7 +177,7 @@ const NavigationMenuIndicator = React.forwardRef<
             )}
             {...props}
         >
-            <View className="relative top-[60%] h-2 w-2 rotate-45 rounded-tl-sm bg-border shadow-md shadow-foreground/5" />
+            <View className="relative top-[60%] h-2 w-2 rotate-45 rounded-tl-sm bg-white" />
         </NavigationMenuPrimitive.Indicator>
     );
 });

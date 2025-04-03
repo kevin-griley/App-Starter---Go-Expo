@@ -20,7 +20,7 @@ const AlertDialogOverlayWeb = React.forwardRef<
     return (
         <AlertDialogPrimitive.Overlay
             className={cn(
-                'z-50 bg-black/80 flex justify-center items-center p-2 absolute top-0 right-0 bottom-0 left-0',
+                'z-50 bg-overlay flex justify-center items-center p-2 absolute top-0 right-0 bottom-0 left-0',
                 open
                     ? 'web:animate-in web:fade-in-0'
                     : 'web:animate-out web:fade-out-0',
@@ -42,7 +42,7 @@ const AlertDialogOverlayNative = React.forwardRef<
         <AlertDialogPrimitive.Overlay
             style={StyleSheet.absoluteFill}
             className={cn(
-                'z-50 bg-black/80 flex justify-center items-center p-2',
+                'z-50 bg-overlay flex justify-center items-center p-2',
                 className,
             )}
             {...props}
@@ -78,7 +78,7 @@ const AlertDialogContent = React.forwardRef<
                 <AlertDialogPrimitive.Content
                     ref={ref}
                     className={cn(
-                        'z-50 max-w-lg gap-4 border border-border bg-background p-6 shadow-lg shadow-foreground/10 web:duration-200 rounded-lg',
+                        'z-50 max-w-lg gap-4 rounded-base border-2 border-border bg-bg p-6 shadow-shadow web:duration-200',
                         open
                             ? 'web:animate-in web:fade-in-0 web:zoom-in-95'
                             : 'web:animate-out web:fade-out-0 web:zoom-out-95',
@@ -115,7 +115,7 @@ const AlertDialogTitle = React.forwardRef<
     <AlertDialogPrimitive.Title
         ref={ref}
         className={cn(
-            'text-lg native:text-xl text-foreground font-semibold',
+            'text-lg native:text-xl text-text font-semibold',
             className,
         )}
         {...props}
@@ -129,10 +129,7 @@ const AlertDialogDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
     <AlertDialogPrimitive.Description
         ref={ref}
-        className={cn(
-            'text-sm native:text-base text-muted-foreground',
-            className,
-        )}
+        className={cn('text-sm native:text-base text-text', className)}
         {...props}
     />
 ));
@@ -158,11 +155,11 @@ const AlertDialogCancel = React.forwardRef<
     AlertDialogPrimitive.CancelProps
 >(({ className, ...props }, ref) => (
     <TextClassContext.Provider
-        value={buttonTextVariants({ className, variant: 'outline' })}
+        value={buttonTextVariants({ className, variant: 'neutral' })}
     >
         <AlertDialogPrimitive.Cancel
             ref={ref}
-            className={cn(buttonVariants({ variant: 'outline', className }))}
+            className={cn(buttonVariants({ variant: 'neutral', className }))}
             {...props}
         />
     </TextClassContext.Provider>

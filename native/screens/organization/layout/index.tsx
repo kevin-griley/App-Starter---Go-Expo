@@ -7,7 +7,7 @@ interface OrgLayoutProps {
 
 export const OrgLayout = (props: OrgLayoutProps) => {
     return (
-        <View className="flex-1 justify-center items-center p-6 bg-secondary/30">
+        <View className="flex-1 justify-center items-center p-6 bg-bg border-2 border-border">
             <ScrollView
                 className="w-full h-full"
                 contentContainerStyle={{ flexGrow: 1 }}

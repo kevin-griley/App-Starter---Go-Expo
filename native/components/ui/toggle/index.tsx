@@ -12,7 +12,7 @@ const toggleVariants = cva(
             variant: {
                 default: 'bg-transparent',
                 outline:
-                    'border border-input bg-transparent web:hover:bg-accent active:bg-accent active:bg-accent',
+                    'border border-input bg-transparent web:hover:bg-bw active:bg-bw active:bg-bw',
             },
             size: {
                 default: 'h-10 px-3 native:h-12 native:px-[12]',
@@ -28,13 +28,12 @@ const toggleVariants = cva(
 );
 
 const toggleTextVariants = cva(
-    'text-sm native:text-base text-foreground font-medium',
+    'text-sm native:text-base text-text font-medium',
     {
         variants: {
             variant: {
                 default: '',
-                outline:
-                    'web:group-hover:text-accent-foreground web:group-active:text-accent-foreground',
+                outline: 'web:group-hover:text-text web:group-active:text-text',
             },
             size: {
                 default: '',
@@ -56,9 +55,7 @@ const Toggle = React.forwardRef<
     <TextClassContext.Provider
         value={cn(
             toggleTextVariants({ variant, size }),
-            props.pressed
-                ? 'text-accent-foreground'
-                : 'web:group-hover:text-muted-foreground',
+            props.pressed ? 'text-text' : 'web:group-hover:text-text',
             className,
         )}
     >
@@ -67,7 +64,7 @@ const Toggle = React.forwardRef<
             className={cn(
                 toggleVariants({ variant, size }),
                 props.disabled && 'web:pointer-events-none opacity-50',
-                props.pressed && 'bg-accent',
+                props.pressed && 'bg-bw',
                 className,
             )}
             {...props}

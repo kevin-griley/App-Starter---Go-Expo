@@ -1,9 +1,9 @@
-import { Pressable, View } from 'react-native';
 import { setAndroidNavigationBar } from '@/lib/android-navigation-bar';
 import { MoonStar } from '@/lib/icons/MoonStar';
 import { Sun } from '@/lib/icons/Sun';
 import { useColorScheme } from '@/lib/useColorScheme';
 import { cn } from '@/lib/utils';
+import { Pressable, View } from 'react-native';
 
 export function ThemeToggle() {
     const { isDarkColorScheme, setColorScheme } = useColorScheme();
@@ -17,7 +17,7 @@ export function ThemeToggle() {
     return (
         <Pressable
             onPress={toggleColorScheme}
-            className="web:ring-offset-background web:transition-colors web:focus-visible:outline-none web:focus-visible:ring-2 web:focus-visible:ring-ring web:focus-visible:ring-offset-2"
+            className="web:ring-offset-white web:transition-colors web:focus-visible:outline-none web:focus-visible:ring-2 web:focus-visible:ring-black web:focus-visible:ring-offset-2"
         >
             {({ pressed }) => (
                 <View
@@ -28,13 +28,13 @@ export function ThemeToggle() {
                 >
                     {isDarkColorScheme ? (
                         <MoonStar
-                            className="text-foreground"
+                            className="text-text"
                             size={23}
                             strokeWidth={1.25}
                         />
                     ) : (
                         <Sun
-                            className="text-foreground"
+                            className="text-text"
                             size={24}
                             strokeWidth={1.25}
                         />

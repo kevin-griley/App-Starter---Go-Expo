@@ -59,7 +59,7 @@ export const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (
             </DrawerContentScrollView>
 
             <View
-                className="border-t border-border"
+                className="border-t-2 border-border bg-bg"
                 style={{ paddingBottom: bottom + 20 }}
             >
                 <DrawerItem

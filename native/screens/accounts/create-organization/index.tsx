@@ -94,7 +94,7 @@ const CreateOrganizationWithoutLayout = () => {
                     }}
                 >
                     <HStack space="sm">
-                        <ArrowLeft className="text-primary" />
+                        <ArrowLeft className="text-text" />
                         <Text>Back</Text>
                     </HStack>
                 </Pressable>

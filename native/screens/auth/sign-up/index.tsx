@@ -170,7 +170,7 @@ const SignUpWithLeftBackground = () => {
                         <Text>Already have an account?</Text>
 
                         <Link href="/sign-in" asChild>
-                            <Text className="underline font-medium text-primary group-hover/link:text-primary  group-hover/pressed:text-primary">
+                            <Text className="underline font-medium text-text group-hover/link:text-text  group-hover/pressed:text-text">
                                 Login
                             </Text>
                         </Link>

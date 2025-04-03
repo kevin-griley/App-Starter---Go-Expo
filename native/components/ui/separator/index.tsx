@@ -1,6 +1,6 @@
+import { cn } from '@/lib/utils';
 import * as SeparatorPrimitive from '@rn-primitives/separator';
 import * as React from 'react';
-import { cn } from '@/lib/utils';
 
 const Separator = React.forwardRef<
     SeparatorPrimitive.RootRef,
@@ -16,9 +16,7 @@ const Separator = React.forwardRef<
             orientation={orientation}
             className={cn(
                 'shrink-0 bg-border',
-                orientation === 'horizontal'
-                    ? 'h-[1px] w-full'
-                    : 'h-full w-[1px]',
+                orientation === 'horizontal' ? 'h-0.5 w-full' : 'h-full w-0.5',
                 className,
             )}
             {...props}

@@ -5,19 +5,21 @@ import * as React from 'react';
 import { Pressable } from 'react-native';
 
 const buttonVariants = cva(
-    'group flex items-center justify-center rounded-md web:ring-offset-background web:transition-colors web:focus-visible:outline-none web:focus-visible:ring-2 web:focus-visible:ring-ring web:focus-visible:ring-offset-2',
+    'group flex items-center justify-center rounded-base web:ring-offset-white web:transition-all web:focus-visible:outline-none web:focus-visible:ring-2 web:focus-visible:ring-black web:focus-visible:ring-offset-2',
     {
         variants: {
             variant: {
-                default: 'bg-primary web:hover:opacity-90 active:opacity-90',
-                destructive:
-                    'bg-destructive web:hover:opacity-90 active:opacity-90',
-                outline:
-                    'border border-input bg-background web:hover:bg-accent web:hover:text-accent-foreground active:bg-accent',
-                secondary:
-                    'bg-secondary web:hover:opacity-80 active:opacity-80',
-                ghost: 'web:hover:bg-accent web:hover:text-accent-foreground active:bg-accent',
-                link: 'web:underline-offset-4 web:hover:underline web:focus:underline ',
+                default:
+                    'bg-main border-2 border-border shadow-shadow web:hover:translate-y-boxShadowY web:hover:shadow-none',
+                noShadow: 'bg-main border-2 border-border',
+                neutral:
+                    'bg-bw border-2 border-border shadow-shadow web:hover:translate-y-boxShadowY web:hover:shadow-none',
+                reverse:
+                    'bg-main border-2 border-border web:hover:translate-x-reverseBoxShadowX web:hover:translate-y-reverseBoxShadowY web:hover:shadow-shadow',
+                warn: 'bg-warn border-2 border-border shadow-shadow web:hover:translate-y-boxShadowY web:hover:shadow-none',
+                success:
+                    'bg-success border-2 border-border shadow-shadow web:hover:translate-y-boxShadowY web:hover:shadow-none',
+                error: 'bg-error border-2 border-border shadow-shadow web:hover:translate-y-boxShadowY web:hover:shadow-none',
             },
             size: {
                 default: 'h-10 px-4 py-2 native:h-12 native:px-5 native:py-3',
@@ -34,17 +36,17 @@ const buttonVariants = cva(
 );
 
 const buttonTextVariants = cva(
-    'web:whitespace-nowrap text-sm native:text-base font-medium text-foreground web:transition-colors',
+    'web:whitespace-nowrap text-sm native:text-base font-medium web:transition-colors',
     {
         variants: {
             variant: {
-                default: 'text-primary-foreground',
-                destructive: 'text-destructive-foreground',
-                outline: 'group-active:text-accent-foreground',
-                secondary:
-                    'text-secondary-foreground group-active:text-secondary-foreground',
-                ghost: 'group-active:text-accent-foreground',
-                link: 'text-primary group-active:underline',
+                default: 'text-mtext',
+                noShadow: 'text-mtext',
+                neutral: 'text-text',
+                reverse: 'text-mtext',
+                warn: 'text-mtext',
+                success: 'text-mtext',
+                error: 'text-mtext',
             },
             size: {
                 default: '',
@@ -69,10 +71,11 @@ const Button = React.forwardRef<
 >(({ className, variant, size, ...props }, ref) => {
     return (
         <TextClassContext.Provider
-            value={cn(
-                props.disabled && 'web:pointer-events-none',
-                buttonTextVariants({ variant, size }),
-            )}
+            value={buttonTextVariants({
+                variant,
+                size,
+                className: 'web:pointer-events-none',
+            })}
         >
             <Pressable
                 className={cn(

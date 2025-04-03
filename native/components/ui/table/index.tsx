@@ -9,7 +9,10 @@ const Table = React.forwardRef<
 >(({ className, ...props }, ref) => (
     <TablePrimitive.Root
         ref={ref}
-        className={cn('w-full caption-bottom text-sm', className)}
+        className={cn(
+            'w-full caption-bottom text-sm border-border border-2',
+            className,
+        )}
         {...props}
     />
 ));
@@ -21,7 +24,7 @@ const TableHeader = React.forwardRef<
 >(({ className, ...props }, ref) => (
     <TablePrimitive.Header
         ref={ref}
-        className={cn('border-border [&_tr]:border-b', className)}
+        className={cn('[&_tr]:border-b', className)}
         {...props}
     />
 ));
@@ -33,10 +36,7 @@ const TableBody = React.forwardRef<
 >(({ className, style, ...props }, ref) => (
     <TablePrimitive.Body
         ref={ref}
-        className={cn(
-            'flex-1 border-border [&_tr:last-child]:border-0',
-            className,
-        )}
+        className={cn('flex-1 [&_tr:last-child]:border-0', className)}
         style={[{ minHeight: 2 }, style]}
         {...props}
     />
@@ -50,7 +50,7 @@ const TableFooter = React.forwardRef<
     <TablePrimitive.Footer
         ref={ref}
         className={cn(
-            'bg-muted/50 font-medium [&>tr]:last:border-b-0',
+            'border-t border-t-border bg-bw [&>tr]:last:border-b-0',
             className,
         )}
         {...props}
@@ -65,7 +65,7 @@ const TableRow = React.forwardRef<
     <TablePrimitive.Row
         ref={ref}
         className={cn(
-            'flex-row border-border border-b web:transition-colors web:hover:bg-muted/50 web:data-[state=selected]:bg-muted',
+            'flex-row border-border border-b bg-bw web:transition-colors web:hover:bg-main/50 web:data-[state=selected]:bg-main web:data-[state=selected]:text-mtext',
             className,
         )}
         {...props}
@@ -77,7 +77,7 @@ const TableHead = React.forwardRef<
     TablePrimitive.HeadRef,
     TablePrimitive.HeadProps
 >(({ className, ...props }, ref) => (
-    <TextClassContext.Provider value="text-muted-foreground">
+    <TextClassContext.Provider value="text-text">
         <TablePrimitive.Head
             ref={ref}
             className={cn(

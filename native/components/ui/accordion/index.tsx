@@ -48,7 +48,10 @@ const AccordionItem = React.forwardRef<
         >
             <AccordionPrimitive.Item
                 ref={ref}
-                className={cn('border-b border-border', className)}
+                className={cn(
+                    'rounded-base overflow-x-hidden border-2 border-b border-border shadow-shadow',
+                    className,
+                )}
                 value={value}
                 {...props}
             />
@@ -81,12 +84,12 @@ const AccordionTrigger = React.forwardRef<
     }));
 
     return (
-        <TextClassContext.Provider value="native:text-lg font-medium web:group-hover:underline">
+        <TextClassContext.Provider value="native:text-lg font-medium text-mtext font-heading web:group-hover:underline">
             <AccordionPrimitive.Header className="flex">
                 <AccordionPrimitive.Trigger ref={ref} {...props} asChild>
                     <Trigger
                         className={cn(
-                            'flex flex-row web:flex-1 items-center justify-between py-4 web:transition-all group web:focus-visible:outline-none web:focus-visible:ring-1 web:focus-visible:ring-muted-foreground',
+                            'flex flex-row web:flex-1 items-center justify-between border-border bg-main p-4 web:transition-all group web:focus-visible:rounded-b-none web:focus-visible:border-b-2',
                             className,
                         )}
                     >
@@ -94,7 +97,7 @@ const AccordionTrigger = React.forwardRef<
                         <Animated.View style={chevronStyle}>
                             <ChevronDown
                                 size={18}
-                                className={'text-foreground shrink-0'}
+                                className={'text-mtext shrink-0'}
                             />
                         </Animated.View>
                     </Trigger>
@@ -111,10 +114,10 @@ const AccordionContent = React.forwardRef<
 >(({ className, children, ...props }, ref) => {
     const { isExpanded } = AccordionPrimitive.useItemContext();
     return (
-        <TextClassContext.Provider value="native:text-lg">
+        <TextClassContext.Provider value="native:text-lg font-base">
             <AccordionPrimitive.Content
                 className={cn(
-                    'overflow-hidden text-sm web:transition-all',
+                    'overflow-hidden rounded-b-base bg-bw text-sm web:transition-all',
                     isExpanded
                         ? 'web:animate-accordion-down'
                         : 'web:animate-accordion-up',
@@ -122,7 +125,7 @@ const AccordionContent = React.forwardRef<
                 ref={ref}
                 {...props}
             >
-                <InnerContent className={cn('pb-4', className)}>
+                <InnerContent className={cn('p-4', className)}>
                     {children}
                 </InnerContent>
             </AccordionPrimitive.Content>
@@ -138,13 +141,13 @@ function InnerContent({
     className?: string;
 }) {
     if (Platform.OS === 'web') {
-        return <View className={cn('pb-4', className)}>{children}</View>;
+        return <View className={cn('p-4', className)}>{children}</View>;
     }
     return (
         <Animated.View
             entering={FadeIn}
             exiting={FadeOutUp.duration(200)}
-            className={cn('pb-4', className)}
+            className={cn('p-4', className)}
         >
             {children}
         </Animated.View>

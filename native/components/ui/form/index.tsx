@@ -104,7 +104,7 @@ const FormLabel = React.forwardRef<
             ref={ref}
             className={cn(
                 'pb-1 native:pb-2 px-px',
-                error && 'text-destructive',
+                error && 'text-error',
                 className,
             )}
             nativeID={formItemNativeID}
@@ -124,7 +124,7 @@ const FormDescription = React.forwardRef<
         <Text
             ref={ref}
             nativeID={formDescriptionNativeID}
-            className={cn('text-sm text-muted-foreground pt-1', className)}
+            className={cn('text-sm text-text pt-1', className)}
             {...props}
         />
     );
@@ -148,7 +148,7 @@ const FormMessage = React.forwardRef<
             exiting={FadeOut.duration(275)}
             ref={ref}
             nativeID={formMessageNativeID}
-            className={cn('text-sm font-medium text-destructive', className)}
+            className={cn('text-sm font-medium text-error', className)}
             {...props}
         >
             {body}
@@ -313,12 +313,6 @@ const FormCheckbox = React.forwardRef<
         onChange?.(!value);
     }
 
-    React.useEffect(() => {
-        if (value === undefined) {
-            onChange?.(false);
-        }
-    }, [value]);
-
     return (
         <FormItem className="px-1">
             <View className="flex-row gap-3 items-center">
@@ -397,24 +391,6 @@ const FormRadioGroup = React.forwardRef<
 
 FormRadioGroup.displayName = 'FormRadioGroup';
 
-/**
- * @prop {children} 
- * @example
- *  <SelectTrigger className='w-[250px]'>
-      <SelectValue
-        className='text-foreground text-sm native:text-lg'
-        placeholder='Select a fruit'
-      />
-    </SelectTrigger>
-    <SelectContent insets={contentInsets} className='w-[250px]'>
-      <SelectGroup>
-        <SelectLabel>Fruits</SelectLabel>
-        <SelectItem label='Apple' value='apple'>
-          Apple
-        </SelectItem>
-      </SelectGroup>
-    </SelectContent>
- */
 const FormSelect = React.forwardRef<
     React.ElementRef<typeof Select>,
     Omit<

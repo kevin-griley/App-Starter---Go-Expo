@@ -31,7 +31,7 @@ const DashboardWithoutLayout = () => {
         <VStack className="flex-1 " space="md">
             <VStack className="w-full">
                 <H1>Organizations</H1>
-                <Text className="mt-2 text-muted-foreground">
+                <Text className="mt-2 text-text">
                     This is a list of all the organizations you are associated
                     with.
                 </Text>

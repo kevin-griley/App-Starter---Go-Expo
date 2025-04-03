@@ -9,17 +9,17 @@ interface AuthLayoutProps {
 
 export const AuthLayout = (props: AuthLayoutProps) => {
     return (
-        <View className="flex-1 justify-center items-center bg-secondary/30">
+        <View className="flex-1 justify-center items-center bg-bg border-2 border-border">
             <ScrollView
                 className="w-full h-full"
                 contentContainerStyle={{ flexGrow: 1 }}
             >
-                <HStack className="w-full h-full bg-background-0 flex-grow justify-center">
+                <HStack className="w-full h-full flex-grow justify-center">
                     <VStack
                         className="relative hidden md:flex h-full w-full flex-1 items-center  justify-center"
                         space="md"
                     >
-                        <View className="flex-1 w-full bg-gradient-to-br from-green-900 via-slate-950 to-emerald-900 ">
+                        <View className="flex-1 w-full bg-gradient-to-br from-sky-950 via-slate-950 to-blue-950 ">
                             <View className="flex items-center justify-center h-full">
                                 {/* Logo Goes Here */}
                             </View>

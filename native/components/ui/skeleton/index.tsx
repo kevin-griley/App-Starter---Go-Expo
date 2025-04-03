@@ -1,3 +1,4 @@
+import { cn } from '@/lib/utils';
 import * as React from 'react';
 import Animated, {
     useAnimatedStyle,
@@ -6,7 +7,6 @@ import Animated, {
     withSequence,
     withTiming,
 } from 'react-native-reanimated';
-import { cn } from '@/lib/utils';
 
 const duration = 1000;
 
@@ -33,7 +33,7 @@ function Skeleton({
     return (
         <Animated.View
             style={style}
-            className={cn('rounded-md bg-secondary dark:bg-muted', className)}
+            className={cn('rounded-md bg-bw border-2 border-border', className)}
             {...props}
         />
     );

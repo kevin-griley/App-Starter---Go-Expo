@@ -4,7 +4,6 @@ import * as DialogPrimitive from '@rn-primitives/dialog';
 import * as React from 'react';
 import { Platform, StyleSheet, View, type ViewProps } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
-
 const Dialog = DialogPrimitive.Root;
 
 const DialogTrigger = DialogPrimitive.Trigger;
@@ -21,7 +20,7 @@ const DialogOverlayWeb = React.forwardRef<
     return (
         <DialogPrimitive.Overlay
             className={cn(
-                'bg-black/80 flex justify-center items-center p-2 absolute top-0 right-0 bottom-0 left-0',
+                'bg-overlay flex justify-center items-center p-2 absolute top-0 right-0 bottom-0 left-0',
                 open
                     ? 'web:animate-in web:fade-in-0'
                     : 'web:animate-out web:fade-out-0',
@@ -43,7 +42,7 @@ const DialogOverlayNative = React.forwardRef<
         <DialogPrimitive.Overlay
             style={StyleSheet.absoluteFill}
             className={cn(
-                'flex bg-black/80 justify-center items-center p-2',
+                'flex bg-overlay justify-center items-center p-2',
                 className,
             )}
             {...props}
@@ -77,7 +76,7 @@ const DialogContent = React.forwardRef<
                 <DialogPrimitive.Content
                     ref={ref}
                     className={cn(
-                        'gap-4 border border-border web:cursor-default bg-background p-6 shadow-lg web:duration-200 rounded-lg',
+                        'max-w-lg gap-4 rounded-base border-2 border-border bg-bg web:cursor-default p-6 shadow-shadow web:duration-200',
                         open
                             ? 'web:animate-in web:fade-in-0 web:zoom-in-95'
                             : 'web:animate-out web:fade-out-0 web:zoom-out-95',
@@ -88,15 +87,12 @@ const DialogContent = React.forwardRef<
                     {children}
                     <DialogPrimitive.Close
                         className={
-                            'absolute right-4 top-4 p-0.5 web:group rounded-sm opacity-70 web:ring-offset-background web:transition-opacity web:hover:opacity-100 web:focus:outline-none web:focus:ring-2 web:focus:ring-ring web:focus:ring-offset-2 web:disabled:pointer-events-none'
+                            'absolute right-4 top-4 p-0.5 web:group rounded-sm opacity-100 web:ring-offset-white web:focus:outline-none web:focus:ring-2 web:focus:ring-black web:focus:ring-offset-2 web:disabled:pointer-events-none'
                         }
                     >
                         <X
                             size={Platform.OS === 'web' ? 16 : 18}
-                            className={cn(
-                                'text-muted-foreground',
-                                open && 'text-accent-foreground',
-                            )}
+                            className={cn('text-text', open && 'text-text')}
                         />
                     </DialogPrimitive.Close>
                 </DialogPrimitive.Content>
@@ -135,7 +131,7 @@ const DialogTitle = React.forwardRef<
     <DialogPrimitive.Title
         ref={ref}
         className={cn(
-            'text-lg native:text-xl text-foreground font-semibold leading-none tracking-tight',
+            'text-lg native:text-xl text-text font-semibold leading-none tracking-tight',
             className,
         )}
         {...props}
@@ -149,10 +145,7 @@ const DialogDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
     <DialogPrimitive.Description
         ref={ref}
-        className={cn(
-            'text-sm native:text-base text-muted-foreground',
-            className,
-        )}
+        className={cn('text-sm native:text-base text-text', className)}
         {...props}
     />
 ));
