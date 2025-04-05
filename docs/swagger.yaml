@@ -256,6 +256,21 @@ paths:
       summary: Requests a password reset
       tags:
       - Auth
+  /health:
+    get:
+      consumes:
+      - application/json
+      description: Health check
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Health check
+      tags:
+      - Health
   /organization:
     post:
       consumes:

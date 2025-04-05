@@ -21,7 +21,7 @@ import (
 //	@version					1.0
 //	@BasePath					/
 //	@securityDefinitions.apikey	Bearer Authentication
-//	@tokenUrl					http://0.0.0.0:80/login
+//	@tokenUrl					https://api.fleetexpand.com/login
 //	@in							header
 //	@name						Authorization
 //	@description				A valid JWT token with Bearer prefix
@@ -32,10 +32,14 @@ func main() {
 	}
 
 	listenAddress := "0.0.0.0:80"
-	docs.SwaggerInfo.Host = listenAddress
+	docs.SwaggerInfo.Host = "api.fleetexpand.com"
 
 	mux := http.NewServeMux()
 
+	// Health check endpoint
+	mux.HandleFunc("/health", handlers.HandleApiError(handlers.HandleHealthCheck))
+
+	// Swagger UI
 	mux.HandleFunc("GET /docs/", httpSwagger.WrapHandler)
 
 	// Auth endpoints

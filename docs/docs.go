@@ -164,6 +164,29 @@ const docTemplate = `{
                 }
             }
         },
+        "/health": {
+            "get": {
+                "description": "Health check",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Health"
+                ],
+                "summary": "Health check",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/organization": {
             "post": {
                 "description": "Create a new organization",

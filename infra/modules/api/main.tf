@@ -17,13 +17,13 @@ resource "aws_iam_role" "api_instance_role" {
 
 data "aws_iam_policy_document" "api_policy" {
   statement {
-    sid     = "AllowS3ReadAccess"
-    effect  = "Allow"
+    sid    = "AllowS3ReadAccess"
+    effect = "Allow"
     actions = [
-      "s3:GetObject", 
-      "s3:ListBucket", 
-      "s3:GetObjectVersion", 
-      "s3:GetObjectAcl", 
+      "s3:GetObject",
+      "s3:ListBucket",
+      "s3:GetObjectVersion",
+      "s3:GetObjectAcl",
       "s3:HeadObject"
     ]
 
