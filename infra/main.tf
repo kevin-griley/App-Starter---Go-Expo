@@ -13,12 +13,20 @@ provider "aws" {
   region = var.aws_region
 }
 
+provider "aws" {
+  alias  = "us_east_1"
+  region = "us-east-1"
+}
+
 # Module: ACM
 module "acm" {
   source = "./modules/acm"
+  providers = {
+    aws = aws.us_east_1
+  }
 
   domain_name               = var.domain_name
-  subject_alternative_names = ["www.${var.domain_name}"]
+  subject_alternative_names = ["www.${var.domain_name}", "api.${var.domain_name}"]
   hosted_zone_id            = var.hosted_zone_id
 }
 
@@ -49,4 +57,37 @@ module "route53" {
   domain_name        = var.domain_name
   cdn_domain_name    = module.cloudfront.distribution_domain_name
   cdn_hosted_zone_id = module.cloudfront.distribution_hosted_zone_id
+}
+
+
+# REBOOT - terraform taint module.api.aws_instance.api_instance
+# Module: API
+module "api" {
+  source = "./modules/api"
+
+  instance_type     = "t2.micro"
+  ami_id            = var.api_ami_id
+  key_name          = var.key_name
+  vpc_id            = var.vpc_id
+  subnet_id         = var.subnet_id
+  user_data         = file("startup.sh")
+  http_port         = 80
+  app_name          = "golang-api"
+  api_subdomain     = "api"
+  base_domain       = var.domain_name
+  hosted_zone_id    = var.hosted_zone_id
+  api_s3_bucket_arn = "arn:aws:s3:::golang-private-api"
+}
+
+module "cloudfront_api" {
+  source = "./modules/cloudfront_api"
+
+  certificate_arn    = module.acm.certificate_arn
+  api_subdomain      = "api"
+  domain_name        = var.domain_name
+  origin_domain_name = module.api.instance_public_dns
+  hosted_zone_id     = var.hosted_zone_id
+  create_dns_record  = true
+  allowed_methods    = ["GET", "HEAD", "OPTIONS", "POST", "PUT", "PATCH", "DELETE"]
+  ssl_support_method = "sni-only"
 }

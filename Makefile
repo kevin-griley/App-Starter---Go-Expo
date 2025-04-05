@@ -1,6 +1,9 @@
 run: build
 	@./bin/api
 
+aws: 
+	@GOOS=linux GOARCH=amd64 go build -o bin/api-linux-amd64 cmd/api/main.go
+
 build: swag
 	@go build -o bin/api cmd/api/main.go
 

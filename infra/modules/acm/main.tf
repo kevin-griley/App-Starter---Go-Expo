@@ -1,12 +1,15 @@
-# (Optional) If you want to enforce us-east-1 for certificates:
-# provider "aws" {
-#   alias  = "us_east_1"
-#   region = "us-east-1"
-# }
-# Then refer to provider = aws.us_east_1 in resources below if needed.
+terraform {
+  required_version = ">= 1.0"
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 4.0"
+    }
+  }
+}
 
 resource "aws_acm_certificate" "this" {
-  # provider = aws.us_east_1  # Uncomment if you created an aliased provider
   domain_name               = var.domain_name
   validation_method         = "DNS"
   subject_alternative_names = var.subject_alternative_names
@@ -33,8 +36,7 @@ resource "aws_route53_record" "cert_records" {
 }
 
 resource "aws_acm_certificate_validation" "this" {
-  # provider = aws.us_east_1
-  certificate_arn         = aws_acm_certificate.this.arn
+  certificate_arn = aws_acm_certificate.this.arn
   validation_record_fqdns = [
     for record in aws_route53_record.cert_records : record.fqdn
   ]
