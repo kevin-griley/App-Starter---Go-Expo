@@ -61,6 +61,8 @@ module "route53" {
 
 
 # REBOOT - terraform taint module.api.aws_instance.api_instance
+# REBOOT - You must run `terraform apply` twice to fix CloudFront. 
+
 # Module: API
 module "api" {
   source = "./modules/api"
@@ -79,22 +81,6 @@ module "api" {
   api_s3_bucket_arn = "arn:aws:s3:::golang-private-api"
 }
 
-resource "null_resource" "wait_for_api" {
-  provisioner "local-exec" {
-    command = <<EOT
-    for i in {1..10}; do
-      if curl --fail -s http://${module.api.instance_public_dns}/health > /dev/null; then
-        exit 0
-      fi
-      sleep 10
-    done
-    exit 1
-EOT
-  }
-
-  depends_on = [module.api]
-}
-
 module "cloudfront_api" {
   source = "./modules/cloudfront_api"
 
@@ -107,5 +93,4 @@ module "cloudfront_api" {
   allowed_methods    = ["GET", "HEAD", "OPTIONS", "POST", "PUT", "PATCH", "DELETE"]
   ssl_support_method = "sni-only"
 
-  depends_on = [null_resource.wait_for_api]
 }
