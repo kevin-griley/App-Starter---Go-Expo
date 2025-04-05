@@ -8,7 +8,6 @@ variable "domain_name" {
   default = "fleetexpand.com"
 }
 
-# If you already know your hosted_zone_id, you can hard-code or set via CLI:
 variable "hosted_zone_id" {
   type    = string
   default = "Z077407534K6DRHPPX64Y"
