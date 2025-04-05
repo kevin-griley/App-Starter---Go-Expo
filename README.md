@@ -33,21 +33,20 @@ make native
 
 ## Documentation
 
-- **API Docs:** Once the backend server is running, the API documentation is available at the `/docs` endpoint (e.g., [http://localhost:8080/docs](http://localhost:8080/docs)).
+- **API Docs:** Once the backend server is running, the API documentation is available at the `/docs` endpoint (e.g., [http://0.0.0.0:8080/docs](http://0.0.0.0:8080/docs)).
 
 - **Frontend Documentation:** Details for the React Native client can be found within the `/native` directory.
 
 ## Project Structure
 
 ```
-api/
-├── cmd
-├── data
-├── db
-├── docs
-├── handlers
-├── native
-├── types
+GO-EXPO/
+├── /cmd
+├── /docs
+├── /internal
+├── /native
+├── /types
+├── /infra
 ├── Makefile
 ├── README.md
 └── ...

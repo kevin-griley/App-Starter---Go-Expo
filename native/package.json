@@ -13,7 +13,9 @@
         "gen:convert": "swagger2openapi ../docs/swagger.yaml -o ./types/schema.yaml",
         "gen:client": "openapi-typescript ./types/schema.yaml -o ./types/schema.d.ts",
         "gen": "bun gen:convert && bun gen:client && bun lint",
-        "lint": "eslint . --fix"
+        "lint": "eslint . --fix",
+        "build:web": "npx expo export -p web",
+        "s3:upload": "aws s3 sync ./dist s3://fleetexpand.com"
     },
     "dependencies": {
         "@hookform/resolvers": "^4.1.3",
