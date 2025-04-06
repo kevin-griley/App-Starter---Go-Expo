@@ -27,7 +27,7 @@ const NavigationMenu = React.forwardRef<
         {...props}
     >
         {children}
-        {Platform.OS === 'web' && <NavigationMenuViewport />}
+        {Platform.OS === 'web' && props.value && <NavigationMenuViewport />}
     </NavigationMenuPrimitive.Root>
 ));
 NavigationMenu.displayName = NavigationMenuPrimitive.Root.displayName;

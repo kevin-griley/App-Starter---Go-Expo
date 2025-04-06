@@ -26,7 +26,7 @@ type CORSData struct {
 
 func CORSMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	allowedOrigins := map[string]bool{
-		"http://0.0.0.0:8081":   true,
+		"http://localhost:8081":   true,
 		"https://fleetexpand.com": true,
 	}
 

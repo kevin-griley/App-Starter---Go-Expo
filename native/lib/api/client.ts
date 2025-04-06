@@ -24,7 +24,7 @@ const authMiddleware: Middleware = {
 };
 
 export const fetchClient = createFetchClient<paths>({
-    baseUrl: 'https://api.fleetexpand.com',
+    baseUrl: __DEV__ ? 'http://localhost' : 'https://api.fleetexpand.com',
     headers: {
         'Content-Type': 'application/json',
     },

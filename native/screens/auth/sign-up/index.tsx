@@ -54,6 +54,12 @@ const SignUpWithLeftBackground = () => {
 
     const form = useForm<SignUpSchemaType>({
         resolver: zodResolver(signUpSchema),
+        defaultValues: {
+            email: '',
+            password: '',
+            confirmpassword: '',
+            rememberme: false,
+        },
     });
 
     const postUser = $api.useMutation('post', '/user');

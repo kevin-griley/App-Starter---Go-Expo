@@ -78,7 +78,6 @@ const LoginWithLeftBackground = () => {
                                     name="password"
                                     render={({ field }) => (
                                         <FormInput
-                                            className="flex-1"
                                             label="Password"
                                             placeholder="********"
                                             description="Use a secure password."

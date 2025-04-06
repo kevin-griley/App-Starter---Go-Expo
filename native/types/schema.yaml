@@ -102,6 +102,19 @@ paths:
       summary: Requests a password reset
       tags:
         - Auth
+  /health:
+    get:
+      description: Health check
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+      summary: Health check
+      tags:
+        - Health
   /organization:
     post:
       description: Create a new organization
