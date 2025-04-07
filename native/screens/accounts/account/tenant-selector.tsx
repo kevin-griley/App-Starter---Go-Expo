@@ -141,7 +141,7 @@ export function TenantSelector({ data, isLoading }: Props) {
             <Pressable
                 className="w-full max-w-sm"
                 onPress={() => {
-                    console.log('Pressed');
+                    console.log('Pressed create-organization');
                     router.push('/create-organization');
                 }}
             >

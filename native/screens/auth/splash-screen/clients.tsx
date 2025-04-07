@@ -3,7 +3,7 @@ import { View } from 'react-native';
 
 export function Clients() {
     return (
-        <View className="px-10">
+        <View className="px-10 max-w-7xl self-center w-full">
             <View className="flex gap-x-8">
                 <H2 className="text-white text-4xl sm:text-6xl font-medium font-serif">
                     The one platform powering every move.

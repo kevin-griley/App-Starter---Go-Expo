@@ -35,7 +35,7 @@ export function Contact() {
 
     return (
         <View
-            className="w-full max-w-6xl overflow-hidden"
+            className="overflow-hidden max-w-7xl self-center w-full"
             style={{ borderRadius: 40 }}
         >
             <View className="grid lg:grid-cols-2">
@@ -47,7 +47,7 @@ export function Contact() {
                         <Accordion
                             type="single"
                             collapsible
-                            className="space-y-4"
+                            className="space-y-4 max-w-xl self-center w-full"
                         >
                             <AccordionItem value="item-1">
                                 <AccordionTrigger>
@@ -98,7 +98,7 @@ export function Contact() {
                 </View>
 
                 <View className="bg-black p-8 lg:p-16">
-                    <View className="max-w-md mx-auto">
+                    <View className="max-w-xl self-center w-full">
                         <H2 className="text-3xl text-white mb-2">
                             DIDN'T FIND YOUR ANSWER?
                         </H2>

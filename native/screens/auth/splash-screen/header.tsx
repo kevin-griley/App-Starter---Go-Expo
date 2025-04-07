@@ -76,7 +76,7 @@ export function Header({ scrollToContact, scrollToSolutions }: HeaderProps) {
 
     return (
         <>
-            <View className="flex flex-row items-center justify-between px-6">
+            <View className="flex flex-row items-center justify-between px-6 max-w-7xl self-center w-full">
                 <View className="flex flex-row items-center gap-x-8">
                     <Link href="/" aria-label="Home" asChild>
                         <View className="flex flex-row items-center">
@@ -93,31 +93,57 @@ export function Header({ scrollToContact, scrollToSolutions }: HeaderProps) {
 
                 <View className="flex flex-row items-center gap-x-4">
                     <Link href="/sign-in" asChild>
-                        <Button className="hidden md:block">
-                            <Text>Join free</Text>
+                        <Button variant="success" className="hidden md:block">
+                            <Text>Log In</Text>
                         </Button>
                     </Link>
 
                     <DropdownMenu>
-                        <DropdownMenuTrigger asChild ref={triggerRef}>
-                            <Button
-                                variant="noShadow"
-                                className="shadow-shadow web:hover:translate-y-boxShadowY web:hover:shadow-none md:shadow-none md:web:hover:translate-y-0 md:bg-white"
-                            >
-                                <Menu className="h-5 w-5 text-mtext" />
-                            </Button>
-                        </DropdownMenuTrigger>
+                        <Button
+                            onPress={() => {
+                                triggerRef.current?.open();
+                            }}
+                            className={cn(
+                                'shadow-shadow web:hover:translate-y-boxShadowY web:hover:shadow-none md:shadow-none md:web:hover:translate-y-0',
+                            )}
+                        >
+                            <Menu className="h-5 w-5 text-mtext" />
+                        </Button>
+                        <DropdownMenuTrigger ref={triggerRef} />
                         <DropdownMenuContent
                             insets={contentInsets}
-                            className="w-64 native:w-72"
+                            className="w-64 native:w-72 web:m-2"
                         >
                             <DropdownMenuGroup>
-                                <DropdownMenuItem asChild>
+                                <DropdownMenuItem
+                                    onPress={() => {
+                                        triggerRef.current?.close();
+                                    }}
+                                    asChild
+                                >
                                     <Link href="/sign-in" asChild>
+                                        <Text>Sign In</Text>
+                                    </Link>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                    onPress={() => {
+                                        triggerRef.current?.close();
+                                    }}
+                                    asChild
+                                >
+                                    <Link href="/sign-up" asChild>
                                         <Text>Sign Up</Text>
                                     </Link>
                                 </DropdownMenuItem>
-                                <DropdownMenuItem asChild>
+
+                                <DropdownMenuSeparator />
+
+                                <DropdownMenuItem
+                                    onPress={() => {
+                                        triggerRef.current?.close();
+                                    }}
+                                    asChild
+                                >
                                     <Link
                                         href={
                                             'https://api.fleetexpand.com/docs'
@@ -127,26 +153,32 @@ export function Header({ scrollToContact, scrollToSolutions }: HeaderProps) {
                                         <Text>API Docs</Text>
                                     </Link>
                                 </DropdownMenuItem>
+
+                                <DropdownMenuItem
+                                    onPress={() => {
+                                        scrollToSolutions();
+                                        triggerRef.current?.close();
+                                    }}
+                                    closeOnPress={false}
+                                    asChild
+                                >
+                                    <Link href={'..'} asChild>
+                                        <Text>Solutions</Text>
+                                    </Link>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                    onPress={() => {
+                                        scrollToContact();
+                                        triggerRef.current?.close();
+                                    }}
+                                    closeOnPress={false}
+                                    asChild
+                                >
+                                    <Link href={'..'} asChild>
+                                        <Text>Contact Us</Text>
+                                    </Link>
+                                </DropdownMenuItem>
                             </DropdownMenuGroup>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem
-                                onPress={() => {
-                                    scrollToSolutions();
-                                    triggerRef.current?.close();
-                                }}
-                                closeOnPress={false}
-                            >
-                                <Text>Solutions</Text>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                                onPress={() => {
-                                    scrollToContact();
-                                    triggerRef.current?.close();
-                                }}
-                                closeOnPress={false}
-                            >
-                                <Text>Contact Us</Text>
-                            </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </View>

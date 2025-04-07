@@ -63,14 +63,14 @@ const SplashScreenWithLeftBackground = () => {
                 </View>
                 <View className="h-2 relative z-50" />
                 <View
-                    className="relative flex flex-auto bg-white pt-14"
+                    className="relative flex flex-auto bg-white pt-14 "
                     style={{
                         borderTopLeftRadius: 40,
                         borderTopRightRadius: 40,
                     }}
                 >
-                    <View className="w-full flex-auto">
-                        <View className="mt-24 sm:mt-32 md:mt-56">
+                    <View className="w-full flex-auto ">
+                        <View className="mt-24 sm:mt-32 md:mt-56 max-w-7xl self-center w-full">
                             <View className="max-w-3xl px-10">
                                 <H1 className="pt-1 text-5xl [text-wrap:balance] sm:text-7xl text-mtext">
                                     Track smarter. Expand further.
@@ -81,8 +81,8 @@ const SplashScreenWithLeftBackground = () => {
                                     one again.
                                 </P>
                                 <View className="mt-8 flex flex-row gap-x-4 justify-center sm:justify-start">
-                                    <Link href="/sign-in" asChild>
-                                        <Button>
+                                    <Link href="/sign-up" asChild>
+                                        <Button variant="warn">
                                             <Text> Join free </Text>
                                         </Button>
                                     </Link>
@@ -102,8 +102,12 @@ const SplashScreenWithLeftBackground = () => {
                                 <Image
                                     alt="UnitLoadDevice"
                                     // eslint-disable-next-line @typescript-eslint/no-require-imports
-                                    source={require('@/assets/images/unit-load-device.jpg')}
-                                    className="h-[458px] w-[612px] object-cover"
+                                    source={require('@/assets/images/unit-load-device.jpeg')}
+                                    style={{
+                                        height: 458,
+                                        width: 612,
+                                        objectFit: 'cover',
+                                    }}
                                 />
                             </View>
                         </View>
@@ -118,35 +122,37 @@ const SplashScreenWithLeftBackground = () => {
                             <Clients />
 
                             <View
-                                className="mt-24 bg-white py-20 sm:mt-32 sm:py-32 lg:mt-56"
+                                className="mt-24 bg-white py-20 sm:mt-32 sm:py-32 lg:mt-56 "
                                 style={{
                                     borderTopLeftRadius: 40,
                                     borderTopRightRadius: 40,
                                 }}
                             >
-                                <H2 className="mb-10 text-mtext font-semibold px-10">
-                                    Expanding Solutions for every move.
-                                </H2>
+                                <View className="max-w-7xl self-center w-full">
+                                    <H2 className="mb-10 text-mtext font-semibold px-10">
+                                        Expanding Solutions for every move.
+                                    </H2>
 
-                                <View
-                                    ref={solutionsRef}
-                                    className="flex flex-row flex-wrap px-10 gap-10"
-                                >
-                                    {solutions.map((component, idx) => (
-                                        <Card
-                                            key={`${component.title}-${idx}`}
-                                            className="w-full md:w-[calc(50%-1.75rem)]"
-                                        >
-                                            <CardHeader>
-                                                <CardTitle>
-                                                    {component.title}
-                                                </CardTitle>
-                                                <CardDescription>
-                                                    {component.description}
-                                                </CardDescription>
-                                            </CardHeader>
-                                        </Card>
-                                    ))}
+                                    <View
+                                        ref={solutionsRef}
+                                        className="flex flex-row flex-wrap px-10 gap-10"
+                                    >
+                                        {solutions.map((component, idx) => (
+                                            <Card
+                                                key={`${component.title}-${idx}`}
+                                                className="w-full md:w-[calc(50%-1.75rem)]"
+                                            >
+                                                <CardHeader>
+                                                    <CardTitle>
+                                                        {component.title}
+                                                    </CardTitle>
+                                                    <CardDescription>
+                                                        {component.description}
+                                                    </CardDescription>
+                                                </CardHeader>
+                                            </Card>
+                                        ))}
+                                    </View>
                                 </View>
                             </View>
 
