@@ -30,6 +30,15 @@ export default function AppRootLayout() {
             <Drawer
                 drawerContent={(props) => <CustomDrawerContent {...props} />}
                 screenOptions={{
+                    sceneStyle: {
+                        borderRadius: 0,
+                    },
+                    drawerStyle: {
+                        borderRightColor: 'var(--border)',
+                        borderRightWidth: 2,
+                        borderTopRightRadius: 0,
+                        borderBottomRightRadius: 0,
+                    },
                     headerTitle(props) {
                         return (
                             <H4>
