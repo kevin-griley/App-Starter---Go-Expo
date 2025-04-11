@@ -97,7 +97,7 @@ func main() {
 		middleware.StoreMiddleware(store),
 	)
 
-	slog.Info("Application", "Swagger Docs Url", "http://"+listenAddress+"/docs")
+	slog.Info("Application", "Swagger Docs Url", "http://localhost/docs")
 
 	http.ListenAndServe(listenAddress, finalHandler)
 }

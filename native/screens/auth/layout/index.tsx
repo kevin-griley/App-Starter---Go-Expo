@@ -19,7 +19,7 @@ export const AuthLayout = (props: AuthLayoutProps) => {
                         className="relative hidden md:flex h-full w-full flex-1 items-center  justify-center"
                         space="md"
                     >
-                        <View className="flex-1 w-full bg-gradient-to-br from-sky-950 via-slate-950 to-blue-950 ">
+                        <View className="flex-1 w-full bg-gradient-to-br from-emerald-950 via-blue-950 to-indigo-950 ">
                             <View className="flex items-center justify-center h-full">
                                 {/* Logo Goes Here */}
                             </View>

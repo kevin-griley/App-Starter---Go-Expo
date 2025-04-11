@@ -93,19 +93,21 @@ export function Header({ scrollToContact, scrollToSolutions }: HeaderProps) {
 
                 <View className="flex flex-row items-center gap-x-4">
                     <Link href="/sign-in" asChild>
-                        <Button variant="success" className="hidden md:block">
+                        <Button
+                            variant="noShadow"
+                            className="hidden md:block bg-purple-400"
+                        >
                             <Text>Log In</Text>
                         </Button>
                     </Link>
 
                     <DropdownMenu>
                         <Button
+                            variant="noShadow"
+                            className="bg-success"
                             onPress={() => {
                                 triggerRef.current?.open();
                             }}
-                            className={cn(
-                                'shadow-shadow web:hover:translate-y-boxShadowY web:hover:shadow-none md:shadow-none md:web:hover:translate-y-0',
-                            )}
                         >
                             <Menu className="h-5 w-5 text-mtext" />
                         </Button>

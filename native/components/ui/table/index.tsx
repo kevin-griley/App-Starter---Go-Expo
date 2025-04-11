@@ -9,10 +9,7 @@ const Table = React.forwardRef<
 >(({ className, ...props }, ref) => (
     <TablePrimitive.Root
         ref={ref}
-        className={cn(
-            'w-full caption-bottom text-sm border-border border-2',
-            className,
-        )}
+        className={cn('w-full caption-bottom text-sm', className)}
         {...props}
     />
 ));

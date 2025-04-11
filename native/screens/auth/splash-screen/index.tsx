@@ -82,7 +82,10 @@ const SplashScreenWithLeftBackground = () => {
                                 </P>
                                 <View className="mt-8 flex flex-row gap-x-4 justify-center sm:justify-start">
                                     <Link href="/sign-up" asChild>
-                                        <Button variant="warn">
+                                        <Button
+                                            variant="noShadow"
+                                            className="bg-warn"
+                                        >
                                             <Text> Join free </Text>
                                         </Button>
                                     </Link>
