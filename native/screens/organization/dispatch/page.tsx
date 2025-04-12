@@ -6,27 +6,26 @@ import { TableView } from './table-view';
 
 import { Text } from '@/components/ui/text';
 import { H2 } from '@/components/ui/typography';
+import Drawer from 'expo-router/drawer';
 import { View } from 'react-native';
 import { OrgLayout } from '../layout';
-import { DashboardHeader } from './dashboard-header';
+import { DispatchHeader } from './header-right';
 
 function DispatchDashboard() {
     const [activeView, setActiveView] = useState('dual');
 
     return (
-        <View className="flex min-h-screen flex-col">
-            <DashboardHeader />
-
-            <View className="flex-1 space-y-4 p-4 md:p-8 pt-6">
-                <View className="flex flex-row items-center justify-between">
-                    <H2 className="text-3xl font-bold tracking-tight">
+        <View className="flex flex-col">
+            <View className="flex-1 space-y-4">
+                <View className="flex flex-row items-center justify-center md:justify-between">
+                    <H2 className="text-xl font-bold tracking-tight hidden md:block">
                         Dispatch Management
                     </H2>
                     <View className="flex items-center gap-2">
                         <Tabs
                             value={activeView}
                             onValueChange={setActiveView}
-                            className="w-full max-w-[400px] mx-auto flex-col gap-1.5"
+                            className="w-full self-center flex-col gap-1.5"
                         >
                             <TabsList className="w-full flex flex-row bg-bw">
                                 <TabsTrigger value="dual">
@@ -57,8 +56,16 @@ function DispatchDashboard() {
 
 export default function DispatchPage() {
     return (
-        <OrgLayout>
-            <DispatchDashboard />
-        </OrgLayout>
+        <>
+            <Drawer.Screen
+                options={{
+                    headerRight: () => <DispatchHeader />,
+                }}
+            />
+
+            <OrgLayout>
+                <DispatchDashboard />
+            </OrgLayout>
+        </>
     );
 }

@@ -95,7 +95,7 @@ export function Header({ scrollToContact, scrollToSolutions }: HeaderProps) {
                     <Link href="/sign-in" asChild>
                         <Button
                             variant="noShadow"
-                            className="hidden md:block bg-purple-400"
+                            className="hidden md:block bg-accent"
                         >
                             <Text>Log In</Text>
                         </Button>

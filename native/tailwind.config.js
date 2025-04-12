@@ -16,6 +16,8 @@ module.exports = {
                 warn: 'var(--warn)',
                 success: 'var(--success)',
                 error: 'var(--error)',
+                accent: 'var(--accent)',
+                info: 'var(--info)',
                 overlay: 'var(--overlay)',
                 bg: 'var(--bg)',
                 bw: 'var(--bw)',
@@ -35,10 +37,10 @@ module.exports = {
                 shadow: 'var(--shadow)',
             },
             translate: {
-                boxShadowX: '4px',
-                boxShadowY: '4px',
-                reverseBoxShadowX: '-4px',
-                reverseBoxShadowY: '-4px',
+                boxShadowX: '2px',
+                boxShadowY: '2px',
+                reverseBoxShadowX: '-2px',
+                reverseBoxShadowY: '-2px',
             },
             fontFamily: {
                 serif: ['RedHatText', 'serif'],

@@ -4,6 +4,8 @@
 
 @layer base {
     :root {
+        --info: #fd9745;
+        --accent: #a388ee;
         --main: #88aaee;
         --warn: #ffdc58;
         --success: #a3e636;
@@ -20,10 +22,10 @@
         --ring-offset: #fff;
 
         --border-radius: 5px;
-        --box-shadow-x: 3px;
-        --box-shadow-y: 3px;
-        --reverse-box-shadow-x: -3px;
-        --reverse-box-shadow-y: -3px;
+        --box-shadow-x: 1px;
+        --box-shadow-y: 1px;
+        --reverse-box-shadow-x: -1px;
+        --reverse-box-shadow-y: -1px;
         --base-font-weight: 500;
         --heading-font-weight: 700;
 

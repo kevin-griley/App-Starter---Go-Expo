@@ -7,7 +7,9 @@ import type { LucideIcon } from 'lucide-react-native';
 
 import { BriefcaseBusiness } from '@/lib/icons/BriefcaseBusiness';
 import { Building } from '@/lib/icons/Building';
+import { MoonStar } from '@/lib/icons/MoonStar';
 import { Network } from '@/lib/icons/Network';
+import { Sun } from '@/lib/icons/Sun';
 import { Truck } from '@/lib/icons/Truck';
 import { LogOut } from 'lucide-react-native';
 
@@ -18,6 +20,9 @@ import { useOrganization } from '../OrganizationProvider';
 import { useSession } from '../SessionProvider';
 import { Avatar, AvatarFallback } from '../ui/avatar';
 import { Text } from '../ui/text';
+
+import { setAndroidNavigationBar } from '@/lib/android-navigation-bar';
+import { useColorScheme } from '@/lib/useColorScheme';
 
 const SIDEBAR_ITEMS: {
     href: Href;
@@ -45,17 +50,17 @@ export const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (
     const pathname = usePathname();
     const { bottom } = useSafeAreaInsets();
 
+    const { isDarkColorScheme, setColorScheme } = useColorScheme();
+
+    function toggleColorScheme() {
+        const newTheme = isDarkColorScheme ? 'light' : 'dark';
+        setColorScheme(newTheme);
+        setAndroidNavigationBar(newTheme);
+    }
+
     return (
         <View style={{ flex: 1 }}>
-            <DrawerContentScrollView
-                {...props}
-                contentContainerStyle={{
-                    paddingTop: 0,
-                    paddingBottom: 0,
-                    paddingLeft: 0,
-                    paddingRight: 0,
-                }}
-            >
+            <DrawerContentScrollView {...props}>
                 <View className="p-4 flex flex-row items-center gap-x-4">
                     <Avatar alt="User Avatar">
                         <AvatarFallback>
@@ -120,6 +125,21 @@ export const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (
                         router.push('/_sitemap');
                     }}
                 />
+
+                <DrawerItem
+                    style={{ borderRadius: 8 }}
+                    icon={({ color, size }) =>
+                        isDarkColorScheme ? (
+                            <MoonStar size={size} color={color} />
+                        ) : (
+                            <Sun size={size} color={color} />
+                        )
+                    }
+                    label="Dark Mode"
+                    labelStyle={{ fontFamily: 'SpaceMono', fontSize: 16 }}
+                    onPress={async () => toggleColorScheme()}
+                />
+
                 <DrawerItem
                     style={{ borderRadius: 8 }}
                     icon={({ color, size }) => (
