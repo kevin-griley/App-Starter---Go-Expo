@@ -226,12 +226,5 @@ const (
 type PermissionsEnum string
 
 const (
-	ReadUserPermissions    PermissionsEnum = "user.read"
-	WriteUserPermissions   PermissionsEnum = "user.write"
-	ReadOrganizationPermissions PermissionsEnum = "organization.read"
-	WriteOrganizationPermissions PermissionsEnum = "organization.write"
-	ReadManifestPermissions PermissionsEnum = "manifest.read"
-	WriteManifestPermissions PermissionsEnum = "manifest.write"
-	ReadUldPermissions PermissionsEnum = "uld.read"
-	WriteUldPermissions PermissionsEnum = "uld.write"
+	WriteOrganization PermissionsEnum = "organization.write"
 )

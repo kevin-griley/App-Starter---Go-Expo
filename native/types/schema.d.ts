@@ -568,7 +568,7 @@ export interface components {
         /** @enum {string} */
         "data.OrganizationType": "airline" | "carrier" | "warehouse";
         /** @enum {string} */
-        "data.PermissionsEnum": "user.read" | "user.write" | "organization.read" | "organization.write" | "manifest.read" | "manifest.write" | "uld.read" | "uld.write";
+        "data.PermissionsEnum": "organization.write";
         "data.User": {
             created_at?: string;
             email?: string;

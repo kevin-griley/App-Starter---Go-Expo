@@ -66,14 +66,7 @@ func HandlePostOrganization(w http.ResponseWriter, r *http.Request) *ApiError {
 	}
 
 	permissions := []data.PermissionsEnum{
-		data.ReadUserPermissions,
-		data.WriteUserPermissions,
-		data.ReadOrganizationPermissions,
-		data.WriteOrganizationPermissions,
-		data.ReadManifestPermissions,
-		data.WriteManifestPermissions,
-		data.ReadUldPermissions,
-		data.WriteUldPermissions,
+		data.WriteOrganization,
 	}
 
 	fmt.Println(permissions)

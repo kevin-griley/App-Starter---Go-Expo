@@ -387,24 +387,10 @@ components:
         - Warehouse
     data.PermissionsEnum:
       enum:
-        - user.read
-        - user.write
-        - organization.read
         - organization.write
-        - manifest.read
-        - manifest.write
-        - uld.read
-        - uld.write
       type: string
       x-enum-varnames:
-        - ReadUserPermissions
-        - WriteUserPermissions
-        - ReadOrganizationPermissions
-        - WriteOrganizationPermissions
-        - ReadManifestPermissions
-        - WriteManifestPermissions
-        - ReadUldPermissions
-        - WriteUldPermissions
+        - WriteOrganization
     data.User:
       properties:
         created_at:

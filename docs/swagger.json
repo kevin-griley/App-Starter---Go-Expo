@@ -578,24 +578,10 @@
         "data.PermissionsEnum": {
             "type": "string",
             "enum": [
-                "user.read",
-                "user.write",
-                "organization.read",
-                "organization.write",
-                "manifest.read",
-                "manifest.write",
-                "uld.read",
-                "uld.write"
+                "organization.write"
             ],
             "x-enum-varnames": [
-                "ReadUserPermissions",
-                "WriteUserPermissions",
-                "ReadOrganizationPermissions",
-                "WriteOrganizationPermissions",
-                "ReadManifestPermissions",
-                "WriteManifestPermissions",
-                "ReadUldPermissions",
-                "WriteUldPermissions"
+                "WriteOrganization"
             ]
         },
         "data.User": {
