@@ -11,6 +11,7 @@ export const AppLayout = (props: AppLayoutProps) => {
             <ScrollView
                 className="w-full h-full"
                 contentContainerStyle={{ flexGrow: 1 }}
+                keyboardShouldPersistTaps="handled"
             >
                 {props.children}
             </ScrollView>

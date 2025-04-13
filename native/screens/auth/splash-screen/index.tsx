@@ -54,6 +54,7 @@ const SplashScreenWithLeftBackground = () => {
             <ScrollView
                 ref={scrollViewRef}
                 className="flex min-h-full flex-col bg-black"
+                keyboardShouldPersistTaps="handled"
             >
                 <View className="absolute top-2 right-0 left-0 z-40 pt-14">
                     <Header

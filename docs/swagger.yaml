@@ -24,10 +24,13 @@ definitions:
   data.Organization:
     properties:
       address:
-        type: string
+        additionalProperties: {}
+        type: object
       contact_info:
         type: string
       created_at:
+        type: string
+      formatted_address:
         type: string
       id:
         type: string
@@ -138,7 +141,8 @@ definitions:
   handlers.PostOrganizationRequest:
     properties:
       address:
-        type: string
+        additionalProperties: {}
+        type: object
       contact_info:
         type: string
       name:

@@ -1,5 +1,7 @@
-import { OrganizationProvider } from '@/components/OrganizationProvider';
 import '../global.css';
+
+import { OrganizationProvider } from '@/components/OrganizationProvider';
+import 'react-native-get-random-values';
 
 import { SessionProvider } from '@/components/SessionProvider';
 import { setAndroidNavigationBar } from '@/lib/android-navigation-bar';

@@ -2,6 +2,7 @@ package data
 
 import (
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"time"
 
@@ -10,7 +11,7 @@ import (
 
 
 
-func (s *organizationStoreImpl) CreateRequest(name, address, contactInfo string, organizationType OrganizationType) (*Organization, error) {
+func (s *organizationStoreImpl) CreateRequest(name, formatted_address, contactInfo string, address map[string]any, organizationType OrganizationType) (*Organization, error) {
 
 	orgId, err := uuid.NewV7()
 	if err != nil {
@@ -25,6 +26,7 @@ func (s *organizationStoreImpl) CreateRequest(name, address, contactInfo string,
 		UpdatedAt:        time.Now().UTC(),
 		Name:             name,
 		UniqueURL:        uniqueURL,
+		FormattedAddress: formatted_address,
 		Address:          address,
 		ContactInfo:      contactInfo,
 		OrganizationType: organizationType,
@@ -35,13 +37,19 @@ func (s *organizationStoreImpl) CreateRequest(name, address, contactInfo string,
 
 func (s *organizationStoreImpl) CreateOrganization(o *Organization) (*Organization, error) {
 
+	jsonAddress, err := json.Marshal(o.Address)
+	if err != nil {
+		return nil, err
+	}
+
 	data := map[string]any{
 		"id":                o.ID,
 		"created_at":        o.CreatedAt,
 		"updated_at":        o.UpdatedAt,
 		"name":              o.Name,
 		"unique_url":        o.UniqueURL,
-		"address":           o.Address,
+		"formatted_address": o.FormattedAddress,
+		"address":           jsonAddress,
 		"contact_info":      o.ContactInfo,
 		"organization_type": o.OrganizationType,
 		"is_deleted":        o.IsDeleted,
@@ -65,7 +73,7 @@ func (s *organizationStoreImpl) CreateOrganization(o *Organization) (*Organizati
 
 }
 
-func (s *organizationStoreImpl) UpdateRequest(name, uniqueURL, address, contactInfo string, organizationType OrganizationType) (*Organization, error) {
+func (s *organizationStoreImpl) UpdateRequest(name, uniqueURL, formatted_address, contactInfo string, address map[string]any , organizationType OrganizationType) (*Organization, error) {
 
 	o := new(Organization)
 
@@ -75,7 +83,8 @@ func (s *organizationStoreImpl) UpdateRequest(name, uniqueURL, address, contactI
 	if uniqueURL != "" {
 		o.UniqueURL = uniqueURL
 	}
-	if address != "" {
+	if formatted_address != "" {
+		o.FormattedAddress = formatted_address
 		o.Address = address
 	}
 	if contactInfo != "" {
@@ -99,8 +108,9 @@ func (s *organizationStoreImpl) UpdateOrganization(o *Organization) (*Organizati
 	if o.UniqueURL != "" {
 		updateData["unique_url"] = o.UniqueURL
 	}
-	if o.Address != "" {
+	if o.FormattedAddress != "" {
 		updateData["address"] = o.Address
+		updateData["formatted_address"] = o.FormattedAddress
 	}
 	if o.ContactInfo != "" {
 		updateData["contact_info"] = o.ContactInfo
@@ -220,10 +230,10 @@ type OrganizationStore interface {
 	GetOrganizationByUniqueURL(uniqueURL string) (*Organization, error)
 
 	CreateOrganization(o *Organization) (*Organization, error)
-	CreateRequest(name, address, contactInfo string, organizationType OrganizationType) (*Organization, error)
+	CreateRequest(name, formatted_address, contactInfo string, address map[string]any, organizationType OrganizationType) (*Organization, error)
 
 	UpdateOrganization(o *Organization) (*Organization, error)
-	UpdateRequest(name, uniqueURL, address, contactInfo string, organizationType OrganizationType) (*Organization, error)
+	UpdateRequest(name, uniqueURL, formatted_address, contactInfo string, address map[string]any, organizationType OrganizationType) (*Organization, error)
 }
 
 type OrganizationType string
@@ -235,31 +245,44 @@ const (
 )
 
 type Organization struct {
-	ID               uuid.UUID        `json:"id"`
-	CreatedAt        time.Time        `json:"created_at"`
-	UpdatedAt        time.Time        `json:"updated_at"`
-	Name             string           `json:"name"`
-	UniqueURL        string           `json:"unique_url"`
-	Address          string           `json:"address"`
-	ContactInfo      string           `json:"contact_info"`
-	OrganizationType OrganizationType `json:"organization_type"`
-	IsDeleted		 bool             `json:"is_deleted"`
+	ID               uuid.UUID        	`json:"id"`
+	CreatedAt        time.Time        	`json:"created_at"`
+	UpdatedAt        time.Time        	`json:"updated_at"`
+	Name             string           	`json:"name"`
+	UniqueURL        string           	`json:"unique_url"`
+	FormattedAddress string           	`json:"formatted_address"`
+	Address          map[string]any 	`json:"address"`
+	ContactInfo      string           	`json:"contact_info"`
+	OrganizationType OrganizationType 	`json:"organization_type"`
+	IsDeleted		 bool             	`json:"is_deleted"`
 }
 
 func scanIntoOrganization(rows *sql.Rows) (*Organization, error) {
 	o := new(Organization)
+
+	var addressBytes []byte
+
 	err := rows.Scan(
 		&o.ID,
 		&o.CreatedAt,
 		&o.UpdatedAt,
 		&o.Name,
 		&o.UniqueURL,
-		&o.Address,
+		&o.FormattedAddress,
+		&addressBytes,
 		&o.ContactInfo,
 		&o.OrganizationType,
 		&o.IsDeleted,
 	)
-	return o, err
+	if err != nil {
+		return nil, err
+	}
+
+	if err := json.Unmarshal(addressBytes, &o.Address); err != nil {
+		return nil, err
+	}
+
+	return o, nil
 }
 
 

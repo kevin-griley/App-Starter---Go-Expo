@@ -22,7 +22,7 @@ export default function AppRootLayout() {
     }
 
     if (organization) {
-        return <Redirect href="/dashboard" />;
+        return <Redirect href="/dispatch" />;
     }
 
     return (

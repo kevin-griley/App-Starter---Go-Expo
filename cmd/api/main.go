@@ -82,6 +82,11 @@ func main() {
 	)
 	mux.HandleFunc("GET /user_associations/me", GetAssociationsByKey)
 
+
+	// Proxy endpoints
+	mux.HandleFunc("GET /proxy/place/autocomplete/json", handlers.HandleApiError(handlers.HandleAutocomplete))
+	mux.HandleFunc("GET /proxy/place/details/json", handlers.HandleApiError(handlers.HandleDetails))
+
 	dbConn, err := db.Init()
 	if err != nil {
 		log.Fatal("Failed to connect to database:", err)

@@ -13,6 +13,7 @@ export const AuthLayout = (props: AuthLayoutProps) => {
             <ScrollView
                 className="w-full h-full"
                 contentContainerStyle={{ flexGrow: 1 }}
+                keyboardShouldPersistTaps="handled"
             >
                 <HStack className="w-full h-full flex-grow justify-center">
                     <VStack

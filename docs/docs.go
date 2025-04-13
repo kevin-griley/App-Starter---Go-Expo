@@ -524,12 +524,16 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "address": {
-                    "type": "string"
+                    "type": "object",
+                    "additionalProperties": {}
                 },
                 "contact_info": {
                     "type": "string"
                 },
                 "created_at": {
+                    "type": "string"
+                },
+                "formatted_address": {
                     "type": "string"
                 },
                 "id": {
@@ -688,7 +692,8 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "address": {
-                    "type": "string"
+                    "type": "object",
+                    "additionalProperties": {}
                 },
                 "contact_info": {
                     "type": "string"

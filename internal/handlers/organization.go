@@ -10,7 +10,7 @@ import (
 
 type PostOrganizationRequest struct {
 	Name             string                `json:"name"`
-	Address          string                `json:"address"`
+	Address          map[string]any        `json:"address"`
 	ContactInfo      string                `json:"contact_info"`
 	OrganizationType data.OrganizationType `json:"organization_type"`
 }
@@ -39,8 +39,18 @@ func HandlePostOrganization(w http.ResponseWriter, r *http.Request) *ApiError {
 
 	fmt.Println("PostOrganizationRequest:", postReq)
 
+	formattedAddress, ok := postReq.Address["formatted_address"].(string)
+	if !ok {
+		return &ApiError{http.StatusBadRequest, "formatted_address is required"}
+	}
 
-	org, err := store.Organization.CreateRequest(postReq.Name, postReq.Address, postReq.ContactInfo, postReq.OrganizationType)
+	org, err := store.Organization.CreateRequest(
+		postReq.Name, 
+		formattedAddress, 
+		postReq.ContactInfo, 
+		postReq.Address, 
+		postReq.OrganizationType,
+	)
 	if err != nil {
 		return &ApiError{http.StatusBadRequest, err.Error()}
 	}
@@ -115,7 +125,7 @@ func HandleGetOrganizationByID(w http.ResponseWriter, r *http.Request) *ApiError
 type PatchOrganizationRequest struct {
 	name             string
 	uniqueURL        string
-	address          string
+	address          map[string]any
 	contactInfo      string
 	organizationType data.OrganizationType
 }
@@ -144,11 +154,17 @@ func HandlePatchOrganizationByID(w http.ResponseWriter, r *http.Request) *ApiErr
 		return &ApiError{http.StatusBadRequest, err.Error()}
 	}
 
+	formattedAddress, ok := patchReq.address["formatted_address"].(string)
+	if !ok {
+		return &ApiError{http.StatusBadRequest, "formatted_address is required"}
+	}
+
 	org, err := store.Organization.UpdateRequest(
 		patchReq.name,
 		patchReq.uniqueURL,
-		patchReq.address,
+		formattedAddress,
 		patchReq.contactInfo,
+		patchReq.address,
 		patchReq.organizationType,
 	)
 	if err != nil {

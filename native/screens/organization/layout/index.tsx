@@ -11,6 +11,7 @@ export const OrgLayout = (props: OrgLayoutProps) => {
             <ScrollView
                 className="w-full h-full"
                 contentContainerStyle={{ flexGrow: 1 }}
+                keyboardShouldPersistTaps="handled"
             >
                 {props.children}
             </ScrollView>

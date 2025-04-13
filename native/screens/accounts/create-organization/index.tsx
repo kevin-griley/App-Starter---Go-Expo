@@ -21,11 +21,26 @@ import { $api, queryClient } from '@/lib/api/client';
 import { AuthLayout } from '@/screens/auth/layout';
 import { z } from 'zod';
 
+import { GoogleInput } from '@/components/ui/form/googleInput';
 import { ArrowLeft } from '@/lib/icons/ArrowLeft';
 
 const newOrgaizationSchema = z.object({
     name: z.string().min(1, 'Name is required'),
-    address: z.string().min(1, 'Address is required'),
+    address: z.any().refine(
+        (val) => {
+            if (typeof val !== 'object') {
+                return false;
+            }
+            if (!val.geometry) {
+                return false;
+            }
+            if (!val.formatted_address) {
+                return false;
+            }
+            return true;
+        },
+        { message: 'Please select a result from google' },
+    ),
     contactInfo: z.string().min(1, 'Contact info is required'),
     organizationType: z.enum(['airline', 'carrier', 'warehouse']),
 });
@@ -39,7 +54,7 @@ const CreateOrganizationWithoutLayout = () => {
         resolver: zodResolver(newOrgaizationSchema),
         defaultValues: {
             name: '',
-            address: '',
+            address: {},
             contactInfo: '',
             organizationType: 'carrier',
         },
@@ -63,9 +78,7 @@ const CreateOrganizationWithoutLayout = () => {
     React.useEffect(() => {
         if (postOrganization.isSuccess) {
             form.reset();
-
             router.push('/my-account');
-
             const { queryKey } = $api.queryOptions(
                 'get',
                 '/user_associations/me',
@@ -126,15 +139,9 @@ const CreateOrganizationWithoutLayout = () => {
                                     control={form.control}
                                     name="address"
                                     render={({ field }) => (
-                                        <FormInput
+                                        <GoogleInput
                                             label="Address"
                                             placeholder="Organization Address"
-                                            description="Full address of the organization"
-                                            autoCapitalize="none"
-                                            autoComplete="off"
-                                            onSubmitEditing={() =>
-                                                form.setFocus('contactInfo')
-                                            }
                                             {...field}
                                         />
                                     )}

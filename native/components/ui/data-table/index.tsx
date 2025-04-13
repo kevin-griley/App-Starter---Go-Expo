@@ -78,6 +78,7 @@ export function DataTable<TData, TValue>({
                 horizontal
                 bounces={false}
                 showsHorizontalScrollIndicator={false}
+                keyboardShouldPersistTaps="handled"
             >
                 <Table>
                     <TableHeader>

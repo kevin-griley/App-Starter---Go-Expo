@@ -16,10 +16,6 @@ const buttonVariants = cva(
                     'bg-bw border-2 border-border shadow-shadow web:hover:translate-y-boxShadowY web:hover:shadow-none',
                 reverse:
                     'bg-main border-2 border-border web:hover:translate-x-reverseBoxShadowX web:hover:translate-y-reverseBoxShadowY web:hover:shadow-shadow',
-                warn: 'bg-warn border-2 border-border shadow-shadow web:hover:translate-y-boxShadowY web:hover:shadow-none',
-                success:
-                    'bg-success border-2 border-border shadow-shadow web:hover:translate-y-boxShadowY web:hover:shadow-none',
-                error: 'bg-error border-2 border-border shadow-shadow web:hover:translate-y-boxShadowY web:hover:shadow-none',
             },
             size: {
                 default: 'h-10 px-4 py-2 native:h-12 native:px-5 native:py-3',
@@ -44,9 +40,6 @@ const buttonTextVariants = cva(
                 noShadow: 'text-mtext',
                 neutral: 'text-text',
                 reverse: 'text-mtext',
-                warn: 'text-mtext',
-                success: 'text-mtext',
-                error: 'text-mtext',
             },
             size: {
                 default: '',

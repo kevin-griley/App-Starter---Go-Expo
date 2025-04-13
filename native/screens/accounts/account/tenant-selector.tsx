@@ -22,6 +22,7 @@ import type { components } from '@/types/schema';
 import { useRouter } from 'expo-router';
 import * as React from 'react';
 import { Pressable, View } from 'react-native';
+import type { GooglePlaceDetail } from 'react-native-google-places-autocomplete';
 import { EditWorkspace } from './edit-workspace';
 
 type Association = components['schemas']['data.Association'];
@@ -64,79 +65,97 @@ export function TenantSelector({ data, isLoading }: Props) {
 
     return (
         <View className="flex flex-row flex-wrap gap-6 px-1">
-            {data.map((assoc) => (
-                <View key={assoc.organization_id} className="w-full max-w-sm">
-                    <Card
-                        className={cn(
-                            'relative transition-all flex-1',
-                            hovered?.id === assoc.organization_id
-                                ? 'hover:shadow-shadow'
-                                : '',
-                        )}
-                    >
-                        {selectedTenant?.id === assoc.organization_id && (
-                            <View className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-bw border-2 border-border">
-                                <Check className="h-4 w-4 text-text" />
-                            </View>
-                        )}
-                        <CardHeader className="flex flex-row items-center gap-4 space-y-0">
-                            <View className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-md bg-bw border-2 border-border" />
+            {data.map((assoc) => {
+                const address = assoc.organization?.address as unknown as
+                    | GooglePlaceDetail
+                    | undefined;
 
-                            <View>
-                                <CardTitle
-                                    className="text-xl"
-                                    style={{ fontFamily: 'SpaceMono' }}
-                                >
-                                    {assoc.organization?.name}
-                                </CardTitle>
-                                <CardDescription>
-                                    {assoc.organization?.name}
-                                </CardDescription>
-                            </View>
-                        </CardHeader>
-                        <CardContent>
-                            <View className="text-sm">
-                                <Text>
-                                    {assoc.organization?.organization_type?.toUpperCase()}
-                                </Text>
-                                <Text>{assoc.organization?.unique_url}</Text>
-                            </View>
-                        </CardContent>
-                        <CardFooter>
-                            <HStack className="flex-1">
-                                <Button
-                                    onHoverIn={() =>
-                                        setHovered(assoc.organization ?? null)
-                                    }
-                                    onHoverOut={() => setHovered(null)}
-                                    variant="neutral"
-                                    className="flex-1"
-                                    onPress={(e) => {
-                                        e.stopPropagation();
-                                        handleSelectTenant(assoc.organization);
-                                    }}
-                                >
-                                    <Text>Select workspace</Text>
-                                </Button>
-                                <Button
-                                    onHoverIn={() =>
-                                        setHovered(assoc.organization ?? null)
-                                    }
-                                    onHoverOut={() => setHovered(null)}
-                                    onPress={(e) => {
-                                        e.stopPropagation();
-                                        setEditingTenant(
-                                            assoc.organization ?? null,
-                                        );
-                                    }}
-                                >
-                                    <Edit className="text-mtext" size={18} />
-                                </Button>
-                            </HStack>
-                        </CardFooter>
-                    </Card>
-                </View>
-            ))}
+                return (
+                    <View
+                        key={assoc.organization_id}
+                        className="w-full max-w-sm"
+                    >
+                        <Card
+                            className={cn(
+                                'relative transition-all flex-1',
+                                hovered?.id === assoc.organization_id
+                                    ? 'hover:shadow-shadow'
+                                    : '',
+                            )}
+                        >
+                            {selectedTenant?.id === assoc.organization_id && (
+                                <View className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-bw border-2 border-border">
+                                    <Check className="h-4 w-4 text-text" />
+                                </View>
+                            )}
+                            <CardHeader className="flex flex-row items-center gap-4 space-y-0">
+                                <View className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-md bg-bw border-2 border-border" />
+
+                                <View>
+                                    <CardTitle
+                                        className="text-xl"
+                                        style={{ fontFamily: 'SpaceMono' }}
+                                    >
+                                        {assoc.organization?.name}
+                                    </CardTitle>
+                                    <CardDescription>
+                                        {assoc.organization?.name}
+                                    </CardDescription>
+                                </View>
+                            </CardHeader>
+                            <CardContent>
+                                <View className="text-sm">
+                                    <Text>
+                                        {assoc.organization?.organization_type?.toUpperCase()}
+                                    </Text>
+                                    <Text>{address?.formatted_address}</Text>
+                                </View>
+                            </CardContent>
+                            <CardFooter>
+                                <HStack className="flex-1">
+                                    <Button
+                                        onHoverIn={() =>
+                                            setHovered(
+                                                assoc.organization ?? null,
+                                            )
+                                        }
+                                        onHoverOut={() => setHovered(null)}
+                                        variant="neutral"
+                                        className="flex-1"
+                                        onPress={(e) => {
+                                            e.stopPropagation();
+                                            handleSelectTenant(
+                                                assoc.organization,
+                                            );
+                                        }}
+                                    >
+                                        <Text>Select workspace</Text>
+                                    </Button>
+                                    <Button
+                                        onHoverIn={() =>
+                                            setHovered(
+                                                assoc.organization ?? null,
+                                            )
+                                        }
+                                        onHoverOut={() => setHovered(null)}
+                                        onPress={(e) => {
+                                            e.stopPropagation();
+                                            setEditingTenant(
+                                                assoc.organization ?? null,
+                                            );
+                                        }}
+                                    >
+                                        <Edit
+                                            className="text-mtext"
+                                            size={18}
+                                        />
+                                    </Button>
+                                </HStack>
+                            </CardFooter>
+                        </Card>
+                    </View>
+                );
+            })}
 
             <Pressable
                 className="w-full max-w-sm"
