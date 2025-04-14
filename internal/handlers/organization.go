@@ -37,8 +37,6 @@ func HandlePostOrganization(w http.ResponseWriter, r *http.Request) *ApiError {
 		return &ApiError{http.StatusBadRequest, err.Error()}
 	}
 
-	fmt.Println("PostOrganizationRequest:", postReq)
-
 	formattedAddress, ok := postReq.Address["formatted_address"].(string)
 	if !ok {
 		return &ApiError{http.StatusBadRequest, "formatted_address is required"}
@@ -116,11 +114,11 @@ func HandleGetOrganizationByID(w http.ResponseWriter, r *http.Request) *ApiError
 }
 
 type PatchOrganizationRequest struct {
-	name             string
-	uniqueURL        string
-	address          map[string]any
-	contactInfo      string
-	organizationType data.OrganizationType
+	Name            	string					`json:"name"`
+	Address         	map[string]any			`json:"address"`
+	LogoURL		 		string					`json:"logo_url"`
+	ContactInfo     	string					`json:"contact_info"`
+	OrganizationType	data.OrganizationType	`json:"organization_type"`
 }
 
 //	@Summary		Patch organization by ID
@@ -129,7 +127,7 @@ type PatchOrganizationRequest struct {
 //	@Security		ApiKeyAuth
 //	@Accept			json
 //	@Produce		json
-//	@Param			id					path		string						true	"Organization ID"
+//	@Param			ID					path		string						true	"Organization ID"
 //	@Param			body				body		PatchOrganizationRequest	true	"Patch Organization Request"
 //	@Success		200					{object}	data.Organization			"Organization"
 //	@Failure		400					{object}	ApiError					"Bad Request"
@@ -147,18 +145,17 @@ func HandlePatchOrganizationByID(w http.ResponseWriter, r *http.Request) *ApiErr
 		return &ApiError{http.StatusBadRequest, err.Error()}
 	}
 
-	formattedAddress, ok := patchReq.address["formatted_address"].(string)
+	formattedAddress, ok := patchReq.Address["formatted_address"].(string)
 	if !ok {
 		return &ApiError{http.StatusBadRequest, "formatted_address is required"}
 	}
 
 	org, err := store.Organization.UpdateRequest(
-		patchReq.name,
-		patchReq.uniqueURL,
+		patchReq.Name,
 		formattedAddress,
-		patchReq.contactInfo,
-		patchReq.address,
-		patchReq.organizationType,
+		patchReq.ContactInfo,
+		patchReq.Address,
+		patchReq.OrganizationType,
 	)
 	if err != nil {
 		return &ApiError{http.StatusBadRequest, err.Error()}

@@ -21,8 +21,11 @@ const DashboardWithoutLayout = () => {
 
                 <Alert icon={Terminal} variant="destructive">
                     <AlertTitle variant="destructive">Organization</AlertTitle>
-                    <AlertDescription variant="destructive">
-                        {JSON.stringify(organization, null, 2)}
+                    <AlertDescription
+                        variant="destructive"
+                        className="max-h-[50vh] overflow-auto"
+                    >
+                        {JSON.stringify(organization, null, 4)}
                     </AlertDescription>
                 </Alert>
 

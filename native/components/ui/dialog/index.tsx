@@ -4,6 +4,7 @@ import * as DialogPrimitive from '@rn-primitives/dialog';
 import * as React from 'react';
 import { Platform, StyleSheet, View, type ViewProps } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
+
 const Dialog = DialogPrimitive.Root;
 
 const DialogTrigger = DialogPrimitive.Trigger;
@@ -76,7 +77,7 @@ const DialogContent = React.forwardRef<
                 <DialogPrimitive.Content
                     ref={ref}
                     className={cn(
-                        'max-w-lg gap-4 rounded-base border-2 border-border bg-bg web:cursor-default p-6 shadow-shadow web:duration-200',
+                        'gap-4 rounded-base border-2 border-border bg-bg web:cursor-default p-6 shadow-shadow web:duration-200',
                         open
                             ? 'web:animate-in web:fade-in-0 web:zoom-in-95'
                             : 'web:animate-out web:fade-out-0 web:zoom-out-95',

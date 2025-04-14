@@ -290,7 +290,7 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "Organization ID",
-                        "name": "id",
+                        "name": "ID",
                         "in": "path",
                         "required": true
                     },
@@ -623,7 +623,25 @@ const docTemplate = `{
             }
         },
         "handlers.PatchOrganizationRequest": {
-            "type": "object"
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "object",
+                    "additionalProperties": {}
+                },
+                "contact_info": {
+                    "type": "string"
+                },
+                "logo_url": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "organization_type": {
+                    "$ref": "#/definitions/data.OrganizationType"
+                }
+            }
         },
         "handlers.PatchUserRequest": {
             "type": "object",

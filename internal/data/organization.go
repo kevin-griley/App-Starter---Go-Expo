@@ -73,28 +73,22 @@ func (s *organizationStoreImpl) CreateOrganization(o *Organization) (*Organizati
 
 }
 
-func (s *organizationStoreImpl) UpdateRequest(name, uniqueURL, formatted_address, contactInfo string, address map[string]any , organizationType OrganizationType) (*Organization, error) {
+func (s *organizationStoreImpl) UpdateRequest(
+	name, 
+	formatted_address, 
+	contactInfo string, 
+	address map[string]any, 
+	organizationType OrganizationType,
+) (*Organization, error) {
 
-	o := new(Organization)
-
-	if name != "" {
-		o.Name = name
-	}
-	if uniqueURL != "" {
-		o.UniqueURL = uniqueURL
-	}
-	if formatted_address != "" {
-		o.FormattedAddress = formatted_address
-		o.Address = address
-	}
-	if contactInfo != "" {
-		o.ContactInfo = contactInfo
-	}
-	if organizationType != "" {
-		o.OrganizationType = organizationType
-	}
-	
-	return o, nil
+	return &Organization{
+		Name:             name,
+		FormattedAddress: formatted_address,
+		Address:          address,
+		ContactInfo:      contactInfo,
+		OrganizationType: organizationType,
+		IsDeleted:        false,
+	}, nil
 }
 
 func (s *organizationStoreImpl) UpdateOrganization(o *Organization) (*Organization, error) {
@@ -109,7 +103,12 @@ func (s *organizationStoreImpl) UpdateOrganization(o *Organization) (*Organizati
 		updateData["unique_url"] = o.UniqueURL
 	}
 	if o.FormattedAddress != "" {
-		updateData["address"] = o.Address
+		jsonAddress, err := json.Marshal(o.Address)
+		if err != nil {
+			return nil, err
+		}
+
+		updateData["address"] = jsonAddress
 		updateData["formatted_address"] = o.FormattedAddress
 	}
 	if o.ContactInfo != "" {
@@ -233,7 +232,7 @@ type OrganizationStore interface {
 	CreateRequest(name, formatted_address, contactInfo string, address map[string]any, organizationType OrganizationType) (*Organization, error)
 
 	UpdateOrganization(o *Organization) (*Organization, error)
-	UpdateRequest(name, uniqueURL, formatted_address, contactInfo string, address map[string]any, organizationType OrganizationType) (*Organization, error)
+	UpdateRequest(name, formatted_address, contactInfo string, address map[string]any, organizationType OrganizationType) (*Organization, error)
 }
 
 type OrganizationType string

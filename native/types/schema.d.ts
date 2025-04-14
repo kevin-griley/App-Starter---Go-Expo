@@ -335,7 +335,7 @@ export interface paths {
                 header?: never;
                 path: {
                     /** @description Organization ID */
-                    id: string;
+                    ID: string;
                 };
                 cookie?: never;
             };
@@ -580,7 +580,13 @@ export interface components {
             error?: string;
             status?: number;
         };
-        "handlers.PatchOrganizationRequest": Record<string, never>;
+        "handlers.PatchOrganizationRequest": {
+            address?: Record<string, unknown>;
+            contact_info?: string;
+            logo_url?: string;
+            name?: string;
+            organization_type?: components["schemas"]["data.OrganizationType"];
+        };
         "handlers.PatchUserRequest": {
             password?: string;
             user_name?: string;

@@ -174,7 +174,7 @@ paths:
       parameters:
         - description: Organization ID
           in: path
-          name: id
+          name: ID
           required: true
           schema:
             type: string
@@ -412,6 +412,18 @@ components:
           type: integer
       type: object
     handlers.PatchOrganizationRequest:
+      properties:
+        address:
+          additionalProperties: {}
+          type: object
+        contact_info:
+          type: string
+        logo_url:
+          type: string
+        name:
+          type: string
+        organization_type:
+          $ref: "#/components/schemas/data.OrganizationType"
       type: object
     handlers.PatchUserRequest:
       properties:

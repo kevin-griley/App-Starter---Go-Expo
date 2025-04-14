@@ -11,6 +11,7 @@ import {
 
 import { HStack } from '@/components/ui/hstack';
 
+import { AddressWrapper } from '@/components/ui/form/googleInput/wrapper';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Text } from '@/components/ui/text';
 import { H3 } from '@/components/ui/typography';
@@ -22,7 +23,6 @@ import type { components } from '@/types/schema';
 import { useRouter } from 'expo-router';
 import * as React from 'react';
 import { Pressable, View } from 'react-native';
-import type { GooglePlaceDetail } from 'react-native-google-places-autocomplete';
 import { EditWorkspace } from './edit-workspace';
 
 type Association = components['schemas']['data.Association'];
@@ -66,9 +66,7 @@ export function TenantSelector({ data, isLoading }: Props) {
     return (
         <View className="flex flex-row flex-wrap gap-6 px-1">
             {data.map((assoc) => {
-                const address = assoc.organization?.address as unknown as
-                    | GooglePlaceDetail
-                    | undefined;
+                const address = new AddressWrapper(assoc.organization?.address);
 
                 return (
                     <View
@@ -103,12 +101,23 @@ export function TenantSelector({ data, isLoading }: Props) {
                                     </CardDescription>
                                 </View>
                             </CardHeader>
-                            <CardContent>
-                                <View className="text-sm">
+                            <CardContent className="flex-grow">
+                                <View className="text-sm space-y-1">
                                     <Text>
                                         {assoc.organization?.organization_type?.toUpperCase()}
                                     </Text>
-                                    <Text>{address?.formatted_address}</Text>
+                                    <View>
+                                        <Text>
+                                            {[
+                                                address.getCity(),
+                                                address.getState(),
+                                                address.getZipCode(),
+                                                address.getCountry(),
+                                            ]
+                                                .filter(Boolean)
+                                                .join(', ')}
+                                        </Text>
+                                    </View>
                                 </View>
                             </CardContent>
                             <CardFooter>

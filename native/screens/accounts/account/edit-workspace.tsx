@@ -12,16 +12,18 @@ import {
     FormField,
     FormInput,
     FormRadioGroup,
-    FormTextarea,
 } from '@/components/ui/form';
+import { GoogleInput } from '@/components/ui/form/googleInput';
 import { Label } from '@/components/ui/label';
 import { RadioGroupItem } from '@/components/ui/radio-group';
 
 import { Text } from '@/components/ui/text';
+import { $api, queryClient } from '@/lib/api/client';
 import type { components } from '@/types/schema';
 import { zodResolver } from '@hookform/resolvers/zod';
+import * as React from 'react';
 import { useForm } from 'react-hook-form';
-import { Image, View } from 'react-native';
+import { ActivityIndicator, Image, View } from 'react-native';
 import { z } from 'zod';
 
 const editWorkspaceSchema = z.object({
@@ -31,12 +33,22 @@ const editWorkspaceSchema = z.object({
         const url = z.string().url().safeParse(val);
         return url.success;
     }, 'Logo URL must be a valid URL'),
-    billing: z.string().refine((val) => {
-        if (val.length === 0) return true;
-        const email = z.string().email().safeParse(val);
-        return email.success;
-    }, 'Billing email must be a valid email'),
-
+    address: z.any().refine(
+        (val) => {
+            if (typeof val !== 'object') {
+                return false;
+            }
+            if (!val.geometry) {
+                return false;
+            }
+            if (!val.formatted_address) {
+                return false;
+            }
+            return true;
+        },
+        { message: 'Please select a result from google' },
+    ),
+    contactInfo: z.string().min(1, 'Contact info is required'),
     organizationType: z.enum(['airline', 'carrier', 'warehouse']),
 
     scacCode: z.string().refine((val) => {
@@ -44,8 +56,6 @@ const editWorkspaceSchema = z.object({
         const scac = z.string().length(4).safeParse(val);
         return scac.success;
     }, 'SCAC must be 4 uppercase letters'),
-
-    termsOfService: z.string(),
 });
 
 type EditWorkspaceSchemaType = z.infer<typeof editWorkspaceSchema>;
@@ -62,25 +72,60 @@ export function EditWorkspace({ editingTenant, setEditingTenant }: Props) {
         resolver: zodResolver(editWorkspaceSchema),
         defaultValues: {
             name: editingTenant?.name ?? '',
-            logo: '',
-            billing: '',
+            address: editingTenant?.address ?? {},
             organizationType: editingTenant?.organization_type ?? 'carrier',
+            contactInfo: editingTenant?.contact_info ?? '',
             scacCode: '',
-            termsOfService: '',
+            logo: '',
         },
     });
 
-    const onSubmit = (values: EditWorkspaceSchemaType) => {
-        console.log('Form values:', values);
-        // Handle form submission here
-    };
+    const patchOrganization = $api.useMutation('patch', '/organization/{ID}');
+
+    async function onSubmit(values: EditWorkspaceSchemaType) {
+        if (patchOrganization.status === 'pending') return;
+
+        return patchOrganization.mutateAsync({
+            params: {
+                path: {
+                    ID: editingTenant?.id ?? '',
+                },
+            },
+            body: {
+                address: values.address,
+                contact_info: values.contactInfo,
+                logo_url: values.logo,
+                name: values.name,
+                organization_type: values.organizationType,
+            },
+        });
+    }
+
+    React.useEffect(() => {
+        if (patchOrganization.isSuccess) {
+            const { queryKey } = $api.queryOptions(
+                'get',
+                '/user_associations/me',
+            );
+
+            queryClient.invalidateQueries({
+                queryKey,
+            });
+
+            setEditingTenant(null);
+        }
+        if (patchOrganization.isError) {
+            console.log(patchOrganization.error);
+            form.setError('name', { message: patchOrganization.error.error });
+        }
+    }, [patchOrganization.status]);
 
     return (
         <Dialog
             open={!!editingTenant}
             onOpenChange={(open) => !open && setEditingTenant(null)}
         >
-            <DialogContent className="sm:w-[600px] max-h-[90vh] overflow-y-auto">
+            <DialogContent className="w-screen max-w-2xl max-h-[90vh] overflow-y-auto">
                 <DialogHeader className="self-stretch">
                     <DialogTitle>Edit Workspace</DialogTitle>
                     <DialogDescription>
@@ -90,6 +135,28 @@ export function EditWorkspace({ editingTenant, setEditingTenant }: Props) {
 
                 <Form {...form}>
                     <View className="w-full gap-6 px-3">
+                        <FormField
+                            control={form.control}
+                            name="scacCode"
+                            render={({ field }) => (
+                                <View className="flex flex-row items-center gap-4">
+                                    <View className="w-1/4 text-right">
+                                        <Label className="" htmlFor="scacCode">
+                                            SCAC Code
+                                        </Label>
+                                    </View>
+                                    <View className="w-3/4">
+                                        <Text className="font-mono">
+                                            {' '}
+                                            {field.value.length === 4
+                                                ? field.value.toUpperCase()
+                                                : 'N/A'}{' '}
+                                        </Text>
+                                    </View>
+                                </View>
+                            )}
+                        />
+
                         <FormField
                             control={form.control}
                             name="name"
@@ -106,8 +173,28 @@ export function EditWorkspace({ editingTenant, setEditingTenant }: Props) {
                                             autoCapitalize="none"
                                             autoComplete="organization-title"
                                             onSubmitEditing={() =>
-                                                form.setFocus('billing')
+                                                form.setFocus('address')
                                             }
+                                            {...field}
+                                        />
+                                    </View>
+                                </View>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="address"
+                            render={({ field }) => (
+                                <View className="flex flex-row items-start gap-4">
+                                    <View className="w-1/4 text-right mt-2">
+                                        <Label className="" htmlFor="address">
+                                            Address
+                                        </Label>
+                                    </View>
+                                    <View className="w-3/4 z-10">
+                                        <GoogleInput
+                                            placeholder="Address"
                                             {...field}
                                         />
                                     </View>
@@ -121,7 +208,7 @@ export function EditWorkspace({ editingTenant, setEditingTenant }: Props) {
                             render={({ field }) => (
                                 <View className="flex flex-row items-center gap-4">
                                     <View className="w-1/4 text-right">
-                                        <Label className="" htmlFor="name">
+                                        <Label className="" htmlFor="logo">
                                             Logo URL
                                         </Label>
                                     </View>
@@ -137,41 +224,57 @@ export function EditWorkspace({ editingTenant, setEditingTenant }: Props) {
                             )}
                         />
 
-                        <View className="flex flex-row items-center gap-4">
-                            <View className="w-1/4 text-right">
-                                <Label htmlFor="logo-preview">Preview</Label>
-                            </View>
-                            <View className="w-3/4">
-                                <View className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-base border-2 border-border bg-bw">
-                                    <Image
-                                        id="logo-preview"
-                                        source={{
-                                            uri: form.watch('logo'),
-                                        }}
-                                        alt="Logo preview"
-                                        width={64}
-                                        height={64}
-                                        className="h-full w-full object-cover"
-                                    />
-                                </View>
-                            </View>
-                        </View>
-
                         <FormField
                             control={form.control}
-                            name="billing"
+                            name="logo"
                             render={({ field }) => (
                                 <View className="flex flex-row items-center gap-4">
                                     <View className="w-1/4 text-right">
-                                        <Label className="" htmlFor="name">
-                                            Billing Email
+                                        <Label className="" htmlFor="logo">
+                                            Preview
+                                        </Label>
+                                    </View>
+                                    <View className="w-3/4">
+                                        <View className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-base border-2 border-border bg-bw">
+                                            <Image
+                                                id="logo-preview"
+                                                source={{
+                                                    uri: field.value,
+                                                }}
+                                                alt="Logo preview"
+                                                width={64}
+                                                height={64}
+                                                className="h-full w-full object-cover"
+                                            />
+                                        </View>
+                                    </View>
+                                </View>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="contactInfo"
+                            render={({ field }) => (
+                                <View className="flex flex-row items-center gap-4">
+                                    <View className="w-1/4 text-right">
+                                        <Label
+                                            className=""
+                                            htmlFor="contactInfo"
+                                        >
+                                            Contact Info
                                         </Label>
                                     </View>
                                     <View className="w-3/4">
                                         <FormInput
-                                            placeholder="billing@cc.co"
+                                            placeholder="Contact Info"
                                             autoCapitalize="none"
-                                            autoComplete="email"
+                                            autoComplete="off"
+                                            onSubmitEditing={() =>
+                                                form.setFocus(
+                                                    'organizationType',
+                                                )
+                                            }
                                             {...field}
                                         />
                                     </View>
@@ -199,7 +302,7 @@ export function EditWorkspace({ editingTenant, setEditingTenant }: Props) {
                                         <View className="w-1/4 text-right">
                                             <Label
                                                 className="break-normal"
-                                                htmlFor="name"
+                                                htmlFor="organizationType"
                                             >
                                                 Organization Type
                                             </Label>
@@ -245,54 +348,16 @@ export function EditWorkspace({ editingTenant, setEditingTenant }: Props) {
                                 );
                             }}
                         />
-
-                        <FormField
-                            control={form.control}
-                            name="scacCode"
-                            render={({ field }) => (
-                                <View className="flex flex-row items-center gap-4">
-                                    <View className="w-1/4 text-right">
-                                        <Label className="" htmlFor="name">
-                                            Standard Carrier Alpha Code
-                                        </Label>
-                                    </View>
-                                    <View className="w-3/4">
-                                        <FormInput
-                                            placeholder="4-character code"
-                                            maxLength={4}
-                                            className="uppercase"
-                                            {...field}
-                                        />
-                                    </View>
-                                </View>
-                            )}
-                        />
-
-                        <FormField
-                            control={form.control}
-                            name="termsOfService"
-                            render={({ field }) => (
-                                <View className="flex flex-row items-center gap-4">
-                                    <View className="w-1/4 text-right">
-                                        <Label className="" htmlFor="name">
-                                            Invoice Terms
-                                        </Label>
-                                    </View>
-                                    <View className="w-3/4">
-                                        <FormTextarea
-                                            placeholder="Enter terms of service for invoices"
-                                            className="min-h-[120px]"
-                                            {...field}
-                                        />
-                                    </View>
-                                </View>
-                            )}
-                        />
                     </View>
                 </Form>
+
                 <DialogFooter>
                     <Button onPress={form.handleSubmit(onSubmit)}>
-                        <Text>Save changes</Text>
+                        {patchOrganization.status === 'pending' ? (
+                            <ActivityIndicator size="small" />
+                        ) : (
+                            <Text>Save changes</Text>
+                        )}
                     </Button>
                 </DialogFooter>
             </DialogContent>

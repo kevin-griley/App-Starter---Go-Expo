@@ -5,6 +5,10 @@ import type { Middleware } from 'openapi-fetch';
 import createFetchClient from 'openapi-fetch';
 import createClient from 'openapi-react-query';
 
+export const BASE_URL = __DEV__
+    ? 'http://localhost'
+    : 'https://api.fleetexpand.com';
+
 export const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
@@ -24,7 +28,7 @@ const authMiddleware: Middleware = {
 };
 
 export const fetchClient = createFetchClient<paths>({
-    baseUrl: __DEV__ ? 'http://localhost' : 'https://api.fleetexpand.com',
+    baseUrl: BASE_URL,
     headers: {
         'Content-Type': 'application/json',
     },
