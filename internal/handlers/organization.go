@@ -153,6 +153,7 @@ func HandlePatchOrganizationByID(w http.ResponseWriter, r *http.Request) *ApiErr
 	org, err := store.Organization.UpdateRequest(
 		patchReq.Name,
 		formattedAddress,
+		patchReq.LogoURL,
 		patchReq.ContactInfo,
 		patchReq.Address,
 		patchReq.OrganizationType,

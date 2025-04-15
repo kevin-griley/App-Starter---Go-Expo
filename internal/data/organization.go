@@ -31,7 +31,6 @@ func (s *organizationStoreImpl) CreateRequest(name, formatted_address, contactIn
 		ContactInfo:      contactInfo,
 		OrganizationType: organizationType,
 		IsDeleted:        false,
-
 	}, nil
 }
 
@@ -52,6 +51,8 @@ func (s *organizationStoreImpl) CreateOrganization(o *Organization) (*Organizati
 		"address":           jsonAddress,
 		"contact_info":      o.ContactInfo,
 		"organization_type": o.OrganizationType,
+		"logo_url":          o.LogoUrl,
+		"scac":              o.SCAC,
 		"is_deleted":        o.IsDeleted,
 	}
 
@@ -76,6 +77,7 @@ func (s *organizationStoreImpl) CreateOrganization(o *Organization) (*Organizati
 func (s *organizationStoreImpl) UpdateRequest(
 	name, 
 	formatted_address, 
+	logo_url,
 	contactInfo string, 
 	address map[string]any, 
 	organizationType OrganizationType,
@@ -87,6 +89,7 @@ func (s *organizationStoreImpl) UpdateRequest(
 		Address:          address,
 		ContactInfo:      contactInfo,
 		OrganizationType: organizationType,
+		LogoUrl:          logo_url,
 		IsDeleted:        false,
 	}, nil
 }
@@ -116,6 +119,9 @@ func (s *organizationStoreImpl) UpdateOrganization(o *Organization) (*Organizati
 	}
 	if o.OrganizationType != "" {
 		updateData["organization_type"] = o.OrganizationType
+	}
+	if o.LogoUrl != "" {
+		updateData["logo_url"] = o.LogoUrl
 	}
 
 	conditions := map[string]any{
@@ -232,7 +238,7 @@ type OrganizationStore interface {
 	CreateRequest(name, formatted_address, contactInfo string, address map[string]any, organizationType OrganizationType) (*Organization, error)
 
 	UpdateOrganization(o *Organization) (*Organization, error)
-	UpdateRequest(name, formatted_address, contactInfo string, address map[string]any, organizationType OrganizationType) (*Organization, error)
+	UpdateRequest(name, formatted_address, logo_url, contactInfo string, address map[string]any, organizationType OrganizationType) (*Organization, error)
 }
 
 type OrganizationType string
@@ -253,7 +259,10 @@ type Organization struct {
 	Address          map[string]any 	`json:"address"`
 	ContactInfo      string           	`json:"contact_info"`
 	OrganizationType OrganizationType 	`json:"organization_type"`
+	LogoUrl			string           	`json:"logo_url"`
+	SCAC			string           	`json:"scac"`
 	IsDeleted		 bool             	`json:"is_deleted"`
+
 }
 
 func scanIntoOrganization(rows *sql.Rows) (*Organization, error) {
@@ -271,6 +280,8 @@ func scanIntoOrganization(rows *sql.Rows) (*Organization, error) {
 		&addressBytes,
 		&o.ContactInfo,
 		&o.OrganizationType,
+		&o.LogoUrl,
+		&o.SCAC,
 		&o.IsDeleted,
 	)
 	if err != nil {

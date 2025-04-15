@@ -75,7 +75,7 @@ export const GoogleInput = React.forwardRef<
     }
 
     React.useEffect(() => {
-        inputRef.current?.setAddressText(props.value.name ?? '');
+        inputRef.current?.setAddressText(props.value.formatted_address ?? '');
     }, []);
 
     return (
@@ -102,7 +102,6 @@ export const GoogleInput = React.forwardRef<
                 textInputProps={{
                     InputComp: Input,
                 }}
-                fetchDetails
                 query={query}
                 requestUrl={{
                     useOnPlatform: 'all',
@@ -114,6 +113,7 @@ export const GoogleInput = React.forwardRef<
                         GooglePlaceAddressSchema.parse(details);
                     onChange(parsedDetails);
                 }}
+                fetchDetails
                 disableScroll
                 suppressDefaultStyles
                 enablePoweredByContainer={false}

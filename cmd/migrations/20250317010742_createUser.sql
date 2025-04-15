@@ -17,7 +17,10 @@ CREATE TABLE IF NOT EXISTS "organizations" (
     "address" JSONB,
     "contact_info" TEXT NOT NULL,
     "organization_type" "organization_type_enum" NOT NULL,
+    "logo_url" TEXT NOT NULL,
+    "scac" VARCHAR(4) NOT NULL,
     "is_deleted" BOOLEAN NOT NULL DEFAULT FALSE
+
 );
 
 -- User Table

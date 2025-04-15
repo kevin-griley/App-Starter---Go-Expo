@@ -558,8 +558,10 @@ export interface components {
             formatted_address?: string;
             id?: string;
             is_deleted?: boolean;
+            logo_url?: string;
             name?: string;
             organization_type?: components["schemas"]["data.OrganizationType"];
+            scac?: string;
             unique_url?: string;
             updated_at?: string;
         };

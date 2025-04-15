@@ -22,7 +22,7 @@ import { cn } from '@/lib/utils';
 import type { components } from '@/types/schema';
 import { useRouter } from 'expo-router';
 import * as React from 'react';
-import { Pressable, View } from 'react-native';
+import { Image, Pressable, View } from 'react-native';
 import { EditWorkspace } from './edit-workspace';
 
 type Association = components['schemas']['data.Association'];
@@ -87,7 +87,18 @@ export function TenantSelector({ data, isLoading }: Props) {
                                 </View>
                             )}
                             <CardHeader className="flex flex-row items-center gap-4 space-y-0">
-                                <View className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-md bg-bw border-2 border-border" />
+                                <View className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-md bg-bw border-2 border-border">
+
+                                    {assoc.organization?.logo_url && (
+                                        <Image
+                                            source={{ uri: assoc.organization.logo_url }}
+                                            alt="Organization Logo"
+                                            className="h-full w-full object-cover"
+                                        />
+                                    )}
+
+
+                                </View>
 
                                 <View>
                                     <CardTitle

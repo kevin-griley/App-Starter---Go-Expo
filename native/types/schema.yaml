@@ -356,10 +356,14 @@ components:
           type: string
         is_deleted:
           type: boolean
+        logo_url:
+          type: string
         name:
           type: string
         organization_type:
           $ref: "#/components/schemas/data.OrganizationType"
+        scac:
+          type: string
         unique_url:
           type: string
         updated_at:

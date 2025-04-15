@@ -28,7 +28,7 @@ import { z } from 'zod';
 
 const editWorkspaceSchema = z.object({
     name: z.string().min(1, 'Name is required'),
-    logo: z.string().refine((val) => {
+    logo_url: z.string().refine((val) => {
         if (val.length === 0) return true;
         const url = z.string().url().safeParse(val);
         return url.success;
@@ -75,8 +75,8 @@ export function EditWorkspace({ editingTenant, setEditingTenant }: Props) {
             address: editingTenant?.address ?? {},
             organizationType: editingTenant?.organization_type ?? 'carrier',
             contactInfo: editingTenant?.contact_info ?? '',
-            scacCode: '',
-            logo: '',
+            scacCode: editingTenant?.scac ?? '',
+            logo_url: editingTenant?.logo_url ?? '',
         },
     });
 
@@ -92,11 +92,12 @@ export function EditWorkspace({ editingTenant, setEditingTenant }: Props) {
                 },
             },
             body: {
-                address: values.address,
-                contact_info: values.contactInfo,
-                logo_url: values.logo,
                 name: values.name,
+                address: values.address,
                 organization_type: values.organizationType,
+                contact_info: values.contactInfo,
+                logo_url: values.logo_url,   
+                             
             },
         });
     }
@@ -204,7 +205,7 @@ export function EditWorkspace({ editingTenant, setEditingTenant }: Props) {
 
                         <FormField
                             control={form.control}
-                            name="logo"
+                            name="logo_url"
                             render={({ field }) => (
                                 <View className="flex flex-row items-center gap-4">
                                     <View className="w-1/4 text-right">
@@ -226,7 +227,7 @@ export function EditWorkspace({ editingTenant, setEditingTenant }: Props) {
 
                         <FormField
                             control={form.control}
-                            name="logo"
+                            name="logo_url"
                             render={({ field }) => (
                                 <View className="flex flex-row items-center gap-4">
                                     <View className="w-1/4 text-right">

@@ -542,11 +542,17 @@ const docTemplate = `{
                 "is_deleted": {
                     "type": "boolean"
                 },
+                "logo_url": {
+                    "type": "string"
+                },
                 "name": {
                     "type": "string"
                 },
                 "organization_type": {
                     "$ref": "#/definitions/data.OrganizationType"
+                },
+                "scac": {
+                    "type": "string"
                 },
                 "unique_url": {
                     "type": "string"
