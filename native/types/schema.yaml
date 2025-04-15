@@ -122,7 +122,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/handlers.PostOrganizationRequest"
+              $ref: "#/components/schemas/data.PostOrganizationRequest"
         description: Create Organization Request
         required: true
       responses:
@@ -182,7 +182,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/handlers.PatchOrganizationRequest"
+              $ref: "#/components/schemas/data.PatchOrganizationRequest"
         description: Patch Organization Request
         required: true
       responses:
@@ -389,12 +389,38 @@ components:
         - Airline
         - Carrier
         - Warehouse
+    data.PatchOrganizationRequest:
+      properties:
+        address:
+          additionalProperties: {}
+          type: object
+        contact_info:
+          type: string
+        logo_url:
+          type: string
+        name:
+          type: string
+        organization_type:
+          $ref: "#/components/schemas/data.OrganizationType"
+      type: object
     data.PermissionsEnum:
       enum:
         - organization.write
       type: string
       x-enum-varnames:
         - WriteOrganization
+    data.PostOrganizationRequest:
+      properties:
+        address:
+          additionalProperties: {}
+          type: object
+        contact_info:
+          type: string
+        name:
+          type: string
+        organization_type:
+          $ref: "#/components/schemas/data.OrganizationType"
+      type: object
     data.User:
       properties:
         created_at:
@@ -414,20 +440,6 @@ components:
           type: string
         status:
           type: integer
-      type: object
-    handlers.PatchOrganizationRequest:
-      properties:
-        address:
-          additionalProperties: {}
-          type: object
-        contact_info:
-          type: string
-        logo_url:
-          type: string
-        name:
-          type: string
-        organization_type:
-          $ref: "#/components/schemas/data.OrganizationType"
       type: object
     handlers.PatchUserRequest:
       properties:
@@ -459,18 +471,6 @@ components:
       properties:
         token:
           type: string
-      type: object
-    handlers.PostOrganizationRequest:
-      properties:
-        address:
-          additionalProperties: {}
-          type: object
-        contact_info:
-          type: string
-        name:
-          type: string
-        organization_type:
-          $ref: "#/components/schemas/data.OrganizationType"
       type: object
     handlers.PostUserRequest:
       properties:

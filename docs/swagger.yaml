@@ -69,12 +69,38 @@ definitions:
     - Airline
     - Carrier
     - Warehouse
+  data.PatchOrganizationRequest:
+    properties:
+      address:
+        additionalProperties: {}
+        type: object
+      contact_info:
+        type: string
+      logo_url:
+        type: string
+      name:
+        type: string
+      organization_type:
+        $ref: '#/definitions/data.OrganizationType'
+    type: object
   data.PermissionsEnum:
     enum:
     - organization.write
     type: string
     x-enum-varnames:
     - WriteOrganization
+  data.PostOrganizationRequest:
+    properties:
+      address:
+        additionalProperties: {}
+        type: object
+      contact_info:
+        type: string
+      name:
+        type: string
+      organization_type:
+        $ref: '#/definitions/data.OrganizationType'
+    type: object
   data.User:
     properties:
       created_at:
@@ -94,20 +120,6 @@ definitions:
         type: string
       status:
         type: integer
-    type: object
-  handlers.PatchOrganizationRequest:
-    properties:
-      address:
-        additionalProperties: {}
-        type: object
-      contact_info:
-        type: string
-      logo_url:
-        type: string
-      name:
-        type: string
-      organization_type:
-        $ref: '#/definitions/data.OrganizationType'
     type: object
   handlers.PatchUserRequest:
     properties:
@@ -139,18 +151,6 @@ definitions:
     properties:
       token:
         type: string
-    type: object
-  handlers.PostOrganizationRequest:
-    properties:
-      address:
-        additionalProperties: {}
-        type: object
-      contact_info:
-        type: string
-      name:
-        type: string
-      organization_type:
-        $ref: '#/definitions/data.OrganizationType'
     type: object
   handlers.PostUserRequest:
     properties:
@@ -288,7 +288,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/handlers.PostOrganizationRequest'
+          $ref: '#/definitions/data.PostOrganizationRequest'
       produces:
       - application/json
       responses:
@@ -345,7 +345,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/handlers.PatchOrganizationRequest'
+          $ref: '#/definitions/data.PatchOrganizationRequest'
       produces:
       - application/json
       responses:

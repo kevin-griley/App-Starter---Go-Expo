@@ -10,50 +10,43 @@ import (
 )
 
 
+type PostOrganizationRequest struct {
+	Name             string           `json:"name"`
+	Address          map[string]any   `json:"address"`
+	ContactInfo      string           `json:"contact_info"`
+	OrganizationType OrganizationType `json:"organization_type"`
+}
 
-func (s *organizationStoreImpl) CreateRequest(name, formatted_address, contactInfo string, address map[string]any, organizationType OrganizationType) (*Organization, error) {
-
+func (s *organizationStoreImpl) CreateOrganization(r *PostOrganizationRequest) (*Organization, error) {
 	orgId, err := uuid.NewV7()
 	if err != nil {
 		return nil, err
 	}
 
-	uniqueURL := GenerateRandomString(10)
-
-	return &Organization{
-		ID:               orgId,
-		CreatedAt:        time.Now().UTC(),
-		UpdatedAt:        time.Now().UTC(),
-		Name:             name,
-		UniqueURL:        uniqueURL,
-		FormattedAddress: formatted_address,
-		Address:          address,
-		ContactInfo:      contactInfo,
-		OrganizationType: organizationType,
-		IsDeleted:        false,
-	}, nil
-}
-
-func (s *organizationStoreImpl) CreateOrganization(o *Organization) (*Organization, error) {
-
-	jsonAddress, err := json.Marshal(o.Address)
+	jsonAddress, err := json.Marshal(r.Address)
 	if err != nil {
 		return nil, err
 	}
 
+	formatted, ok := (r.Address)["formatted_address"];
+	if !ok {
+		return nil, fmt.Errorf("missing formatted_address in address")
+	}
+
+
 	data := map[string]any{
-		"id":                o.ID,
-		"created_at":        o.CreatedAt,
-		"updated_at":        o.UpdatedAt,
-		"name":              o.Name,
-		"unique_url":        o.UniqueURL,
-		"formatted_address": o.FormattedAddress,
+		"id":                orgId,
+		"created_at":        time.Now().UTC(),
+		"updated_at":        time.Now().UTC(),
+		"name":              r.Name,
+		"unique_url":        GenerateRandomString(10),
+		"formatted_address": formatted,
 		"address":           jsonAddress,
-		"contact_info":      o.ContactInfo,
-		"organization_type": o.OrganizationType,
-		"logo_url":          o.LogoUrl,
-		"scac":              o.SCAC,
-		"is_deleted":        o.IsDeleted,
+		"contact_info":      r.ContactInfo,
+		"organization_type": r.OrganizationType,
+		"logo_url":          "",
+		"scac":              "",
+		"is_deleted":        false,
 	}
 
 	query, values, err := BuildInsertQuery("organizations", data)
@@ -74,58 +67,49 @@ func (s *organizationStoreImpl) CreateOrganization(o *Organization) (*Organizati
 
 }
 
-func (s *organizationStoreImpl) UpdateRequest(
-	name, 
-	formatted_address, 
-	logo_url,
-	contactInfo string, 
-	address map[string]any, 
-	organizationType OrganizationType,
-) (*Organization, error) {
-
-	return &Organization{
-		Name:             name,
-		FormattedAddress: formatted_address,
-		Address:          address,
-		ContactInfo:      contactInfo,
-		OrganizationType: organizationType,
-		LogoUrl:          logo_url,
-		IsDeleted:        false,
-	}, nil
+type PatchOrganizationRequest struct {
+	Name            	*string				`json:"name"`
+	Address         	*map[string]any		`json:"address"`
+	LogoURL		 		*string				`json:"logo_url"`
+	ContactInfo     	*string				`json:"contact_info"`
+	OrganizationType	*OrganizationType	`json:"organization_type"`
 }
 
-func (s *organizationStoreImpl) UpdateOrganization(o *Organization) (*Organization, error) {
+func (s *organizationStoreImpl) UpdateOrganization(ID uuid.UUID, r *PatchOrganizationRequest) (*Organization, error) {
 
 	updateData := make(map[string]any)
 	updateData["updated_at"] = time.Now().UTC()
 
-	if o.Name != "" {
-		updateData["name"] = o.Name
+	if r.Name != nil {
+		updateData["name"] = r.Name
 	}
-	if o.UniqueURL != "" {
-		updateData["unique_url"] = o.UniqueURL
-	}
-	if o.FormattedAddress != "" {
-		jsonAddress, err := json.Marshal(o.Address)
+
+	if r.Address != nil {
+		formatted, ok := (*r.Address)["formatted_address"];
+		if !ok {
+			return nil, fmt.Errorf("missing formatted_address in address")
+		}
+		updateData["formatted_address"] = formatted
+
+		jsonAddress, err := json.Marshal(r.Address)
 		if err != nil {
 			return nil, err
 		}
-
 		updateData["address"] = jsonAddress
-		updateData["formatted_address"] = o.FormattedAddress
+		
 	}
-	if o.ContactInfo != "" {
-		updateData["contact_info"] = o.ContactInfo
+	if r.ContactInfo != nil {
+		updateData["contact_info"] = r.ContactInfo
 	}
-	if o.OrganizationType != "" {
-		updateData["organization_type"] = o.OrganizationType
+	if r.OrganizationType != nil {
+		updateData["organization_type"] = r.OrganizationType
 	}
-	if o.LogoUrl != "" {
-		updateData["logo_url"] = o.LogoUrl
+	if r.LogoURL != nil {
+		updateData["logo_url"] = r.LogoURL
 	}
 
 	conditions := map[string]any{
-		"id": o.ID,
+		"id": ID,
 	}
 
 	query, values, err := BuildUpdateQuery("organizations", updateData, conditions)
@@ -234,11 +218,9 @@ type OrganizationStore interface {
 	GetOrganizationByName(name string) (*Organization, error)
 	GetOrganizationByUniqueURL(uniqueURL string) (*Organization, error)
 
-	CreateOrganization(o *Organization) (*Organization, error)
-	CreateRequest(name, formatted_address, contactInfo string, address map[string]any, organizationType OrganizationType) (*Organization, error)
+	CreateOrganization(r *PostOrganizationRequest) (*Organization, error)
+	UpdateOrganization(ID uuid.UUID, r *PatchOrganizationRequest) (*Organization, error)
 
-	UpdateOrganization(o *Organization) (*Organization, error)
-	UpdateRequest(name, formatted_address, logo_url, contactInfo string, address map[string]any, organizationType OrganizationType) (*Organization, error)
 }
 
 type OrganizationType string

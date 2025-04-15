@@ -255,7 +255,7 @@ export interface paths {
             /** @description Create Organization Request */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["handlers.PostOrganizationRequest"];
+                    "application/json": components["schemas"]["data.PostOrganizationRequest"];
                 };
             };
             responses: {
@@ -342,7 +342,7 @@ export interface paths {
             /** @description Patch Organization Request */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["handlers.PatchOrganizationRequest"];
+                    "application/json": components["schemas"]["data.PatchOrganizationRequest"];
                 };
             };
             responses: {
@@ -569,8 +569,21 @@ export interface components {
         "data.OrganizationStatus": "pending" | "active" | "inactive";
         /** @enum {string} */
         "data.OrganizationType": "airline" | "carrier" | "warehouse";
+        "data.PatchOrganizationRequest": {
+            address?: Record<string, unknown>;
+            contact_info?: string;
+            logo_url?: string;
+            name?: string;
+            organization_type?: components["schemas"]["data.OrganizationType"];
+        };
         /** @enum {string} */
         "data.PermissionsEnum": "organization.write";
+        "data.PostOrganizationRequest": {
+            address?: Record<string, unknown>;
+            contact_info?: string;
+            name?: string;
+            organization_type?: components["schemas"]["data.OrganizationType"];
+        };
         "data.User": {
             created_at?: string;
             email?: string;
@@ -581,13 +594,6 @@ export interface components {
         "handlers.ApiError": {
             error?: string;
             status?: number;
-        };
-        "handlers.PatchOrganizationRequest": {
-            address?: Record<string, unknown>;
-            contact_info?: string;
-            logo_url?: string;
-            name?: string;
-            organization_type?: components["schemas"]["data.OrganizationType"];
         };
         "handlers.PatchUserRequest": {
             password?: string;
@@ -606,12 +612,6 @@ export interface components {
         };
         "handlers.PostAuthResponse": {
             token?: string;
-        };
-        "handlers.PostOrganizationRequest": {
-            address?: Record<string, unknown>;
-            contact_info?: string;
-            name?: string;
-            organization_type?: components["schemas"]["data.OrganizationType"];
         };
         "handlers.PostUserRequest": {
             email?: string;

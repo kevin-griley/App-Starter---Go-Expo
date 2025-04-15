@@ -1,28 +1,20 @@
 package handlers
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/kevin-griley/api/internal/data"
 	"github.com/kevin-griley/api/internal/middleware"
 )
 
-type PostOrganizationRequest struct {
-	Name             string                `json:"name"`
-	Address          map[string]any        `json:"address"`
-	ContactInfo      string                `json:"contact_info"`
-	OrganizationType data.OrganizationType `json:"organization_type"`
-}
-
 //	@Summary		Create a new organization
 //	@Description	Create a new organization
 //	@Tags			Organization
 //	@Accept			json
 //	@Produce		json
-//	@Param			body			body		PostOrganizationRequest	true	"Create Organization Request"
-//	@Success		200				{object}	data.Organization		"Organization"
-//	@Failure		400				{object}	ApiError				"Bad Request"
+//	@Param			body			body		data.PostOrganizationRequest	true			"Create Organization Request"
+//	@Success		200				{object}	data.Organization				"Organization"
+//	@Failure		400				{object}	ApiError						"Bad Request"
 //	@Router			/organization	[post]
 func HandlePostOrganization(w http.ResponseWriter, r *http.Request) *ApiError {
 	ctx := r.Context()
@@ -32,28 +24,12 @@ func HandlePostOrganization(w http.ResponseWriter, r *http.Request) *ApiError {
 		return &ApiError{http.StatusInternalServerError, "no database store in context"}
 	}
 
-	postReq := new(PostOrganizationRequest)
+	postReq := new(data.PostOrganizationRequest)
 	if err := DecodeJSONRequest(r, postReq, 1<<20); err != nil {
 		return &ApiError{http.StatusBadRequest, err.Error()}
 	}
 
-	formattedAddress, ok := postReq.Address["formatted_address"].(string)
-	if !ok {
-		return &ApiError{http.StatusBadRequest, "formatted_address is required"}
-	}
-
-	org, err := store.Organization.CreateRequest(
-		postReq.Name, 
-		formattedAddress, 
-		postReq.ContactInfo, 
-		postReq.Address, 
-		postReq.OrganizationType,
-	)
-	if err != nil {
-		return &ApiError{http.StatusBadRequest, err.Error()}
-	}
-
-	resp, err := store.Organization.CreateOrganization(org)
+	resp, err := store.Organization.CreateOrganization(postReq)
 	if err != nil {
 		return &ApiError{http.StatusInternalServerError, err.Error()}
 	}
@@ -66,8 +42,6 @@ func HandlePostOrganization(w http.ResponseWriter, r *http.Request) *ApiError {
 	permissions := []data.PermissionsEnum{
 		data.WriteOrganization,
 	}
-
-	fmt.Println(permissions)
 
 	association, err := store.Association.CreateRequest(userID, resp.ID, data.Active, permissions)
 	if err != nil {
@@ -113,13 +87,6 @@ func HandleGetOrganizationByID(w http.ResponseWriter, r *http.Request) *ApiError
 	return WriteJSON(w, http.StatusOK, org)
 }
 
-type PatchOrganizationRequest struct {
-	Name            	string					`json:"name"`
-	Address         	map[string]any			`json:"address"`
-	LogoURL		 		string					`json:"logo_url"`
-	ContactInfo     	string					`json:"contact_info"`
-	OrganizationType	data.OrganizationType	`json:"organization_type"`
-}
 
 //	@Summary		Patch organization by ID
 //	@Description	Patch organization by ID
@@ -127,10 +94,10 @@ type PatchOrganizationRequest struct {
 //	@Security		ApiKeyAuth
 //	@Accept			json
 //	@Produce		json
-//	@Param			ID					path		string						true	"Organization ID"
-//	@Param			body				body		PatchOrganizationRequest	true	"Patch Organization Request"
-//	@Success		200					{object}	data.Organization			"Organization"
-//	@Failure		400					{object}	ApiError					"Bad Request"
+//	@Param			ID					path		string							true	"Organization ID"
+//	@Param			body				body		data.PatchOrganizationRequest	true	"Patch Organization Request"
+//	@Success		200					{object}	data.Organization				"Organization"
+//	@Failure		400					{object}	ApiError						"Bad Request"
 //	@Router			/organization/{ID}	[patch]
 func HandlePatchOrganizationByID(w http.ResponseWriter, r *http.Request) *ApiError {
 	ctx := r.Context()
@@ -140,25 +107,8 @@ func HandlePatchOrganizationByID(w http.ResponseWriter, r *http.Request) *ApiErr
 		return &ApiError{http.StatusInternalServerError, "no database store in context"}
 	}
 
-	patchReq := new(PatchOrganizationRequest)
+	patchReq := new(data.PatchOrganizationRequest)
 	if err := DecodeJSONRequest(r, patchReq, 1<<20); err != nil {
-		return &ApiError{http.StatusBadRequest, err.Error()}
-	}
-
-	formattedAddress, ok := patchReq.Address["formatted_address"].(string)
-	if !ok {
-		return &ApiError{http.StatusBadRequest, "formatted_address is required"}
-	}
-
-	org, err := store.Organization.UpdateRequest(
-		patchReq.Name,
-		formattedAddress,
-		patchReq.LogoURL,
-		patchReq.ContactInfo,
-		patchReq.Address,
-		patchReq.OrganizationType,
-	)
-	if err != nil {
 		return &ApiError{http.StatusBadRequest, err.Error()}
 	}
 
@@ -167,9 +117,7 @@ func HandlePatchOrganizationByID(w http.ResponseWriter, r *http.Request) *ApiErr
 		return &ApiError{http.StatusBadRequest, err.Error()}
 	}
 
-	org.ID = orgId
-
-	resp, err := store.Organization.UpdateOrganization(org)
+	resp, err := store.Organization.UpdateOrganization(orgId, patchReq)
 	if err != nil {
 		return &ApiError{http.StatusInternalServerError, err.Error()}
 	}

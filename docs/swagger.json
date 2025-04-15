@@ -200,7 +200,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.PostOrganizationRequest"
+                            "$ref": "#/definitions/data.PostOrganizationRequest"
                         }
                     }
                 ],
@@ -293,7 +293,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.PatchOrganizationRequest"
+                            "$ref": "#/definitions/data.PatchOrganizationRequest"
                         }
                     }
                 ],
@@ -581,6 +581,27 @@
                 "Warehouse"
             ]
         },
+        "data.PatchOrganizationRequest": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "object",
+                    "additionalProperties": {}
+                },
+                "contact_info": {
+                    "type": "string"
+                },
+                "logo_url": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "organization_type": {
+                    "$ref": "#/definitions/data.OrganizationType"
+                }
+            }
+        },
         "data.PermissionsEnum": {
             "type": "string",
             "enum": [
@@ -589,6 +610,24 @@
             "x-enum-varnames": [
                 "WriteOrganization"
             ]
+        },
+        "data.PostOrganizationRequest": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "object",
+                    "additionalProperties": {}
+                },
+                "contact_info": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "organization_type": {
+                    "$ref": "#/definitions/data.OrganizationType"
+                }
+            }
         },
         "data.User": {
             "type": "object",
@@ -618,27 +657,6 @@
                 },
                 "status": {
                     "type": "integer"
-                }
-            }
-        },
-        "handlers.PatchOrganizationRequest": {
-            "type": "object",
-            "properties": {
-                "address": {
-                    "type": "object",
-                    "additionalProperties": {}
-                },
-                "contact_info": {
-                    "type": "string"
-                },
-                "logo_url": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "organization_type": {
-                    "$ref": "#/definitions/data.OrganizationType"
                 }
             }
         },
@@ -688,24 +706,6 @@
             "properties": {
                 "token": {
                     "type": "string"
-                }
-            }
-        },
-        "handlers.PostOrganizationRequest": {
-            "type": "object",
-            "properties": {
-                "address": {
-                    "type": "object",
-                    "additionalProperties": {}
-                },
-                "contact_info": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "organization_type": {
-                    "$ref": "#/definitions/data.OrganizationType"
                 }
             }
         },
