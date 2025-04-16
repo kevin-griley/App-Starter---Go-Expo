@@ -10,35 +10,30 @@ import (
 	"github.com/lib/pq"
 )
 
-func (s *associationStoreImpl) CreateRequest(userID, orgID uuid.UUID, status OrganizationStatus, permissions []PermissionsEnum) (*Association, error) {
-	assocId, err := uuid.NewV7()
+
+type PostAssociationRequest struct {
+	OrganizationID	uuid.UUID           `json:"organization_id"`
+	Permissions		[]PermissionsEnum 	`json:"permissions"`
+	UserID			uuid.UUID           `json:"user_id"`
+	Status 			OrganizationStatus 	`json:"status"`
+}
+
+
+func (s *associationStoreImpl) CreateAssociation(r *PostAssociationRequest) (*Association, error) {
+
+	ID, err := uuid.NewV7()
 	if err != nil {
 		return nil, err
 	}
 
-	return &Association{
-		ID:               	assocId,
-		CreatedAt:        	time.Now().UTC(),
-		UpdatedAt:        	time.Now().UTC(),
-		Status: 		 	status,
-		Permissions:      	permissions,
-		UserID: 			userID,
-		OrganizationID: 	orgID,
-		
-	}, nil
-} 
-
-
-func (s *associationStoreImpl) CreateAssociation(a *Association) (*Association, error) {
-
 	data := map[string]any{
-		"id":                a.ID,
-		"created_at":        a.CreatedAt,
-		"updated_at":        a.UpdatedAt,
-		"status":            a.Status,
-		"permissions":       pq.Array(a.Permissions),
-		"user_id":           a.UserID,
-		"organization_id":   a.OrganizationID,
+		"id":                ID,
+		"created_at":        time.Now().UTC(),
+		"updated_at":        time.Now().UTC(),
+		"status":            r.Status,
+		"permissions":       pq.Array(r.Permissions),
+		"user_id":           r.UserID,
+		"organization_id":   r.OrganizationID,
 	}
 
 	query, values, err := BuildInsertQuery("user_associations", data)
@@ -124,8 +119,7 @@ var NewAssociationStore = func(db *sql.DB) AssociationStore {
 type AssociationStore interface {
 	GetAssociationByUserID(ID uuid.UUID, expands []string) ([]*Association, error)
 
-	CreateAssociation(a *Association) (*Association, error)
-	CreateRequest(userID, orgID uuid.UUID, status OrganizationStatus, permissions []PermissionsEnum) (*Association, error)
+	CreateAssociation(r *PostAssociationRequest) (*Association, error)
 }
 
 

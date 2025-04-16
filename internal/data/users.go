@@ -9,8 +9,13 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func (s *userStoreImpl) CreateRequest(Email, Password string) (*User, error) {
-	encpwd, err := bcrypt.GenerateFromPassword([]byte(Password), bcrypt.DefaultCost)
+type PostUserRequest struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
+func (s *userStoreImpl) CreateUser(r *PostUserRequest) (*User, error) {
+	encpwd, err := bcrypt.GenerateFromPassword([]byte(r.Password), bcrypt.DefaultCost)
 	if err != nil {
 		return nil, err
 	}
@@ -20,29 +25,15 @@ func (s *userStoreImpl) CreateRequest(Email, Password string) (*User, error) {
 		return nil, err
 	}
 
-	return &User{
-		ID:             userId,
-		CreatedAt:      time.Now().UTC(),
-		UpdatedAt:      time.Now().UTC(),
-		UserName:       Email,
-		Email:          Email,
-		HashedPassword: string(encpwd),
-		LastRequest:    time.Now().UTC(),
-		LastLogin:      time.Now().UTC(),
-	}, nil
-}
-
-func (s *userStoreImpl) CreateUser(u *User) (*User, error) {
-
 	data := map[string]any{
-		"id":              u.ID,
-		"created_at":      u.CreatedAt,
-		"updated_at":      u.UpdatedAt,
-		"user_name":       u.UserName,
-		"email":           u.Email,
-		"hashed_password": u.HashedPassword,
-		"last_request":    u.LastRequest,
-		"last_login":      u.LastLogin,
+		"id":              userId,
+		"created_at":      time.Now().UTC(),
+		"updated_at":      time.Now().UTC(),
+		"user_name":       r.Email,
+		"email":           r.Email,
+		"hashed_password": string(encpwd),
+		"last_request":    time.Now().UTC(),
+		"last_login":      time.Now().UTC(),
 	}
 
 	query, values, err := BuildInsertQuery("users", data)
@@ -63,61 +54,30 @@ func (s *userStoreImpl) CreateUser(u *User) (*User, error) {
 
 }
 
-func (s *userStoreImpl) UpdateRequest(UserName, Password string) (*User, error) {
-
-	user := new(User)
-
-	if Password != "" {
-		encpwd, err := bcrypt.GenerateFromPassword([]byte(Password), bcrypt.DefaultCost)
-		if err != nil {
-			return nil, err
-		}
-		user.HashedPassword = string(encpwd)
-	}
-
-	if UserName != "" {
-		user.UserName = UserName
-	}
-
-	return user, nil
-
+type PatchUserRequest struct {
+	UserName *string `json:"user_name"`
+	Password *string `json:"password"`
 }
 
-func (s *userStoreImpl) UpdateUser(u *User) (*User, error) {
+func (s *userStoreImpl) UpdateUser(ID uuid.UUID, r *PatchUserRequest) (*User, error) {
 
 	updateData := make(map[string]any)
 	updateData["updated_at"] = time.Now().UTC()
 
-	if u.UserName != "" {
-		updateData["user_name"] = u.UserName
+	if r.UserName != nil {
+		updateData["user_name"] = r.UserName
 	}
-	if u.Email != "" {
-		updateData["email"] = u.Email
-	}
-	if u.HashedPassword != "" {
-		updateData["hashed_password"] = u.HashedPassword
-	}
-	if u.IsAdmin {
-		updateData["is_admin"] = u.IsAdmin
-	}
-	if u.IsVerified {
-		updateData["is_verified"] = u.IsVerified
-	}
-	if u.IsDeleted {
-		updateData["is_deleted"] = u.IsDeleted
-	}
-	if !u.LastRequest.IsZero() {
-		updateData["last_request"] = u.LastRequest
-	}
-	if !u.LastLogin.IsZero() {
-		updateData["last_login"] = u.LastLogin
-	}
-	if u.FailedLoginAttempts != 0 {
-		updateData["failed_login_attempts"] = u.FailedLoginAttempts
+
+	if r.Password != nil {
+		encpwd, err := bcrypt.GenerateFromPassword([]byte(*r.Password), bcrypt.DefaultCost)
+		if err != nil {
+			return nil, err
+		}
+		updateData["hashed_password"] = string(encpwd)
 	}
 
 	conditions := map[string]any{
-		"id": u.ID,
+		"id": ID,
 	}
 
 	query, args, err := BuildUpdateQuery("users", updateData, conditions)
@@ -199,11 +159,8 @@ type UserStore interface {
 	GetUserByEmail(email string) (*User, error)
 	GetUserByID(ID uuid.UUID) (*User, error)
 
-	CreateUser(user *User) (*User, error)
-	CreateRequest(email, password string) (*User, error)
-
-	UpdateUser(user *User) (*User, error)
-	UpdateRequest(userName, password string) (*User, error)
+	CreateUser(r *PostUserRequest) (*User, error)
+	UpdateUser(ID uuid.UUID,r *PatchUserRequest) (*User, error)
 }
 
 type User struct {

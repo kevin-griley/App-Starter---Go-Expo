@@ -7,19 +7,14 @@ import (
 	"github.com/kevin-griley/api/internal/middleware"
 )
 
-type PostUserRequest struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
-}
-
 //	@Summary		Create a new user
 //	@Description	Create a new user
 //	@Tags			User
 //	@Accept			json
 //	@Produce		json
-//	@Param			body	body		PostUserRequest	true	"Create User Request"
-//	@Success		200		{object}	data.User		"User"
-//	@Failure		400		{object}	ApiError		"Bad Request"
+//	@Param			body	body		data.PostUserRequest	true	"Create User Request"
+//	@Success		200		{object}	data.User				"User"
+//	@Failure		400		{object}	ApiError				"Bad Request"
 //	@Router			/user	[post]
 func HandlePostUser(w http.ResponseWriter, r *http.Request) *ApiError {
 	ctx := r.Context()
@@ -29,17 +24,12 @@ func HandlePostUser(w http.ResponseWriter, r *http.Request) *ApiError {
 		return &ApiError{http.StatusInternalServerError, "no database store in context"}
 	}
 
-	postReq := new(PostUserRequest)
+	postReq := new(data.PostUserRequest)
 	if err := DecodeJSONRequest(r, postReq, 1<<20); err != nil {
 		return &ApiError{http.StatusBadRequest, err.Error()}
 	}
 
-	user, err := store.User.CreateRequest(postReq.Email, postReq.Password)
-	if err != nil {
-		return &ApiError{http.StatusBadRequest, err.Error()}
-	}
-
-	resp, err := store.User.CreateUser(user)
+	resp, err := store.User.CreateUser(postReq)
 	if err != nil {
 		return &ApiError{http.StatusInternalServerError, err.Error()}
 	}
@@ -77,20 +67,15 @@ func HandleGetUserByKey(w http.ResponseWriter, r *http.Request) *ApiError {
 	return WriteJSON(w, http.StatusOK, user)
 }
 
-type PatchUserRequest struct {
-	UserName string `json:"user_name"`
-	Password string `json:"password"`
-}
-
 //	@Summary		Patch user by apiKey
 //	@Description	Patch user by apiKey
 //	@Tags			User
 //	@Security		ApiKeyAuth
 //	@Accept			json
 //	@Produce		json
-//	@Param			body		body		PatchUserRequest	true	"Patch User Request"
-//	@Success		200			{object}	data.User			"User"
-//	@Failure		400			{object}	ApiError			"Bad Request"
+//	@Param			body		body		data.PatchUserRequest	true	"Patch User Request"
+//	@Success		200			{object}	data.User				"User"
+//	@Failure		400			{object}	ApiError				"Bad Request"
 //	@Router			/user/me	[patch]
 func HandlePatchUser(w http.ResponseWriter, r *http.Request) *ApiError {
 	ctx := r.Context()
@@ -100,13 +85,8 @@ func HandlePatchUser(w http.ResponseWriter, r *http.Request) *ApiError {
 		return &ApiError{http.StatusInternalServerError, "no database store in context"}
 	}
 
-	patchReq := new(PatchUserRequest)
+	patchReq := new(data.PatchUserRequest)
 	if err := DecodeJSONRequest(r, patchReq, 1<<20); err != nil {
-		return &ApiError{http.StatusBadRequest, err.Error()}
-	}
-
-	user, err := store.User.UpdateRequest(patchReq.UserName, patchReq.Password)
-	if err != nil {
 		return &ApiError{http.StatusBadRequest, err.Error()}
 	}
 
@@ -115,9 +95,7 @@ func HandlePatchUser(w http.ResponseWriter, r *http.Request) *ApiError {
 		return &ApiError{http.StatusBadRequest, "Invalid user id"}
 	}
 
-	user.ID = userID
-
-	resp, err := store.User.UpdateUser(user)
+	resp, err := store.User.UpdateUser(userID, patchReq)
 	if err != nil {
 		return &ApiError{http.StatusInternalServerError, err.Error()}
 	}

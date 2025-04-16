@@ -65,7 +65,12 @@ func HandlePostLogin(w http.ResponseWriter, r *http.Request) *ApiError {
 
 	if !user.ValidPassword(postReq.Password) {
 		user.FailedLoginAttempts++
-		_, err := store.User.UpdateUser(user)
+
+
+		_, err := store.User.UpdateUser(user.ID, &data.PatchUserRequest{
+			Password: &postReq.Password,
+			UserName: &postReq.Email,	
+		})
 		if err != nil {
 			log.Printf("failed to update user: %v", err)
 			return &ApiError{http.StatusInternalServerError, err.Error()}
@@ -75,7 +80,10 @@ func HandlePostLogin(w http.ResponseWriter, r *http.Request) *ApiError {
 
 	user.FailedLoginAttempts = 1
 	user.LastLogin = time.Now().UTC()
-	user, err = store.User.UpdateUser(user)
+	user, err = store.User.UpdateUser(user.ID, &data.PatchUserRequest{
+		Password: &postReq.Password,
+		UserName: &postReq.Email,
+	})
 
 	if err != nil {
 		return &ApiError{http.StatusInternalServerError, err.Error()}
@@ -240,19 +248,14 @@ func HandlePostResetConfirm(w http.ResponseWriter, r *http.Request) *ApiError {
 		return &ApiError{http.StatusUnauthorized, "invalid token"}
 	}
 
-	user, err := store.User.UpdateRequest("", postReq.NewPassword)
-	if err != nil {
-		return &ApiError{http.StatusInternalServerError, err.Error()}
-	}
-
 	userID, err := uuid.Parse(subject)
 	if err != nil {
 		return &ApiError{http.StatusInternalServerError, err.Error()}
 	}
 
-	user.ID = userID
-
-	resp, err := store.User.UpdateUser(user)
+	resp, err := store.User.UpdateUser(userID, &data.PatchUserRequest{
+		Password: &postReq.NewPassword,
+	})
 	if err != nil {
 		return &ApiError{http.StatusInternalServerError, err.Error()}
 	}

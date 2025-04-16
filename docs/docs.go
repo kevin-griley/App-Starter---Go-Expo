@@ -340,7 +340,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.PostUserRequest"
+                            "$ref": "#/definitions/data.PostUserRequest"
                         }
                     }
                 ],
@@ -417,7 +417,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.PatchUserRequest"
+                            "$ref": "#/definitions/data.PatchUserRequest"
                         }
                     }
                 ],
@@ -609,6 +609,17 @@ const docTemplate = `{
                 }
             }
         },
+        "data.PatchUserRequest": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "user_name": {
+                    "type": "string"
+                }
+            }
+        },
         "data.PermissionsEnum": {
             "type": "string",
             "enum": [
@@ -633,6 +644,17 @@ const docTemplate = `{
                 },
                 "organization_type": {
                     "$ref": "#/definitions/data.OrganizationType"
+                }
+            }
+        },
+        "data.PostUserRequest": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
                 }
             }
         },
@@ -664,17 +686,6 @@ const docTemplate = `{
                 },
                 "status": {
                     "type": "integer"
-                }
-            }
-        },
-        "handlers.PatchUserRequest": {
-            "type": "object",
-            "properties": {
-                "password": {
-                    "type": "string"
-                },
-                "user_name": {
-                    "type": "string"
                 }
             }
         },
@@ -712,17 +723,6 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "token": {
-                    "type": "string"
-                }
-            }
-        },
-        "handlers.PostUserRequest": {
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "password": {
                     "type": "string"
                 }
             }

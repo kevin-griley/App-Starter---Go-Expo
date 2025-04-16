@@ -12,6 +12,10 @@ import (
 	"github.com/kevin-griley/api/internal/data"
 )
 
+func stringPtr(s string) *string {
+	return &s
+}
+
 func TestUsers(t *testing.T) {
 	number := rand.Int()
 	newUserName := fmt.Sprintf("Kevin Griley %d", number)
@@ -20,16 +24,16 @@ func TestUsers(t *testing.T) {
 		name           string
 		method         string
 		path           string
-		updatePayload  PatchUserRequest
+		updatePayload  data.PatchUserRequest
 		expectedStatus int
 	}{
 		{
 			name:   "Valid Update",
 			method: http.MethodPatch,
 			path:   "/user/me",
-			updatePayload: PatchUserRequest{
-				UserName: newUserName,
-				Password: "Kevin",
+			updatePayload: data.PatchUserRequest{
+				UserName: &newUserName,
+				Password: stringPtr("Kevin"),
 			},
 			expectedStatus: http.StatusOK,
 		},

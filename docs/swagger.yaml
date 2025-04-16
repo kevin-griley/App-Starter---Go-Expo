@@ -83,6 +83,13 @@ definitions:
       organization_type:
         $ref: '#/definitions/data.OrganizationType'
     type: object
+  data.PatchUserRequest:
+    properties:
+      password:
+        type: string
+      user_name:
+        type: string
+    type: object
   data.PermissionsEnum:
     enum:
     - organization.write
@@ -100,6 +107,13 @@ definitions:
         type: string
       organization_type:
         $ref: '#/definitions/data.OrganizationType'
+    type: object
+  data.PostUserRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
     type: object
   data.User:
     properties:
@@ -120,13 +134,6 @@ definitions:
         type: string
       status:
         type: integer
-    type: object
-  handlers.PatchUserRequest:
-    properties:
-      password:
-        type: string
-      user_name:
-        type: string
     type: object
   handlers.PostAuthRequest:
     properties:
@@ -150,13 +157,6 @@ definitions:
   handlers.PostAuthResponse:
     properties:
       token:
-        type: string
-    type: object
-  handlers.PostUserRequest:
-    properties:
-      email:
-        type: string
-      password:
         type: string
     type: object
 info:
@@ -373,7 +373,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/handlers.PostUserRequest'
+          $ref: '#/definitions/data.PostUserRequest'
       produces:
       - application/json
       responses:
@@ -419,7 +419,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/handlers.PatchUserRequest'
+          $ref: '#/definitions/data.PatchUserRequest'
       produces:
       - application/json
       responses:

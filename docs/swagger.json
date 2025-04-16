@@ -333,7 +333,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.PostUserRequest"
+                            "$ref": "#/definitions/data.PostUserRequest"
                         }
                     }
                 ],
@@ -410,7 +410,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.PatchUserRequest"
+                            "$ref": "#/definitions/data.PatchUserRequest"
                         }
                     }
                 ],
@@ -602,6 +602,17 @@
                 }
             }
         },
+        "data.PatchUserRequest": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "user_name": {
+                    "type": "string"
+                }
+            }
+        },
         "data.PermissionsEnum": {
             "type": "string",
             "enum": [
@@ -626,6 +637,17 @@
                 },
                 "organization_type": {
                     "$ref": "#/definitions/data.OrganizationType"
+                }
+            }
+        },
+        "data.PostUserRequest": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
                 }
             }
         },
@@ -657,17 +679,6 @@
                 },
                 "status": {
                     "type": "integer"
-                }
-            }
-        },
-        "handlers.PatchUserRequest": {
-            "type": "object",
-            "properties": {
-                "password": {
-                    "type": "string"
-                },
-                "user_name": {
-                    "type": "string"
                 }
             }
         },
@@ -705,17 +716,6 @@
             "type": "object",
             "properties": {
                 "token": {
-                    "type": "string"
-                }
-            }
-        },
-        "handlers.PostUserRequest": {
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "password": {
                     "type": "string"
                 }
             }

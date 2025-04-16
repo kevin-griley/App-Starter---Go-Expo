@@ -43,12 +43,13 @@ func HandlePostOrganization(w http.ResponseWriter, r *http.Request) *ApiError {
 		data.WriteOrganization,
 	}
 
-	association, err := store.Association.CreateRequest(userID, resp.ID, data.Active, permissions)
-	if err != nil {
-		return &ApiError{http.StatusInternalServerError, err.Error()}
-	}
-
-	_, err = store.Association.CreateAssociation(association)
+	_, err = store.Association.CreateAssociation(&data.PostAssociationRequest{
+		OrganizationID: resp.ID,
+		Permissions:   permissions,
+		UserID: 	  userID,
+		Status:       data.Active,
+	})
+	
 	if err != nil {
 		return &ApiError{http.StatusInternalServerError, err.Error()}
 	}
