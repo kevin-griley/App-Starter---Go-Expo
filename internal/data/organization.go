@@ -18,7 +18,7 @@ type PostOrganizationRequest struct {
 }
 
 func (s *organizationStoreImpl) CreateOrganization(r *PostOrganizationRequest) (*Organization, error) {
-	orgId, err := uuid.NewV7()
+	ID, err := uuid.NewV7()
 	if err != nil {
 		return nil, err
 	}
@@ -33,9 +33,8 @@ func (s *organizationStoreImpl) CreateOrganization(r *PostOrganizationRequest) (
 		return nil, fmt.Errorf("missing formatted_address in address")
 	}
 
-
 	data := map[string]any{
-		"id":                orgId,
+		"id":                ID,
 		"created_at":        time.Now().UTC(),
 		"updated_at":        time.Now().UTC(),
 		"name":              r.Name,

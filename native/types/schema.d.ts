@@ -387,7 +387,7 @@ export interface paths {
             /** @description Create User Request */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["handlers.PostUserRequest"];
+                    "application/json": components["schemas"]["data.PostUserRequest"];
                 };
             };
             responses: {
@@ -468,7 +468,7 @@ export interface paths {
             /** @description Patch User Request */
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["handlers.PatchUserRequest"];
+                    "application/json": components["schemas"]["data.PatchUserRequest"];
                 };
             };
             responses: {
@@ -576,6 +576,10 @@ export interface components {
             name?: string;
             organization_type?: components["schemas"]["data.OrganizationType"];
         };
+        "data.PatchUserRequest": {
+            password?: string;
+            user_name?: string;
+        };
         /** @enum {string} */
         "data.PermissionsEnum": "organization.write";
         "data.PostOrganizationRequest": {
@@ -583,6 +587,10 @@ export interface components {
             contact_info?: string;
             name?: string;
             organization_type?: components["schemas"]["data.OrganizationType"];
+        };
+        "data.PostUserRequest": {
+            email?: string;
+            password?: string;
         };
         "data.User": {
             created_at?: string;
@@ -594,10 +602,6 @@ export interface components {
         "handlers.ApiError": {
             error?: string;
             status?: number;
-        };
-        "handlers.PatchUserRequest": {
-            password?: string;
-            user_name?: string;
         };
         "handlers.PostAuthRequest": {
             email?: string;
@@ -612,10 +616,6 @@ export interface components {
         };
         "handlers.PostAuthResponse": {
             token?: string;
-        };
-        "handlers.PostUserRequest": {
-            email?: string;
-            password?: string;
         };
     };
     responses: never;

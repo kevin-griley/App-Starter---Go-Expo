@@ -20,13 +20,13 @@ func (s *userStoreImpl) CreateUser(r *PostUserRequest) (*User, error) {
 		return nil, err
 	}
 
-	userId, err := uuid.NewV7()
+	ID, err := uuid.NewV7()
 	if err != nil {
 		return nil, err
 	}
 
 	data := map[string]any{
-		"id":              userId,
+		"id":              ID,
 		"created_at":      time.Now().UTC(),
 		"updated_at":      time.Now().UTC(),
 		"user_name":       r.Email,

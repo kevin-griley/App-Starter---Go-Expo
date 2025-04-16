@@ -210,7 +210,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/handlers.PostUserRequest"
+              $ref: "#/components/schemas/data.PostUserRequest"
         description: Create User Request
         required: true
       responses:
@@ -256,7 +256,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/handlers.PatchUserRequest"
+              $ref: "#/components/schemas/data.PatchUserRequest"
         description: Patch User Request
         required: true
       responses:
@@ -403,6 +403,13 @@ components:
         organization_type:
           $ref: "#/components/schemas/data.OrganizationType"
       type: object
+    data.PatchUserRequest:
+      properties:
+        password:
+          type: string
+        user_name:
+          type: string
+      type: object
     data.PermissionsEnum:
       enum:
         - organization.write
@@ -420,6 +427,13 @@ components:
           type: string
         organization_type:
           $ref: "#/components/schemas/data.OrganizationType"
+      type: object
+    data.PostUserRequest:
+      properties:
+        email:
+          type: string
+        password:
+          type: string
       type: object
     data.User:
       properties:
@@ -440,13 +454,6 @@ components:
           type: string
         status:
           type: integer
-      type: object
-    handlers.PatchUserRequest:
-      properties:
-        password:
-          type: string
-        user_name:
-          type: string
       type: object
     handlers.PostAuthRequest:
       properties:
@@ -470,12 +477,5 @@ components:
     handlers.PostAuthResponse:
       properties:
         token:
-          type: string
-      type: object
-    handlers.PostUserRequest:
-      properties:
-        email:
-          type: string
-        password:
           type: string
       type: object
