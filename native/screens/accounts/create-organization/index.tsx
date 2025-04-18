@@ -21,7 +21,7 @@ import { $api, queryClient } from '@/lib/api/client';
 import { AuthLayout } from '@/screens/auth/layout';
 import { z } from 'zod';
 
-import { GoogleInput } from '@/components/ui/form/googleInput';
+import { GoogleTest } from '@/components/ui/form/googleInput/test';
 import { ArrowLeft } from '@/lib/icons/ArrowLeft';
 
 const newOrgaizationSchema = z.object({
@@ -139,11 +139,7 @@ const CreateOrganizationWithoutLayout = () => {
                                     control={form.control}
                                     name="address"
                                     render={({ field }) => (
-                                        <GoogleInput
-                                            label="Address"
-                                            placeholder="Organization Address"
-                                            {...field}
-                                        />
+                                        <GoogleTest field={field} />
                                     )}
                                 />
 
