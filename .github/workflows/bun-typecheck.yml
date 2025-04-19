@@ -30,3 +30,32 @@ jobs:
       - name: Run Bun Typecheck
         working-directory: native
         run: bun typecheck
+
+  build-upload:
+    needs: bun-typecheck
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+
+      - name: Install Dependencies
+        working-directory: native
+        run: bun install
+
+      - name: Build Web Assets
+        working-directory: native
+        run: bun run build:web
+
+      - name: Upload Static Files to S3
+        working-directory: native
+        run: bun run s3:upload
+
