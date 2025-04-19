@@ -1,0 +1,32 @@
+name: Bun Typecheck for Native Project
+
+on:
+  push:
+    branches:
+      - main
+      - setup-gh-actions-bun-typecheck
+  pull_request:
+
+jobs:
+  bun-typecheck:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+
+      - name: Install Dependencies
+        working-directory: native
+        run: bun install
+
+      - name: Run Bun Typecheck
+        working-directory: native
+        run: bun typecheck
