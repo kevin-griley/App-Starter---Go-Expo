@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { ControllerRenderProps } from 'react-hook-form';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { FormSelect } from '..';
+import type { FormItemProps } from '..';
+import { FormDescription, FormSelect } from '..';
+import type { Option, Select } from '../../select';
 import {
     SelectContent,
     SelectGroup,
@@ -9,24 +10,24 @@ import {
     SelectTrigger,
     SelectValue,
 } from '../../select';
+
+import { BASE_URL } from '@/lib/api/client';
+import { useColorScheme } from '@/lib/useColorScheme';
+import { ActivityIndicator, Image, View } from 'react-native';
+import { DropdownMenuSeparator } from '../../dropdown-menu';
+import { Input } from '../../input';
 import { Text } from '../../text';
+import { useGooglePlacesAutocomplete } from './useGooglePlaces';
 
-const emails = [
-    { value: 'tom@cruise.com', label: 'tom@cruise.com' },
-    { value: 'napoleon@dynamite.com', label: 'napoleon@dynamite.com' },
-    { value: 'kunfu@panda.com', label: 'kunfu@panda.com' },
-    { value: 'bruce@lee.com', label: 'bruce@lee.com' },
-    { value: 'harry@potter.com', label: 'harry@potter.com' },
-    { value: 'jane@doe.com', label: 'jane@doe.com' },
-    { value: 'elon@musk.com', label: 'elon@musk.com' },
-    { value: 'lara@croft.com', label: 'lara@croft.com' },
-];
+export const GoogleTest = React.forwardRef<
+    React.ElementRef<typeof Select>,
+    Omit<
+        FormItemProps<typeof Select, Partial<Option>>,
+        'open' | 'onOpenChange' | 'onValueChange'
+    >
+>((props, ref) => {
+    const { isDarkColorScheme } = useColorScheme();
 
-interface GoogleInputProps {
-    field: ControllerRenderProps<any, any>;
-}
-
-export const GoogleTest: React.FC<GoogleInputProps> = ({ field }) => {
     const [selectTriggerWidth, setSelectTriggerWidth] = React.useState(0);
 
     const insets = useSafeAreaInsets();
@@ -38,34 +39,94 @@ export const GoogleTest: React.FC<GoogleInputProps> = ({ field }) => {
         right: 12,
     };
 
+    const inputRef = React.useRef<React.ElementRef<typeof Input>>(null);
+
+    const { input, suggestions, loading, onChangeText } =
+        useGooglePlacesAutocomplete({
+            ref: inputRef,
+            proxyUrl: BASE_URL + '/proxy',
+        });
+
+    React.useEffect(() => {
+        setTimeout(() => {
+            inputRef?.current?.focus();
+        }, 0);
+    }, [suggestions]);
+
     return (
-        <FormSelect {...field}>
+        <FormSelect {...props} ref={ref}>
             <SelectTrigger
                 onLayout={(ev) => {
                     setSelectTriggerWidth(ev.nativeEvent.layout.width);
                 }}
+                onPress={() => {
+                    inputRef.current?.focus();
+                }}
             >
-                <SelectValue
-                    className="text-mtext"
-                    placeholder="Select a verified email"
-                />
+                <SelectValue placeholder="Select address..." />
             </SelectTrigger>
+
             <SelectContent
                 insets={contentInsets}
                 style={{ width: selectTriggerWidth }}
             >
+                <Input
+                    key="google-input"
+                    className="flex-grow web:focus-visible:ring-bw"
+                    ref={inputRef}
+                    placeholder="Search for address..."
+                    value={input}
+                    onChangeText={onChangeText}
+                />
+
+                <DropdownMenuSeparator />
+
+                {loading && <ActivityIndicator size="large" />}
+
                 <SelectGroup>
-                    {emails.map((email) => (
+                    {suggestions.length > 0 ? (
+                        suggestions.map((place) => (
+                            <SelectItem
+                                key={place.place_id}
+                                label={place.description}
+                                value={place.place_id}
+                            >
+                                <Text>{place.description}</Text>
+                            </SelectItem>
+                        ))
+                    ) : (
                         <SelectItem
-                            key={email.value}
-                            label={email.label}
-                            value={email.value}
+                            key="no-results"
+                            label="No results found"
+                            value="no-results"
+                            disabled
                         >
-                            <Text>{email.label}</Text>
+                            <Text>No results found</Text>
                         </SelectItem>
-                    ))}
+                    )}
                 </SelectGroup>
+
+                <DropdownMenuSeparator />
+
+                <View className="flex flex-row justify-end items-end gap-x-2 mr-2 p-1">
+                    <FormDescription>Powered by</FormDescription>
+                    <Image
+                        alt="google-logo"
+                        style={{
+                            width: 60,
+                            height: 20,
+                            resizeMode: 'contain',
+                        }}
+                        source={
+                            isDarkColorScheme
+                                ? // eslint-disable-next-line @typescript-eslint/no-require-imports
+                                  require('@/assets/logos/google_on_non_white.png')
+                                : // eslint-disable-next-line @typescript-eslint/no-require-imports
+                                  require('@/assets/logos/google_on_white.png')
+                        }
+                    />
+                </View>
             </SelectContent>
         </FormSelect>
     );
-};
+});

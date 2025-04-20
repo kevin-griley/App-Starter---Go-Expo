@@ -139,7 +139,10 @@ const CreateOrganizationWithoutLayout = () => {
                                     control={form.control}
                                     name="address"
                                     render={({ field }) => (
-                                        <GoogleTest field={field} />
+                                        <GoogleTest
+                                            label="Address"
+                                            {...field}
+                                        />
                                     )}
                                 />
 

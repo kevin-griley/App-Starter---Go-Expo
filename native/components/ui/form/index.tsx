@@ -505,6 +505,7 @@ export {
     FormField,
     FormInput,
     FormItem,
+    FormItemProps,
     FormLabel,
     FormMessage,
     FormRadioGroup,
