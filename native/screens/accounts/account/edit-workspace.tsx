@@ -96,8 +96,7 @@ export function EditWorkspace({ editingTenant, setEditingTenant }: Props) {
                 address: values.address,
                 organization_type: values.organizationType,
                 contact_info: values.contactInfo,
-                logo_url: values.logo_url,   
-                             
+                logo_url: values.logo_url,
             },
         });
     }
@@ -194,10 +193,7 @@ export function EditWorkspace({ editingTenant, setEditingTenant }: Props) {
                                         </Label>
                                     </View>
                                     <View className="w-3/4 z-10">
-                                        <GoogleInput
-                                            placeholder="Address"
-                                            {...field}
-                                        />
+                                        <GoogleInput {...field} />
                                     </View>
                                 </View>
                             )}

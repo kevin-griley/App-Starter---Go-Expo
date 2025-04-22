@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as Crypto from 'expo-crypto';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import type { TextInput } from 'react-native';
 import type {
     GooglePlaceData,
     GooglePlaceDetail,
@@ -12,8 +11,6 @@ export interface UseGooglePlacesAutocompleteOptions {
     language?: string;
     minLength?: number;
     debounceTime?: number;
-    fetchDetails?: boolean;
-    ref: React.RefObject<TextInput>;
 }
 
 export interface UseGooglePlacesAutocompleteReturn {
@@ -31,8 +28,6 @@ export function useGooglePlacesAutocomplete({
     language = 'en',
     minLength = 2,
     debounceTime = 300,
-    fetchDetails = false,
-    ref,
 }: UseGooglePlacesAutocompleteOptions): UseGooglePlacesAutocompleteReturn {
     const [input, setInput] = useState<string>('');
     const [suggestions, setSuggestions] = useState<GooglePlaceData[]>([]);
@@ -99,7 +94,6 @@ export function useGooglePlacesAutocomplete({
                 }
             } finally {
                 setLoading(false);
-                ref.current?.focus();
             }
         },
         [proxyUrl, sessionToken, language, minLength],
@@ -130,7 +124,7 @@ export function useGooglePlacesAutocomplete({
 
     const selectPlace = useCallback(
         async (place: GooglePlaceData): Promise<GooglePlaceDetail | null> => {
-            if (!fetchDetails || !place.place_id || !sessionToken) {
+            if (!place.place_id || !sessionToken) {
                 return null;
             }
             abortPrevious();
@@ -141,7 +135,7 @@ export function useGooglePlacesAutocomplete({
 
             try {
                 const params = new URLSearchParams({
-                    place_id: place.place_id,
+                    placeid: place.place_id,
                     sessiontoken: sessionToken,
                     language,
                 });
@@ -164,7 +158,7 @@ export function useGooglePlacesAutocomplete({
                 setLoading(false);
             }
         },
-        [fetchDetails, proxyUrl, sessionToken, language],
+        [proxyUrl, sessionToken, language],
     );
 
     // cleanup on unmount

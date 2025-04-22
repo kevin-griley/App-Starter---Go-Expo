@@ -1,130 +1,125 @@
 import * as React from 'react';
-import type { Noop } from 'react-hook-form';
-
-import type {
-    AutocompleteRequestType,
-    GooglePlacesAutocompleteRef,
-    Query,
-    Styles,
-} from 'react-native-google-places-autocomplete';
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import type { Option } from '../../select';
 import {
-    FormDescription,
-    FormItem,
-    FormLabel,
-    FormMessage,
-    useFormField,
-} from '../';
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+} from '../../select';
 
 import { BASE_URL } from '@/lib/api/client';
 import { useColorScheme } from '@/lib/useColorScheme';
-import { Image, View } from 'react-native';
+
+import { ActivityIndicator, Image, View } from 'react-native';
+import type { FormItemProps } from '..';
+import { FormSelect } from '..';
 import { Input } from '../../input';
-import type { GooglePlaceAddress } from './schema';
+import { Text } from '../../text';
 import { GooglePlaceAddressSchema } from './schema';
-
-type Override<T, U> = Omit<T, keyof U> & U;
-
-interface FormFieldFieldProps<T> {
-    name: string;
-    onBlur: Noop;
-    onChange: (val: T) => void;
-    value: T;
-    disabled?: boolean;
-    query?: Query<AutocompleteRequestType>;
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type FormItemProps<T extends React.ElementType<any>, U> = Override<
-    React.ComponentPropsWithoutRef<T>,
-    FormFieldFieldProps<U>
-> & {
-    label?: string;
-};
+import { useGooglePlacesAutocomplete } from './useGooglePlaces';
+import { AddressWrapper } from './wrapper';
 
 export const GoogleInput = React.forwardRef<
-    GooglePlacesAutocompleteRef,
-    FormItemProps<typeof GooglePlacesAutocomplete, GooglePlaceAddress>
->(({ label, onChange, query = {}, ...props }, ref) => {
+    React.ElementRef<typeof FormSelect>,
+    FormItemProps<typeof FormSelect, Partial<Option>>
+>(({ onChange, ...rest }, ref) => {
     const { isDarkColorScheme } = useColorScheme();
-    const inputRef = React.useRef<GooglePlacesAutocompleteRef | null>(null);
+    const [selectTriggerWidth, setSelectTriggerWidth] = React.useState(0);
+    const insets = useSafeAreaInsets();
 
-    const {
-        error,
-        formItemNativeID,
-        formDescriptionNativeID,
-        formMessageNativeID,
-    } = useFormField();
+    const contentInsets = {
+        top: insets.top,
+        bottom: insets.bottom,
+        left: 12,
+        right: 12,
+    };
 
-    React.useImperativeHandle(ref, () => {
-        if (!inputRef.current) {
-            return {} as React.ComponentRef<typeof GooglePlacesAutocomplete>;
-        }
-        return inputRef.current;
-    }, [inputRef.current]);
+    const inputRef = React.useRef<React.ElementRef<typeof Input>>(null);
 
-    function handleOnLabelPress() {
-        if (!inputRef.current) {
-            return;
-        }
-        if (inputRef.current.isFocused()) {
-            inputRef.current?.blur();
-        } else {
-            inputRef.current?.focus();
-        }
-    }
+    const { input, suggestions, loading, onChangeText, selectPlace } =
+        useGooglePlacesAutocomplete({
+            proxyUrl: BASE_URL + '/proxy',
+        });
 
-    React.useEffect(() => {
-        inputRef.current?.setAddressText(props.value.formatted_address ?? '');
-    }, []);
+    const focusInput = React.useCallback(() => {
+        setTimeout(() => {
+            inputRef?.current?.focus();
+        }, 0);
+    }, [inputRef]);
+
+    React.useEffect(focusInput, [suggestions]);
+
+    const address = new AddressWrapper(rest.value);
 
     return (
-        <FormItem className="space-y-0">
-            {!!label && (
-                <FormLabel
-                    nativeID={formItemNativeID}
-                    onPress={handleOnLabelPress}
-                    className="mb-2"
-                >
-                    {label}
-                </FormLabel>
-            )}
+        <FormSelect
+            ref={ref}
+            onChange={async (val) => {
+                const result = suggestions.find(
+                    (place) => place.place_id === val?.value,
+                );
+                if (!result) return;
+                const detail = await selectPlace(result);
+                if (!detail) return;
+                const parsed = GooglePlaceAddressSchema.parse(detail);
+                onChange(parsed as unknown as Option);
+            }}
+            {...rest}
+        >
+            <SelectTrigger
+                onLayout={(ev) => {
+                    setSelectTriggerWidth(ev.nativeEvent.layout.width);
+                }}
+                onPress={focusInput}
+            >
+                {address.isValid()
+                    ? address.getFormattedAddress()
+                    : 'Select address...'}
+            </SelectTrigger>
 
-            <GooglePlacesAutocomplete
-                ref={inputRef}
-                aria-labelledby={formItemNativeID}
-                aria-describedby={
-                    !error
-                        ? `${formDescriptionNativeID}`
-                        : `${formDescriptionNativeID} ${formMessageNativeID}`
-                }
-                aria-invalid={!!error}
-                textInputProps={{
-                    InputComp: Input,
-                }}
-                query={query}
-                requestUrl={{
-                    useOnPlatform: 'all',
-                    url: BASE_URL + '/proxy',
-                }}
-                onPress={(_, details) => {
-                    if (!details) return;
-                    const parsedDetails =
-                        GooglePlaceAddressSchema.parse(details);
-                    onChange(parsedDetails);
-                }}
-                fetchDetails
-                disableScroll
-                suppressDefaultStyles
-                enablePoweredByContainer={false}
-                styles={STYLES}
-                listHoverColor="rgba(250, 250, 250, 0.2)"
-                {...props}
-            />
-
-            {!error ? (
-                <View className="flex flex-row justify-end items-end gap-x-2 mr-2">
-                    <FormDescription>Powered by</FormDescription>
+            <SelectContent
+                insets={contentInsets}
+                style={{ width: selectTriggerWidth }}
+            >
+                <Input
+                    key="google-input"
+                    className="web:focus-visible:ring-bw native:m-1"
+                    ref={inputRef}
+                    placeholder="Search for address..."
+                    value={input}
+                    onChangeText={onChangeText}
+                    autoFocus
+                />
+                <View className="border-b-2 border-border h-px my-1" />
+                {loading && <ActivityIndicator size="large" />}
+                <SelectGroup>
+                    {suggestions.length > 0 ? (
+                        suggestions.map((place) => (
+                            <SelectItem
+                                key={place.place_id}
+                                label={place.description}
+                                value={place.place_id}
+                            >
+                                <Text>{place.description}</Text>
+                            </SelectItem>
+                        ))
+                    ) : (
+                        <SelectItem
+                            key="no-results"
+                            label="No results found"
+                            value="no-results"
+                            disabled
+                        >
+                            <Text>No results found</Text>
+                        </SelectItem>
+                    )}
+                </SelectGroup>
+                <View className="border-b-2 border-border h-px my-1" />
+                <View className="flex flex-row justify-end items-end gap-x-2 mr-2 p-1">
+                    <Text className="text-sm text-text opacity-70">
+                        Powered by
+                    </Text>
                     <Image
                         alt="google-logo"
                         style={{
@@ -141,41 +136,7 @@ export const GoogleInput = React.forwardRef<
                         }
                     />
                 </View>
-            ) : (
-                <FormMessage />
-            )}
-        </FormItem>
+            </SelectContent>
+        </FormSelect>
     );
 });
-GoogleInput.displayName = 'GoogleInput';
-
-const STYLES: Partial<Styles> = {
-    listView: {
-        backgroundColor: '#88aaee',
-        borderTopColor: '#000000',
-        borderBottomColor: '#000000',
-        borderLeftColor: '#000000',
-        borderRightColor: '#000000',
-        borderWidth: 2,
-        borderRadius: 5,
-    },
-    row: {
-        borderRadius: 5,
-        padding: 12,
-        height: 42,
-        flexDirection: 'row',
-    },
-    separator: {
-        height: 2,
-        backgroundColor: '#000000',
-    },
-    description: {
-        color: '#000000',
-        fontFamily: 'RedHatText',
-    },
-    loader: {
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-        height: 20,
-    },
-};

@@ -15,7 +15,11 @@ export class AddressWrapper {
             this.parsed = undefined;
         }
 
-        this.parsed = GooglePlaceAddressSchema.parse(data);
+        this.parsed = data;
+    }
+
+    isValid() {
+        return !!this.parsed;
     }
 
     getFormattedAddress() {
