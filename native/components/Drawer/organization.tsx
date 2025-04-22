@@ -7,11 +7,11 @@ import type { LucideIcon } from 'lucide-react-native';
 
 import { BriefcaseBusiness } from '@/lib/icons/BriefcaseBusiness';
 import { Building } from '@/lib/icons/Building';
+import { ClipboardList } from '@/lib/icons/ClipboardList';
+import { LogOut } from '@/lib/icons/LogOut';
 import { MoonStar } from '@/lib/icons/MoonStar';
 import { Network } from '@/lib/icons/Network';
 import { Sun } from '@/lib/icons/Sun';
-import { Truck } from '@/lib/icons/Truck';
-import { LogOut } from 'lucide-react-native';
 
 import * as React from 'react';
 import { Platform, View } from 'react-native';
@@ -35,9 +35,9 @@ const SIDEBAR_ITEMS: {
         label: 'Dashboard',
     },
     {
-        href: '/dispatch',
-        icon: Truck,
-        label: 'Dispatch',
+        href: '/quote',
+        icon: ClipboardList,
+        label: 'Quotes',
     },
 ];
 

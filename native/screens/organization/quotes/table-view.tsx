@@ -26,7 +26,7 @@ export function TableView() {
             <CardHeader className="p-4">
                 <View className="flex flex-row items-center justify-between">
                     <CardTitle className="text-lg font-medium">
-                        Orders List
+                        Quote List
                     </CardTitle>
                     <View className="flex flex-row items-center gap-2">
                         <Button
@@ -41,7 +41,7 @@ export function TableView() {
                             className="flex flex-row items-center bg-accent"
                         >
                             <Plus className="mr-2 h-4 w-4 text-mtext" />
-                            <Text>Add Load</Text>
+                            <Text>Add Quote</Text>
                         </Button>
                     </View>
                 </View>
