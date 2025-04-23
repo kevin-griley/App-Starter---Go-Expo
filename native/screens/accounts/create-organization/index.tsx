@@ -7,7 +7,6 @@ import {
 } from '@/components/ui/form';
 import { Text } from '@/components/ui/text';
 import { H1 } from '@/components/ui/typography';
-import { VStack } from '@/components/ui/vstack';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'expo-router';
 import * as React from 'react';
@@ -95,8 +94,8 @@ const CreateOrganizationWithoutLayout = () => {
     }, [postOrganization.status]);
 
     return (
-        <VStack className="max-w-[440px] w-full">
-            <VStack space="xl">
+        <View className="max-w-[440px] w-full">
+            <View className="flex-col gap-6">
                 <Pressable
                     onPress={() => {
                         if (router.canGoBack()) {
@@ -115,8 +114,8 @@ const CreateOrganizationWithoutLayout = () => {
                 <H1>Create Organization</H1>
                 <Text>Create an organization to start using the app.</Text>
 
-                <VStack className="w-full">
-                    <VStack space="xl" className="w-full">
+                <View className="w-full">
+                    <View className="w-full flex-col gap-6">
                         <Form {...form}>
                             <View className="gap-7">
                                 <FormField
@@ -227,9 +226,9 @@ const CreateOrganizationWithoutLayout = () => {
                                 />
                             </View>
                         </Form>
-                    </VStack>
+                    </View>
 
-                    <VStack className="w-full my-7" space="lg">
+                    <View className="w-full my-6 flex-col gap-6">
                         <Button
                             className="w-full"
                             onPress={form.handleSubmit(onSubmit)}
@@ -240,10 +239,10 @@ const CreateOrganizationWithoutLayout = () => {
                                 <Text>Create Organization</Text>
                             )}
                         </Button>
-                    </VStack>
-                </VStack>
-            </VStack>
-        </VStack>
+                    </View>
+                </View>
+            </View>
+        </View>
     );
 };
 

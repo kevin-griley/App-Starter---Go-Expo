@@ -1,8 +1,8 @@
 import { Text } from '@/components/ui/text';
 import { H1 } from '@/components/ui/typography';
-import { VStack } from '@/components/ui/vstack';
 import { $api } from '@/lib/api/client';
 import * as React from 'react';
+import { View } from 'react-native';
 import { AppLayout } from '../layout';
 import { TenantSelector } from './tenant-selector';
 
@@ -28,8 +28,8 @@ const DashboardWithoutLayout = () => {
     }, [getOrganizations.data]);
 
     return (
-        <VStack className="flex-1 " space="md">
-            <VStack className="w-full">
+        <View className="flex-1">
+            <View className="w-full flex-col gap-4">
                 <H1>Organizations</H1>
                 <Text className="mt-2 text-text">
                     This is a list of all the organizations you are associated
@@ -40,8 +40,8 @@ const DashboardWithoutLayout = () => {
                     data={active}
                     isLoading={getOrganizations.isLoading}
                 />
-            </VStack>
-        </VStack>
+            </View>
+        </View>
     );
 };
 

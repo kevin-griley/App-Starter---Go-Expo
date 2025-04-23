@@ -2,7 +2,6 @@ import { Button } from '@/components/ui/button';
 import { Form, FormField, FormInput } from '@/components/ui/form';
 import { Text } from '@/components/ui/text';
 import { H1 } from '@/components/ui/typography';
-import { VStack } from '@/components/ui/vstack';
 import { $api } from '@/lib/api/client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as React from 'react';
@@ -45,51 +44,47 @@ const ForgotPasswordWithLeftBackground = () => {
     }, [postResetRequest.status]);
 
     return (
-        <VStack className="max-w-[440px] w-full" space="md">
-            <VStack>
+        <View className="max-w-[440px] w-full">
+            <View className="w-full flex-col gap-4">
                 <H1>Forgot Password?</H1>
                 <Text> Enter email ID associated with your account. </Text>
 
-                <VStack className="w-full">
-                    <VStack space="xl" className="w-full">
-                        <Form {...form}>
-                            <View className="gap-7">
-                                <FormField
-                                    control={form.control}
-                                    name="email"
-                                    render={({ field }) => (
-                                        <FormInput
-                                            label="Email"
-                                            placeholder="hello@email.ai"
-                                            autoCapitalize="none"
-                                            autoComplete="email"
-                                            onSubmitEditing={form.handleSubmit(
-                                                onSubmit,
-                                            )}
-                                            {...field}
-                                        />
+                <Form {...form}>
+                    <View className="flex-col gap-6">
+                        <FormField
+                            control={form.control}
+                            name="email"
+                            render={({ field }) => (
+                                <FormInput
+                                    label="Email"
+                                    placeholder="hello@email.ai"
+                                    autoCapitalize="none"
+                                    autoComplete="email"
+                                    onSubmitEditing={form.handleSubmit(
+                                        onSubmit,
                                     )}
+                                    {...field}
                                 />
-                            </View>
-                        </Form>
-                    </VStack>
-
-                    <VStack className="w-full my-7 " space="lg">
-                        <Button
-                            className="w-full"
-                            onPress={form.handleSubmit(onSubmit)}
-                        >
-                            {/* eslint-disable-next-line no-constant-condition */}
-                            {postResetRequest.isPending ? (
-                                <ActivityIndicator size="small" />
-                            ) : (
-                                <Text>Send Link</Text>
                             )}
-                        </Button>
-                    </VStack>
-                </VStack>
-            </VStack>
-        </VStack>
+                        />
+                    </View>
+                </Form>
+
+                <View />
+
+                <Button
+                    className="w-full"
+                    onPress={form.handleSubmit(onSubmit)}
+                >
+                    {/* eslint-disable-next-line no-constant-condition */}
+                    {postResetRequest.isPending ? (
+                        <ActivityIndicator size="small" />
+                    ) : (
+                        <Text>Send Link</Text>
+                    )}
+                </Button>
+            </View>
+        </View>
     );
 };
 

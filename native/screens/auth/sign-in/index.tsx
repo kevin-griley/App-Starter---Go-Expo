@@ -4,7 +4,6 @@ import { Form, FormCheckbox, FormField, FormInput } from '@/components/ui/form';
 import { HStack } from '@/components/ui/hstack';
 import { Text } from '@/components/ui/text';
 import { H1 } from '@/components/ui/typography';
-import { VStack } from '@/components/ui/vstack';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link } from 'expo-router';
 import * as React from 'react';
@@ -48,97 +47,95 @@ const LoginWithLeftBackground = () => {
     }, [error]);
 
     return (
-        <VStack className="max-w-[440px] w-full" space="md">
-            <VStack>
+        <View className="max-w-[440px] w-full ">
+            <View className="flex-col gap-4">
                 <H1>Log in</H1>
                 <Text> Login to start using **Company** </Text>
 
-                <VStack className="w-full">
-                    <VStack space="xl" className="w-full">
-                        <Form {...form}>
-                            <View className="gap-7">
-                                <FormField
-                                    control={form.control}
-                                    name="email"
-                                    render={({ field }) => (
-                                        <FormInput
-                                            label="Email"
-                                            placeholder="hello@email.ai"
-                                            autoCapitalize="none"
-                                            autoComplete="email"
-                                            onSubmitEditing={() =>
-                                                form.setFocus('password')
-                                            }
-                                            {...field}
-                                        />
-                                    )}
-                                />
-                                <FormField
-                                    control={form.control}
-                                    name="password"
-                                    render={({ field }) => (
-                                        <FormInput
-                                            label="Password"
-                                            placeholder="********"
-                                            description="Use a secure password."
-                                            secureTextEntry
-                                            autoComplete="password"
-                                            onSubmitEditing={form.handleSubmit(
-                                                onSubmit,
-                                            )}
-                                            {...field}
-                                        />
-                                    )}
-                                />
-
-                                <HStack className="flex justify-between items-start">
-                                    <FormField
-                                        control={form.control}
-                                        name="rememberme"
-                                        render={({ field }) => (
-                                            <FormCheckbox
-                                                label="Remember me"
-                                                description="Keep me logged in."
-                                                {...field}
-                                            />
-                                        )}
+                <View className="w-full flex-col gap-6">
+                    <Form {...form}>
+                        <View className="gap-7">
+                            <FormField
+                                control={form.control}
+                                name="email"
+                                render={({ field }) => (
+                                    <FormInput
+                                        label="Email"
+                                        placeholder="hello@email.ai"
+                                        autoCapitalize="none"
+                                        autoComplete="email"
+                                        onSubmitEditing={() =>
+                                            form.setFocus('password')
+                                        }
+                                        {...field}
                                     />
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="password"
+                                render={({ field }) => (
+                                    <FormInput
+                                        label="Password"
+                                        placeholder="********"
+                                        description="Use a secure password."
+                                        secureTextEntry
+                                        autoComplete="password"
+                                        onSubmitEditing={form.handleSubmit(
+                                            onSubmit,
+                                        )}
+                                        {...field}
+                                    />
+                                )}
+                            />
 
-                                    <Link href="/forgot-password" asChild>
-                                        <Text className="underline font-medium text-text group-hover/link:text-text">
-                                            Forgot Password?
-                                        </Text>
-                                    </Link>
-                                </HStack>
-                            </View>
-                        </Form>
-                    </VStack>
+                            <HStack className="flex justify-between items-start">
+                                <FormField
+                                    control={form.control}
+                                    name="rememberme"
+                                    render={({ field }) => (
+                                        <FormCheckbox
+                                            label="Remember me"
+                                            description="Keep me logged in."
+                                            {...field}
+                                        />
+                                    )}
+                                />
 
-                    <VStack className="w-full my-7 " space="lg">
-                        <Button
-                            className="w-full"
-                            onPress={form.handleSubmit(onSubmit)}
-                        >
-                            {isLoading ? (
-                                <ActivityIndicator size="small" />
-                            ) : (
-                                <Text>Log in</Text>
-                            )}
-                        </Button>
-                    </VStack>
+                                <Link href="/forgot-password" asChild>
+                                    <Text className="underline font-medium text-text group-hover/link:text-text">
+                                        Forgot Password?
+                                    </Text>
+                                </Link>
+                            </HStack>
+                        </View>
+                    </Form>
 
-                    <HStack className="self-center">
-                        <Text>Don't have an account?</Text>
+                    <View />
 
-                        <Link href="/sign-up" asChild>
-                            <Text className="underline font-medium text-text group-hover/link:text-text group-hover/pressed:text-text">
-                                Sign up
-                            </Text>
-                        </Link>
-                    </HStack>
-                </VStack>
-            </VStack>
-        </VStack>
+                    <Button
+                        className="w-full"
+                        onPress={form.handleSubmit(onSubmit)}
+                    >
+                        {isLoading ? (
+                            <ActivityIndicator size="small" />
+                        ) : (
+                            <Text>Log in</Text>
+                        )}
+                    </Button>
+                </View>
+
+                <HStack className="self-center">
+                    <Text>Don't have an account?</Text>
+
+                    <Link href="/sign-up" asChild>
+                        <Text className="underline font-medium text-text group-hover/link:text-text group-hover/pressed:text-text">
+                            Sign up
+                        </Text>
+                    </Link>
+                </HStack>
+            </View>
+        </View>
     );
 };
 
