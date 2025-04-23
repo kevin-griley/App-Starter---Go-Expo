@@ -58,37 +58,39 @@ const editWorkspaceSchema = z.object({
     }, 'SCAC must be 4 uppercase letters'),
 });
 
-type EditWorkspaceSchemaType = z.infer<typeof editWorkspaceSchema>;
+type PatchOrganizationSchemaType = z.infer<typeof editWorkspaceSchema>;
 
 type Organization = components['schemas']['data.Organization'];
 
-interface Props {
-    editingTenant: Organization | null;
-    setEditingTenant: React.Dispatch<React.SetStateAction<Organization | null>>;
+export interface PatchOrganizationProps {
+    closeModal: () => void;
+    organization: Organization | null;
 }
 
-export function EditWorkspace({ editingTenant, setEditingTenant }: Props) {
-    const form = useForm<EditWorkspaceSchemaType>({
+const PatchOrganization: React.FC<PatchOrganizationProps> = (props) => {
+    const { closeModal, organization } = props;
+
+    const form = useForm<PatchOrganizationSchemaType>({
         resolver: zodResolver(editWorkspaceSchema),
         defaultValues: {
-            name: editingTenant?.name ?? '',
-            address: editingTenant?.address ?? {},
-            organizationType: editingTenant?.organization_type ?? 'carrier',
-            contactInfo: editingTenant?.contact_info ?? '',
-            scacCode: editingTenant?.scac ?? '',
-            logo_url: editingTenant?.logo_url ?? '',
+            name: organization?.name ?? '',
+            address: organization?.address ?? {},
+            organizationType: organization?.organization_type ?? 'carrier',
+            contactInfo: organization?.contact_info ?? '',
+            scacCode: organization?.scac ?? '',
+            logo_url: organization?.logo_url ?? '',
         },
     });
 
     const patchOrganization = $api.useMutation('patch', '/organization/{ID}');
 
-    async function onSubmit(values: EditWorkspaceSchemaType) {
+    async function onSubmit(values: PatchOrganizationSchemaType) {
         if (patchOrganization.status === 'pending') return;
 
         return patchOrganization.mutateAsync({
             params: {
                 path: {
-                    ID: editingTenant?.id ?? '',
+                    ID: organization?.id ?? '',
                 },
             },
             body: {
@@ -112,7 +114,7 @@ export function EditWorkspace({ editingTenant, setEditingTenant }: Props) {
                 queryKey,
             });
 
-            setEditingTenant(null);
+            closeModal();
         }
         if (patchOrganization.isError) {
             console.log(patchOrganization.error);
@@ -121,10 +123,7 @@ export function EditWorkspace({ editingTenant, setEditingTenant }: Props) {
     }, [patchOrganization.status]);
 
     return (
-        <Dialog
-            open={!!editingTenant}
-            onOpenChange={(open) => !open && setEditingTenant(null)}
-        >
+        <Dialog open onOpenChange={closeModal}>
             <DialogContent className="w-screen max-w-2xl max-h-[90vh] overflow-y-auto">
                 <DialogHeader className="self-stretch">
                     <DialogTitle>Edit Workspace</DialogTitle>
@@ -360,4 +359,6 @@ export function EditWorkspace({ editingTenant, setEditingTenant }: Props) {
             </DialogContent>
         </Dialog>
     );
-}
+};
+
+export default PatchOrganization;

@@ -11,6 +11,7 @@ import {
 
 import { HStack } from '@/components/ui/hstack';
 
+import { useModal } from '@/components/ModalManager/context';
 import { AddressWrapper } from '@/components/ui/form/googleInput/wrapper';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Text } from '@/components/ui/text';
@@ -23,7 +24,6 @@ import type { components } from '@/types/schema';
 import { useRouter } from 'expo-router';
 import * as React from 'react';
 import { Image, Pressable, View } from 'react-native';
-import { EditWorkspace } from './edit-workspace';
 
 type Association = components['schemas']['data.Association'];
 type Organization = components['schemas']['data.Organization'];
@@ -50,8 +50,7 @@ export function TenantSelector({ data, isLoading }: Props) {
         }, 500);
     };
 
-    const [editingTenant, setEditingTenant] =
-        React.useState<Organization | null>(null);
+    const { openModal, closeModal } = useModal();
 
     if (isLoading) {
         return (
@@ -88,16 +87,16 @@ export function TenantSelector({ data, isLoading }: Props) {
                             )}
                             <CardHeader className="flex flex-row items-center gap-4 space-y-0">
                                 <View className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-md bg-bw border-2 border-border">
-
                                     {assoc.organization?.logo_url && (
                                         <Image
-                                            source={{ uri: assoc.organization.logo_url }}
+                                            source={{
+                                                uri: assoc.organization
+                                                    .logo_url,
+                                            }}
                                             alt="Organization Logo"
                                             className="h-full w-full object-cover"
                                         />
                                     )}
-
-
                                 </View>
 
                                 <View>
@@ -160,9 +159,12 @@ export function TenantSelector({ data, isLoading }: Props) {
                                         onHoverOut={() => setHovered(null)}
                                         onPress={(e) => {
                                             e.stopPropagation();
-                                            setEditingTenant(
-                                                assoc.organization ?? null,
-                                            );
+
+                                            openModal('PATCH_ORGANIZATION', {
+                                                organization:
+                                                    assoc.organization ?? null,
+                                                closeModal,
+                                            });
                                         }}
                                     >
                                         <Edit
@@ -197,13 +199,6 @@ export function TenantSelector({ data, isLoading }: Props) {
                     <View className="h-4" />
                 </Card>
             </Pressable>
-
-            {editingTenant && (
-                <EditWorkspace
-                    editingTenant={editingTenant}
-                    setEditingTenant={setEditingTenant}
-                />
-            )}
         </View>
     );
 }

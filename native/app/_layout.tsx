@@ -3,6 +3,7 @@ import '../global.css';
 import { OrganizationProvider } from '@/components/OrganizationProvider';
 import 'react-native-get-random-values';
 
+import { ModalProvider } from '@/components/ModalManager/context';
 import { SessionProvider } from '@/components/SessionProvider';
 import { setAndroidNavigationBar } from '@/lib/android-navigation-bar';
 import { queryClient } from '@/lib/api/client';
@@ -73,15 +74,19 @@ export default function RootLayout() {
             <SessionProvider>
                 <OrganizationProvider>
                     <SafeAreaProvider>
-                        <ThemeProvider
-                            value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}
-                        >
-                            <StatusBar
-                                style={isDarkColorScheme ? 'light' : 'dark'}
-                            />
-                            <Slot />
-                            <PortalHost />
-                        </ThemeProvider>
+                        <ModalProvider>
+                            <ThemeProvider
+                                value={
+                                    isDarkColorScheme ? DARK_THEME : LIGHT_THEME
+                                }
+                            >
+                                <StatusBar
+                                    style={isDarkColorScheme ? 'light' : 'dark'}
+                                />
+                                <Slot />
+                                <PortalHost />
+                            </ThemeProvider>
+                        </ModalProvider>
                     </SafeAreaProvider>
                 </OrganizationProvider>
             </SessionProvider>
