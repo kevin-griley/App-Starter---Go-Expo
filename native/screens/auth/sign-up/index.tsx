@@ -1,6 +1,5 @@
 import { Button } from '@/components/ui/button';
 import { Form, FormCheckbox, FormField, FormInput } from '@/components/ui/form';
-import { HStack } from '@/components/ui/hstack';
 import { Text } from '@/components/ui/text';
 import { H1 } from '@/components/ui/typography';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -168,7 +167,7 @@ const SignUpWithLeftBackground = () => {
                     )}
                 </Button>
 
-                <HStack className="self-center">
+                <View className="flex-row self-center gap-3">
                     <Text>Already have an account?</Text>
 
                     <Link href="/sign-in" asChild>
@@ -176,7 +175,7 @@ const SignUpWithLeftBackground = () => {
                             Login
                         </Text>
                     </Link>
-                </HStack>
+                </View>
             </View>
         </View>
     );

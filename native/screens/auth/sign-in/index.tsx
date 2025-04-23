@@ -1,7 +1,6 @@
 import { useSession } from '@/components/SessionProvider';
 import { Button } from '@/components/ui/button';
 import { Form, FormCheckbox, FormField, FormInput } from '@/components/ui/form';
-import { HStack } from '@/components/ui/hstack';
 import { Text } from '@/components/ui/text';
 import { H1 } from '@/components/ui/typography';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -89,7 +88,7 @@ const LoginWithLeftBackground = () => {
                                 )}
                             />
 
-                            <HStack className="flex justify-between items-start">
+                            <View className="flex-row justify-between items-start">
                                 <FormField
                                     control={form.control}
                                     name="rememberme"
@@ -107,7 +106,7 @@ const LoginWithLeftBackground = () => {
                                         Forgot Password?
                                     </Text>
                                 </Link>
-                            </HStack>
+                            </View>
                         </View>
                     </Form>
 
@@ -125,7 +124,7 @@ const LoginWithLeftBackground = () => {
                     </Button>
                 </View>
 
-                <HStack className="self-center">
+                <View className="flex-row self-center gap-3">
                     <Text>Don't have an account?</Text>
 
                     <Link href="/sign-up" asChild>
@@ -133,7 +132,7 @@ const LoginWithLeftBackground = () => {
                             Sign up
                         </Text>
                     </Link>
-                </HStack>
+                </View>
             </View>
         </View>
     );

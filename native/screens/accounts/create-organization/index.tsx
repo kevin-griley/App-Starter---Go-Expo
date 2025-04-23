@@ -13,7 +13,6 @@ import * as React from 'react';
 import { useForm } from 'react-hook-form';
 import { ActivityIndicator, Pressable, View } from 'react-native';
 
-import { HStack } from '@/components/ui/hstack';
 import { Label } from '@/components/ui/label';
 import { RadioGroupItem } from '@/components/ui/radio-group';
 import { $api, queryClient } from '@/lib/api/client';
@@ -105,10 +104,10 @@ const CreateOrganizationWithoutLayout = () => {
                         }
                     }}
                 >
-                    <HStack space="sm">
+                    <View className="flex-row gap-2">
                         <ArrowLeft className="text-text" />
                         <Text>Back</Text>
-                    </HStack>
+                    </View>
                 </Pressable>
 
                 <H1>Create Organization</H1>

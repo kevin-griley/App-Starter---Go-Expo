@@ -9,8 +9,6 @@ import {
     CardTitle,
 } from '@/components/ui/card';
 
-import { HStack } from '@/components/ui/hstack';
-
 import { useModal } from '@/components/ModalManager/context';
 import { AddressWrapper } from '@/components/ui/form/googleInput/wrapper';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -131,7 +129,7 @@ export function TenantSelector({ data, isLoading }: Props) {
                                 </View>
                             </CardContent>
                             <CardFooter>
-                                <HStack className="flex-1">
+                                <View className="flex-1 flex-row gap-3">
                                     <Button
                                         onHoverIn={() =>
                                             setHovered(
@@ -172,7 +170,7 @@ export function TenantSelector({ data, isLoading }: Props) {
                                             size={18}
                                         />
                                     </Button>
-                                </HStack>
+                                </View>
                             </CardFooter>
                         </Card>
                     </View>

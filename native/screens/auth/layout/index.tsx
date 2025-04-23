@@ -1,4 +1,3 @@
-import { HStack } from '@/components/ui/hstack';
 import * as React from 'react';
 import { ScrollView, View } from 'react-native';
 
@@ -14,7 +13,7 @@ export const AuthLayout = (props: AuthLayoutProps) => {
                 contentContainerStyle={{ flexGrow: 1 }}
                 keyboardShouldPersistTaps="handled"
             >
-                <HStack className="w-full h-full flex-grow justify-center">
+                <View className="w-full h-full flex-grow justify-center flex-row">
                     <View className="relative hidden md:flex h-full w-full flex-1 items-center justify-center flex-col gap-4">
                         <View className="flex-1 w-full bg-gradient-to-br from-emerald-950 via-blue-950 to-indigo-950 ">
                             <View className="flex items-center justify-center h-full">
@@ -26,7 +25,7 @@ export const AuthLayout = (props: AuthLayoutProps) => {
                     <View className="md:items-center md:justify-center flex-1 w-full p-9 md:gap-10 gap-16 md:m-auto md:w-1/2 h-full">
                         {props.children}
                     </View>
-                </HStack>
+                </View>
             </ScrollView>
         </View>
     );
