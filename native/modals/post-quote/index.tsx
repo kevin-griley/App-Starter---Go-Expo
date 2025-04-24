@@ -23,7 +23,7 @@ export interface PostQuotesProps {
     closeModal: () => void;
 }
 
-export const PostQuotes: React.FC<PostQuotesProps> = (props) => {
+const PostQuotes: React.FC<PostQuotesProps> = (props) => {
     const { closeModal } = props;
 
     const form = useForm<PostQuoteSchemaType>({
@@ -57,3 +57,5 @@ export const PostQuotes: React.FC<PostQuotesProps> = (props) => {
         </Dialog>
     );
 };
+
+export default PostQuotes;

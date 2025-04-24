@@ -16,13 +16,13 @@ const DashboardWithoutLayout = () => {
     });
 
     const { active } = React.useMemo(() => {
-        const active =
-            getOrganizations.data?.filter((org) => org.status === 'active') ??
-            [];
+        const organizations =
+            getOrganizations.data?.filter(
+                (org) => org.organization?.is_deleted === false,
+            ) ?? [];
 
-        const pending =
-            getOrganizations.data?.filter((org) => org.status === 'pending') ??
-            [];
+        const active = organizations.filter((org) => org.status === 'active');
+        const pending = organizations.filter((org) => org.status === 'pending');
 
         return { active, pending };
     }, [getOrganizations.data]);

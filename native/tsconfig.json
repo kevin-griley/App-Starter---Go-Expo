@@ -5,7 +5,8 @@
         "paths": {
             "@/*": ["./*"]
         },
-        "noUncheckedIndexedAccess": true
+        "noUncheckedIndexedAccess": true,
+        "module": "ESNext"
     },
     "include": [
         "**/*.ts",

@@ -1,13 +1,15 @@
 import React from 'react';
 
-import PatchOrganization from '@/screens/accounts/account/patch-organization';
-import { PostQuotes } from '@/screens/organization/quotes/post-quote';
+import DeleteOrganization from '@/modals/delete-organization';
+import PatchOrganization from '@/modals/patch-organization';
+import PostQuotes from '@/modals/post-quote';
 import type { ModalDescriptorAny, ModalID, ModalMap } from './types';
 
 const MODAL_COMPONENTS: {
     [K in ModalID]: React.ComponentType<ModalMap[K]>;
 } = {
     PATCH_ORGANIZATION: PatchOrganization,
+    DELETE_ORGANIZATION: DeleteOrganization,
     POST_QUOTES: PostQuotes,
 };
 

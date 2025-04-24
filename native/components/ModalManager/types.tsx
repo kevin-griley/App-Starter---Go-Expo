@@ -1,8 +1,10 @@
-import type { PatchOrganizationProps } from '@/screens/accounts/account/patch-organization';
-import type { PostQuotesProps } from '@/screens/organization/quotes/post-quote';
+import type { DeleteOrganizationProps } from '@/modals/delete-organization';
+import type { PatchOrganizationProps } from '@/modals/patch-organization';
+import type { PostQuotesProps } from '@/modals/post-quote';
 
 export interface ModalMap {
     PATCH_ORGANIZATION: PatchOrganizationProps;
+    DELETE_ORGANIZATION: DeleteOrganizationProps;
     POST_QUOTES: PostQuotesProps;
 }
 

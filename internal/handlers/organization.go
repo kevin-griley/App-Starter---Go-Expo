@@ -126,3 +126,34 @@ func HandlePatchOrganizationByID(w http.ResponseWriter, r *http.Request) *ApiErr
 	return WriteJSON(w, http.StatusOK, resp)
 
 }
+
+//	@Summary		Delete organization by ID
+//	@Description	Delete organization by ID
+//	@Tags			Organization
+//	@Security		ApiKeyAuth
+//	@Accept			json
+//	@Produce		json
+//	@Param			ID					path		string				true	"Organization ID"
+//	@Success		200					{object}	data.Organization	"Organization"
+//	@Failure		400					{object}	ApiError			"Bad Request"
+//	@Router			/organization/{ID}	[delete]
+func HandleDeleteOrganizationByID(w http.ResponseWriter, r *http.Request) *ApiError {
+	ctx := r.Context()
+
+	store, ok := data.GetStore(ctx)
+	if !ok {
+		return &ApiError{http.StatusInternalServerError, "no database store in context"}
+	}
+
+	orgId, err := GetPathID(r)
+	if err != nil {
+		return &ApiError{http.StatusBadRequest, err.Error()}
+	}
+
+	resp, err := store.Organization.DeleteOrganization(orgId)
+	if err != nil {
+		return &ApiError{http.StatusInternalServerError, err.Error()}
+	}
+
+	return WriteJSON(w, http.StatusOK, resp)
+}

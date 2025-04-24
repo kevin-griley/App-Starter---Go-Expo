@@ -130,6 +130,35 @@ func (s *organizationStoreImpl) UpdateOrganization(ID uuid.UUID, r *PatchOrganiz
 
 }
 
+func (s *organizationStoreImpl) DeleteOrganization(ID uuid.UUID, ) (*Organization, error) {
+
+	updateData := make(map[string]any)
+	updateData["updated_at"] = time.Now().UTC()
+	updateData["is_deleted"] = true
+
+	conditions := map[string]any{
+		"id": ID,
+	}
+
+	query, values, err := BuildUpdateQuery("organizations", updateData, conditions)
+	if err != nil {
+		return nil, err
+	}
+
+	rows, err := s.db.Query(query, values...)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	if rows.Next() {
+		return scanIntoOrganization(rows)
+	}
+
+	return nil, fmt.Errorf("failed to update organization")
+
+}
+
 func (s *organizationStoreImpl) GetOrganizationByID(ID uuid.UUID) (*Organization, error) {
 
 	data := map[string]any{
@@ -219,6 +248,7 @@ type OrganizationStore interface {
 
 	CreateOrganization(r *PostOrganizationRequest) (*Organization, error)
 	UpdateOrganization(ID uuid.UUID, r *PatchOrganizationRequest) (*Organization, error)
+	DeleteOrganization(ID uuid.UUID) (*Organization, error)
 
 }
 

@@ -75,6 +75,15 @@ func main() {
 	)
 	mux.HandleFunc("PATCH /organization/{ID}", PatchOrganizationByID)
 
+	DeleteOrganizationByID := middleware.Chain(
+		handlers.HandleApiError(handlers.HandleDeleteOrganizationByID),
+		middleware.JwtAuthMiddleware,
+		middleware.ScopeMiddleware("organization:write"),
+	)
+	mux.HandleFunc("DELETE /organization/{ID}", DeleteOrganizationByID)
+
+
+
 	// Association endpoints
 	GetAssociationsByKey := middleware.Chain(
 		handlers.HandleApiError(handlers.HandleGetAssociationsByKey),

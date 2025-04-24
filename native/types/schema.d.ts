@@ -322,7 +322,38 @@ export interface paths {
         };
         put?: never;
         post?: never;
-        delete?: never;
+        /**
+         * Delete organization by ID
+         * @description Delete organization by ID
+         */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description Organization ID */
+                    ID: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Organization */
+                200: {
+                    headers: Record<string, unknown>;
+                    content: {
+                        "application/json": components["schemas"]["data.Organization"];
+                    };
+                };
+                /** @description Bad Request */
+                400: {
+                    headers: Record<string, unknown>;
+                    content: {
+                        "application/json": components["schemas"]["handlers.ApiError"];
+                    };
+                };
+            };
+        };
         options?: never;
         head?: never;
         /**

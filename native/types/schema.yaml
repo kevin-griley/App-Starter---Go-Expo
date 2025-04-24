@@ -142,6 +142,33 @@ paths:
       tags:
         - Organization
   "/organization/{ID}":
+    delete:
+      description: Delete organization by ID
+      parameters:
+        - description: Organization ID
+          in: path
+          name: ID
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Organization
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/data.Organization"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/handlers.ApiError"
+      security:
+        - ApiKeyAuth: []
+      summary: Delete organization by ID
+      tags:
+        - Organization
     get:
       description: Get organization by ID
       parameters:
