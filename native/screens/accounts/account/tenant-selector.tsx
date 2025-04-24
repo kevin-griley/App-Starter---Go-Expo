@@ -159,9 +159,9 @@ export function TenantSelector({ data, isLoading }: Props) {
                                             e.stopPropagation();
 
                                             openModal('PATCH_ORGANIZATION', {
+                                                closeModal,
                                                 organization:
                                                     assoc.organization ?? null,
-                                                closeModal,
                                             });
                                         }}
                                     >

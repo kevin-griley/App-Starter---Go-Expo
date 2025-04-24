@@ -24,7 +24,12 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
     const [modals, setModals] = React.useState<ModalDescriptorAny[]>([]);
 
     const openModal = <K extends ModalID>(id: K, props: ModalMap[K]) => {
-        setModals((modals) => [...modals, { id, props }]);
+        const descript = {
+            id,
+            props,
+        } as ModalDescriptorAny;
+
+        setModals((modals) => [...modals, descript]);
     };
 
     const closeModal = () => {

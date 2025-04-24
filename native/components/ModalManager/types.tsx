@@ -1,7 +1,9 @@
-import type { PatchOrganizationProps } from '@/screens/accounts/account/edit-workspace';
+import type { PatchOrganizationProps } from '@/screens/accounts/account/patch-organization';
+import type { PostQuotesProps } from '@/screens/organization/quotes/post-quote';
 
 export interface ModalMap {
     PATCH_ORGANIZATION: PatchOrganizationProps;
+    POST_QUOTES: PostQuotesProps;
 }
 
 export type ModalID = keyof ModalMap;

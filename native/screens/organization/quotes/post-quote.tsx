@@ -15,27 +15,32 @@ import { useForm } from 'react-hook-form';
 import { ActivityIndicator, View } from 'react-native';
 import { z } from 'zod';
 
-const createQuoteSchema = z.object({});
+const postQuoteSchema = z.object({});
 
-type CreateQuoteSchemaType = z.infer<typeof createQuoteSchema>;
+type PostQuoteSchemaType = z.infer<typeof postQuoteSchema>;
 
-interface Props {}
+export interface PostQuotesProps {
+    closeModal: () => void;
+}
 
-export function EditWorkspace(_props: Props) {
-    const form = useForm<CreateQuoteSchemaType>({
-        resolver: zodResolver(createQuoteSchema),
+export const PostQuotes: React.FC<PostQuotesProps> = (props) => {
+    const { closeModal } = props;
+
+    const form = useForm<PostQuoteSchemaType>({
+        resolver: zodResolver(postQuoteSchema),
         defaultValues: {},
     });
 
-    async function onSubmit(_values: CreateQuoteSchemaType) {}
+    async function onSubmit(_values: PostQuoteSchemaType) {}
 
     return (
-        <Dialog open={false} onOpenChange={(open) => !open}>
+        <Dialog open onOpenChange={closeModal}>
             <DialogContent className="w-screen max-w-2xl max-h-[90vh] overflow-y-auto">
                 <DialogHeader className="self-stretch">
-                    <DialogTitle>Edit Workspace</DialogTitle>
+                    <DialogTitle>Create New Quote</DialogTitle>
                     <DialogDescription>
-                        Make changes to your workspace settings here.
+                        Create a new quote for your organization. Fill in the
+                        required details and submit.
                     </DialogDescription>
                 </DialogHeader>
 
@@ -51,4 +56,4 @@ export function EditWorkspace(_props: Props) {
             </DialogContent>
         </Dialog>
     );
-}
+};
